@@ -1,0 +1,88 @@
+# 微信公众号清单
+# biz: 从公众号主页 URL 的 __biz= 参数提取
+# last_update: 最新已处理文章的 Unix 时间戳（秒），--update 模式以此为起点
+accounts:
+  - name: 机器之心
+    biz: MzA3MzI4MjgzMw==
+    freq: A、B、C、D
+    last_update: 1781712563    # 20260618-00:09
+  - name: 量子位
+    biz: MzIzNjc1NzUzMw==
+    freq: A、B、C、D
+    last_update: 1781712592    # 20260618-00:09
+  - name: 新智元
+    biz: MzI3MTA0MTk1MA==
+    freq: A、B、C、D
+    last_update: 1781712635    # 20260618-00:10
+  - name: 智东西
+    biz: MzA4MTQ4NjQzMw==
+    freq: A、B、C、D
+    last_update: 1781712663    # 20260618-00:11
+  - name: 42章经
+    biz: MzIyMDE5OTYyMw==
+    freq: A
+    last_update: 1780301907    # 20260601-16:18
+  - name: DeepTech深科技
+    biz: MzA3NTIyODUzNA==
+    freq: A、B、C、D
+    last_update: 1781712689    # 20260618-00:11
+  - name: Founder Park
+    biz: Mzg5NTc0MjgwMw==
+    freq: A
+    last_update: 1781712712    # 20260618-00:11
+  - name: MindCode
+    biz: MzAxNTYwMzcyNw==
+    freq: D
+    last_update: 1781712724    # 20260618-00:12
+  - name: Web3天空之城
+    biz: MzIxODUzNTg2MA==
+    freq: D
+    last_update: 1781712737    # 20260618-00:12
+  - name: Z Potentials
+    biz: MzI4NTgxMDk1NA==
+    freq: C
+    last_update: 1781712750    # 20260618-00:12
+  - name: 白鲸出海
+    biz: MzA3NTQ4NjczNw==
+    freq: A、D
+    last_update: 1779902704    # 20260528-01:25
+  - name: 海外独角兽
+    biz: Mzg2OTY0MDk0NQ==
+    freq: A
+    last_update: 1780602488    # 20260605-03:48
+  - name: 极客公园
+    biz: MTMwNDMwODQ0MQ==
+    freq: C、D
+    last_update: 1781712777    # 20260618-00:12
+  - name: 卡尔的AI沃茨
+    biz: Mzg3MTk3NzYzNw==
+    freq: D
+    last_update: 1781712798    # 20260618-00:13
+  - name: 郎瀚威 Will
+    biz: MzIwNjM2NjQyNg==
+    freq: C
+    last_update: 1781359876    # 20260613-22:11
+  - name: 赛博禅心
+    biz: MzkzNDQxOTU2MQ==
+    freq: C
+    last_update: 1781712817    # 20260618-00:13
+  - name: 深思圈
+    biz: Mzg3NDc2MjQxMg==
+    freq: C
+    last_update: 1781277437    # 20260612-23:17
+  - name: 数字生命卡兹克
+    biz: MzIyMzA5NjEyMA==
+    freq: C
+    last_update: 1781712835    # 20260618-00:13
+  - name: 特工宇宙
+    biz: MzYyMTY1NDA0Nw==
+    freq: C
+    last_update: 1781712847    # 20260618-00:14
+  - name: 王吉伟
+    biz: MzA5NjMzODEwNQ==
+    freq: C
+    last_update: 1781712865    # 20260618-00:14
+  # - name: 示例公众号
+  #   biz: MzI5MDA5NTIxOA==
+  #   freq: A、B、C、D  #ABCD分别对应:1点、7点、13点、19点。
+  #   last_update: 0

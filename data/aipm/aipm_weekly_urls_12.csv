@@ -1,0 +1,55 @@
+﻿序号,URL,链接文字,是否重要,周报时间
+1,https://mp.weixin.qq.com/s/v6ufzVlrsP4va9DO7AouwA,14天造出一台AI Native计算机：Happycapy和下一代人机协作的故事,是,260404周
+2,https://mp.weixin.qq.com/s/HUbGS3ddYqv_-QUTEu3JiQ,The Book of Elon: 最具价值的35条核心洞见,是,260404周
+3,https://m.okjike.com/reposts/69c883b651449d16de2b8cac,互联网对空间起作用，AI对时间起作用,是,260404周
+4,https://mp.weixin.qq.com/s/yKebVH7BAQsXFlkhDaGeBg,拿到 Claude Code 源码，怎么真正学到手,否,260404周
+5,https://github.com/claude-code-best/claude-code,可运行版本,否,260404周
+6,https://mp.weixin.qq.com/s/9ejYjBP-hmmz6lliDbROjg,装了Agent却不知道干啥，不是你不需要，而是创造力不足；激发创造力的方法分享,否,260404周
+7,https://mp.weixin.qq.com/s/VzJSS0magtMAEg-vv4H2Jw,Mike Krieger（Anthropic 产品 VP）：构建加速了，但“知道造什么”仍需时间积累,否,260404周
+8,https://mp.weixin.qq.com/s/ukObromqpNfDaOHqxKCFzA,到底什么能力AI无法取代,否,260404周
+9,https://mp.weixin.qq.com/s/3h4RsEa8-IpJb2TSA5LV2Q,如何把龙虾“养进工作与生活里”,否,260404周
+10,https://mp.weixin.qq.com/s/giwwCOYkM9INW5MBiLFJhw,AI圈，三种“不懂装懂”的业余病,否,260404周
+11,https://mp.weixin.qq.com/s/g6QwrCRKesifCEgOVXsQtQ,Junior.so：新产品形态OpenClaw for Teams，可取代任何行业里，若干3～5年经验的员工,否,260404周
+12,https://mp.weixin.qq.com/s/ZQqdOkx7-7ZQBHAWd1QrSA,让Agent可控的必经之路：AI本体论（分层治理体系，以本体模型为约束核心）,否,260404周
+13,https://mp.weixin.qq.com/s/9qI83Ne-Ac_R9y-yJ6SVnQ,Harness is the New Dataset：模型智能提升的下一个关键方向,否,260404周
+14,https://mp.weixin.qq.com/s/tjzWyvA8Am1PbS0dEd7xpw,前端项目Pretext，可实现“动态文字环绕”效果，通过JS就能轻松调用，达到CSS做不到的高性能动态布局,是,260404周
+15,https://m.okjike.com/originalPosts/69c89cb79f3cd84f6569a636,它让AI知道每个字符的宽度，避免出现闪烁、超出范围、抖动等问题。,否,260404周
+16,https://mp.weixin.qq.com/s/HzOW1RdfzTCvNnLvFbiG9w,Claude Code 的宠物系统,否,260404周
+17,https://linux.do/t/topic/1873901,攻略链接,否,260404周
+18,https://www.xiaohongshu.com/discovery/item/69c65b4c000000001b001fe6?source=webshare&xhsshare=pc_web&xsec_token=ABVfT8f1X3NQbx2ZMNAovzR-ev0uDpdaViybnI5KORrKo=&xsec_source=pc_share,AI短片「如山」（4分45秒）,否,260404周
+19,https://www.xiaohongshu.com/discovery/item/69c756ee0000000028008cea?source=webshare&xhsshare=pc_web&xsec_token=AB9XPjrBA-YfUebsp_yk3-OWBbPh_7CwtHW6qKclDyT2Q=&xsec_source=pc_share,AI农业科幻短片「云下之民」（12分59秒）,否,260404周
+20,https://www.xiaohongshu.com/discovery/item/69c12c51000000001a02afcc?source=webshare&xhsshare=pc_web&xsec_token=ABtukpUAQN7RTJUdEA1u64V8TIAjm2WX2dmHUts9PuSiI=&xsec_source=pc_share,AI原创动画「青花瓷」（4分54秒）,否,260404周
+21,https://mp.weixin.qq.com/s/Qjp0L16V3LalOLv_JmJnnw,Founders Fund领投Halter（估值20亿美元），奶牛智能项圈让农场主直呼“离不开”,否,260404周
+22,https://t.zsxq.com/MOqrd,（上）_模型路由的智能配置,否,260404周
+23,https://t.zsxq.com/gTfnn,（下）_关闭心跳、指令设置及其他,否,260404周
+24,https://mp.weixin.qq.com/s/udSpp7eMqwiRo5yVShRzLw,必装Skills推荐,是,260404周
+25,https://claude.com/plugins/skill-creator,链接,否,260404周
+26,https://github.com/anthropics/skills/tree/main/skills,链接,否,260404周
+27,https://github.com/eze-is/web-access,链接,否,260404周
+28,https://github.com/thedotmack/claude-mem,链接,否,260404周
+29,https://github.com/anthropics/skills/tree/main/skills/frontend-design,链接,否,260404周
+30,https://mp.weixin.qq.com/s/lrihiZonqug-xi4sHMviVg,飞书出了官方 CLI（正式开源），消息、文档、日历、邮箱都能用 Agent 操作了,是,260404周
+31,https://github.com/larksuite/cli,仓库,否,260404周
+32,https://mp.weixin.qq.com/s/Ku6HM9xA_tXJon4y4cLXgA,阿里上线Wan2.7-Image,否,260404周
+33,https://github.com/Wan-Video/Wan-skills%E3%80%8D%E3%80%82,https://github.com/Wan-Video/Wan-skills」。,否,260404周
+34,https://mp.weixin.qq.com/s/OpblYhgUHrQ27eC-xwsprg,Claude Code 上线 Computer Use,否,260404周
+35,https://mp.weixin.qq.com/s/w3dvnGs_1D3MaH3uHiCOUA,启动方式，在终端输入/mcp。可执行以下操作,否,260404周
+36,https://mp.weixin.qq.com/s/HU_X0K31Nw0LRqZCanxRrg,OpenAI总裁Greg Brockman回应近期大调整,否,260404周
+37,https://mp.weixin.qq.com/s/fzP9O1zOt7ZuKstXl4ggQQ,SpaceX冲刺人类史上最大IPO，国内火箭公司技术到达“冲线前”,否,260404周
+38,https://mp.weixin.qq.com/s/tHzyxvVGsBT9CyOsucdSzg,Gemini 3.1毫秒级接话，实时Agent时代到来,否,260404周
+39,https://mp.weixin.qq.com/s/dUf88fy8xSHT4MagF2mv7Q,晶泰率先盈利背后：AI for Science的数据工厂模式，从能力验证走向结果交付,否,260404周
+40,https://mp.weixin.qq.com/s/9urGvG6sTk6e81DFaTSLzQ,Claude Code成高危木马,否,260404周
+41,https://mp.weixin.qq.com/s/QxF79oyU5M5B-jX6sU7cpw,OpenAI宣布完成最新一轮融资：募集资金1220亿美元,否,260404周
+42,https://mp.weixin.qq.com/s/r4gVI_YWVTzVVP8A4xRyLw,英伟达、软银，各押注300亿美元，亚马逊出资500亿美元,否,260404周
+43,https://mp.weixin.qq.com/s/I-Ie8HZnytLsf-9VKfUDwg,谷歌地图Gemini核弹更新：步行导航说“人话”,否,260404周
+44,https://mp.weixin.qq.com/s/-eTLfDhRWmu0h-Vncft27w,xAI创始团队，全员离场：马斯克承认“最初没走对路子”，从零重建,否,260404周
+45,https://mp.weixin.qq.com/s/GVgMNi-4RgyVwNiXNFupyw,VCX爆炒背后：普通人终于可以买”顶级AI公司“,否,260404周
+46,https://mp.weixin.qq.com/s/d7fIEIByhayqO0H950QieA,DeepSeek深夜崩溃：新模型灰度发布，触发系统雪崩,否,260404周
+47,https://mp.weixin.qq.com/s/Nf6qc3dq2-jhif_6a4GYsQ,B2B生意可能都会走向A2A（Agent to Agent）,否,260404周
+48,https://m.okjike.com/originalPosts/69c9f219c5a1d4e649434b0e,企业微信 CLI 开源，覆盖通讯录、待办、会议、消息、日程、文档、智能表格等功能,否,260404周
+49,https://github.com/WecomTeam/wecom-cli,体验地址,否,260404周
+50,https://mp.weixin.qq.com/s/0Jys6xpW9J9rhp4zX2AexA?scene=1&click_id=9,Claude Code 源码泄露,否,260404周
+51,https://mp.weixin.qq.com/s/5lAB7CPkX2FL6sH2W6H9wQ,隐藏新功能,否,260404周
+52,https://mp.weixin.qq.com/s/um8mgrAJBJiLhnNkHgjsLA?scene=1&click_id=14,源码中的不少地方，都是技术债,否,260404周
+53,https://mp.weixin.qq.com/s/Oryy0MiO9EDbdoDdeo5NLQ,底层设计,否,260404周
+54,https://t.zsxq.com/axgXs,会员福利发布：AI季度资料包（2026Q1版-71份-575M）,是,260404周

@@ -1,0 +1,58 @@
+﻿序号,URL,链接文字,是否重要,周报时间
+1,https://m.okjike.com/originalPosts/69bd1ee625bae566123645b9,Ben Horowitz：CEO/产品负责人，只有一个核心任务，在正确的时间，做出正确的产品,是,260328周
+2,https://mp.weixin.qq.com/s/eWlyaIa1cZY9HhxsQtNd0w,Andrej Karpathy对话Sarah Guo：谈OpenClaw，AutoResearch和MicroGPT,是,260328周
+3,https://mp.weixin.qq.com/s/lejKFfDttRuO1tzNWs-A8g,更全文字版,是,260328周
+4,https://mp.weixin.qq.com/s/tvleF2Xdnx3zleriXNG3nQ,“护城河”打分表（不仅仅适合公司，也适合个人）,是,260328周
+5,https://mp.weixin.qq.com/s/5f0HLH-TX1RyTMbO_IKQ6w,OpenAI帮助我们反思：壁垒到底在哪,否,260328周
+6,https://t.zsxq.com/gdgzU,为什么不少人觉得，龙虾“用不起来”,否,260328周
+7,https://mp.weixin.qq.com/s/hqLS5MLw0zCXGefhmfw30w,余一：你的AI跟别人的AI，差在哪,否,260328周
+8,https://mp.weixin.qq.com/s/OO851ZeZpU_-wdjOAeEReg,李善友访谈Second Me创始人陶芳波：放弃卷算力，转而为AI注入「感受力」，用觉知重构人类心识,否,260328周
+9,https://t.zsxq.com/VaIJG,AI时代三重门,否,260328周
+10,https://mp.weixin.qq.com/s/SPyg43bpF8t4D3y26JJmqg,今年的机会是Coding Agent「套壳」；OpenClaw是第一个，把Coding能力压到极致的,否,260328周
+11,https://mp.weixin.qq.com/s/p2KJi3d7o0WRGc-_zjxA3Q,一些产品直觉，已不适用于Agent first思想,否,260328周
+12,https://mp.weixin.qq.com/s/huv31nYzRx_vueNhBHEC_w,杨植麟、罗福莉等从业者的圆桌讨论,否,260328周
+13,https://mp.weixin.qq.com/s/aGkcjZEXMt1jbLY_HFwn7w,OpenClaw闭门局：和30位创业者一起聊聊，真正值得关注的 Agent 生态位,否,260328周
+14,https://mp.weixin.qq.com/s/ltjF_0RRbo3Z6T3P6FqAtQ,黄仁勋两小时访谈：如何理解 AI 时代的底层秩序,否,260328周
+15,https://youtube.com/watch?v=vif8NQcjVf0,油管视频地址,否,260328周
+16,https://mp.weixin.qq.com/s/e8tNhmMwYHR0_2z6m-Ngbg,AI产品出海，达人营销全流程：从“被看见”到“被信任”的完整增长体系,否,260328周
+17,https://mp.weixin.qq.com/s/Svs8hnVD2mIsVr7x2f64XQ,极不建议“文字工作者”依赖AI写文章,否,260328周
+18,https://mp.weixin.qq.com/s/iA7_XAmnxQ96SDrgrn7gzQ,AI帮写代码快了50%，但代码审查，因为团队壁垒、流程摩擦，仍然要等三天，整体的“价值交付时间”没怎么改善,否,260328周
+19,https://www.xiaohongshu.com/discovery/item/69ba196b000000001a020bd3?source=webshare&xhsshare=pc_web&xsec_token=ABIDrNDXxNhuAIWTn3InLYMxD9iU_7faJFn5RDHoY6Fb4=&xsec_source=pc_share,AI复古动画音乐短片「Viva La Dream」 （1分48秒）,否,260328周
+20,https://www.xiaohongshu.com/discovery/item/69bd3b9c000000001b003971?source=webshare&xhsshare=pc_web&xsec_token=ABJREXj6h2CPuGNkieSHixr8I5Mh_kBsr9jBFMHmqVNhY=&xsec_source=pc_share,AI动画「最适合蒂姆的工作」（7分23秒）,否,260328周
+21,https://www.xiaohongshu.com/discovery/item/69bedccc0000000023016649?source=webshare&xhsshare=pc_web&xsec_token=AB2J96kuxZzw5MvpsnY8uweHXcK27FVjrWo_QjtGWSf9o=&xsec_source=pc_share,AI短片「百岁幼儿园」（8分5秒）,否,260328周
+22,https://www.xiaohongshu.com/discovery/item/69ba0711000000001b021541?source=webshare&xhsshare=pc_web&xsec_token=ABIDrNDXxNhuAIWTn3InLYMyyYD_JFDdxdx49y03b9RlQ=&xsec_source=pc_share,AI动画短片「电影院最后的夜晚」（5分27秒）,否,260328周
+23,https://t.zsxq.com/HnwQe,亲测踩坑攻略贴：安装OpenClaw，需要几步？,是,260328周
+24,https://mp.weixin.qq.com/s/Trc0nbnE_faVTbG1IjDX3w,Claude新功能：Dispatch + Computer Use,是,260328周
+25,https://mp.weixin.qq.com/s/14WIUQp1ncwJ4DnfC74bWg,谷歌Stitch大升级，可一键生成原型，Vibe Design时代已来临,是,260328周
+26,https://mp.weixin.qq.com/s/r3Xm5xnjpYBhWI82cUJ6Sg,微信「ClawBot」插件正式发布，支持接入OpenClaw,否,260328周
+27,https://mp.weixin.qq.com/s/rps5YVB6TchT9npAaIWKCw,Web Access：自测，最好用 Agent 通用联网方案,否,260328周
+28,https://github.com/eze-is/web-access,仓库地址,否,260328周
+29,https://mp.weixin.qq.com/s/06zQ7izFKN7oZnzVaNwkdw,Superpowers：结构化工作流（11万Star的必装插件）,否,260328周
+30,https://github.com/obra/superpowers,下载地址,否,260328周
+31,https://mp.weixin.qq.com/s/nddQEaH0cJGH2nU9WHNWeQ,OpenClaw 降本三大技巧,否,260328周
+32,https://mp.weixin.qq.com/s/ZkqqPH_Go0RLsbma3l1J5g,原文链接,否,260328周
+33,https://mp.weixin.qq.com/s/JbO5PNtWG1QPxlnOhHPSXQ,字节产品小云雀——Seedance2.0做底层模型的AI短剧Agent,否,260328周
+34,https://xyq.jianying.com/,网址,否,260328周
+35,https://mp.weixin.qq.com/s/MRGfb4zaLN7PDj475RUagQ,新职业“龙虾官”,是,260328周
+36,https://mp.weixin.qq.com/s/Fvs0YYFa8C4OoarwIjvk2g,全球龙虾批量黑化：Meta内部AI Agent失控，自主智能体反噬硅谷,否,260328周
+37,https://mp.weixin.qq.com/s/dCHt6w3c_fLaYY6ys_GSxA,OpenClaw 2026.3.22-beta.1 上线，底层架构大换血,否,260328周
+38,https://mp.weixin.qq.com/s/g8Zf8KNYl8sqHkQo6scikw,当前版本仍不稳定,否,260328周
+39,https://mp.weixin.qq.com/s/tBLiIN6IdqWIOnYXlMhTpw,Claude彻底「虾化」，凡是能在电脑上完成的操作，都能代劳,否,260328周
+40,https://mp.weixin.qq.com/s/6pcXTy0O8DREbzJHC9-VxQ,功能介绍,否,260328周
+41,https://mp.weixin.qq.com/s/ufDvJEd5ow_TCbGW26zsyQ,因外部工具配置失误，Claude 最新模型 Mythos 的信息泄漏——全面碾压Opus 4.6,否,260328周
+42,https://mp.weixin.qq.com/s/FfkGxNrCwECglru1WUSJSg,OpenAI广告首测暴露不足：预算消耗仅15%-20%，技术能力远逊Meta与Google,否,260328周
+43,https://mp.weixin.qq.com/s/uflgg9hCH6obz66XnR5gZg,Sora关停，OpenAI砍掉烧钱视频，押注企业市场与下一代模型,否,260328周
+44,https://mp.weixin.qq.com/s/b7D2y_Uq0doTH-8RCaxPQw,Anthropic 的增长营销部门，竟是“一人团队”,否,260328周
+45,https://mp.weixin.qq.com/s/0hr30u7qq6PA_psQfI1Nbg,全球首个机器人养老驿站，正式在北京启用,否,260328周
+46,https://mp.weixin.qq.com/s/62QYRhan3-kHttL3AaGiiw,（对副业感兴趣的同学，一定要看）我做副业，曾很多年都效果一般，但那一年，月收入涨了 10 倍……,否,260328周
+47,https://mp.weixin.qq.com/s/JOadccKoBIRur-F2IjrcQA,马斯克启动 TERAFAB 项目——万亿瓦算力工厂（美国得州奥斯汀），瞄准太空,否,260328周
+48,https://mp.weixin.qq.com/s/Z6q3pr3IXXXXrixPUMoidQ,“TikTok测试短剧入口”、“男二以下都是AI”，短剧行业迎来“底层逻辑重构”,否,260328周
+49,https://mp.weixin.qq.com/s/zKYBbtK7A8AbN_DKuIvXZQ,美国改写两条金融规则：代币化资产启动，流动性放大，或引爆2029年大崩盘,否,260328周
+50,https://mp.weixin.qq.com/s/VrHP7EAzhDUNR_w0stBZYg,美国2月份裁员9万，超过去一年总和,否,260328周
+51,https://m.okjike.com/originalPosts/69c148ebc5a1d4e6497e9b66,网易云音乐，全面接入OpenClaw,否,260328周
+52,https://github.com/NetEase/skills,GitHub链接,否,260328周
+53,https://mp.weixin.qq.com/s/ZO9xObjr81j-MNwB3sF22Q,DJI 发布 Avata 360，本质是对影石的“防守反击”,否,260328周
+54,https://mp.weixin.qq.com/s/x3uMAZ8TyCYLtVmdeZPVqg,Claude Code 发布 Auto Mode 模式：用AI分类器，替代人工审批,否,260328周
+55,https://t.zsxq.com/W6Xtw,周日换频道（304）_别对 AI PUA ,否,260328周
+56,https://t.zsxq.com/cjR04,新增2个JD（北京）_共计81个,否,260328周
+57,https://t.zsxq.com/6saL7,团员分享_从传统制造到AI产品经理：29岁，我用半年完成从零转型_岩风,否,260328周

@@ -1,0 +1,106 @@
+bitable_columns:
+  publish_date: 日期
+  source: 来源
+  title: 标题
+  url: 链接
+  weekday: 星期
+
+sort_config:
+  priority_field: 兴趣优先级
+
+feishuMessage:
+  ai:
+    target_chat:
+      chat_id: oc_3204c7360f0b89f350480ac8f7a130c8
+      name: claw_速读文章-智能
+    target_bitable:
+      app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+      table_id: tbl4uAOEiXGMae9c  # 2026
+    last_processed_time: 1781096555049    # 20260610-21:02
+  ot:
+    target_chat:
+      chat_id: oc_9eeb7097a2443316645fff42f42df472
+      name: claw_速读文章-其他
+    target_bitable:
+      app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+      table_id: tblOiwGGCenOZqQz
+    last_processed_time: 1781096119452    # 20260610-20:55
+
+# 微信公众号
+wxgzh:
+  target_bitable:
+    app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+    table_id: tbl4uAOEiXGMae9c  # 2026
+
+# 日报 —— WaytoAGI 的每日更新及历史归档
+waytoagi:
+  recent_doc: QPe5w5g7UisbEkkow8XcDmOpn8e  # 最近文档
+  year_doc: FjiOwWp2giA7hRk6jjfcPioCnAc   # 历史文档-2025年度
+  target_bitable:
+    app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+    table_id: tbl4uAOEiXGMae9c  # 2026
+    # table_id: tblFMAvHWGqvVE73  # TMP
+    # table_id: tblUQkM2CE2KAb7n  # 2026TMP
+  lookback_days: 1
+  last_processed_date: 20260609
+
+# 周报 —— AI产品经理大本营
+weekly_report:
+  zsxq_group_url: https://wx.zsxq.com/group/28512128481421
+  daily_exclude_urls:
+    - https://wx.zsxq.com/group
+    - https://t.zsxq.com/0838WKhlf
+    - https://shimo.im/sheets/Qc9z3H8iPIiNQR9X/MODOC
+  sample_bitable:
+    app_token: Fv6IwSMhHikScDkjzz7cIKRLnig
+    table_id: tblzWKOrKPaRzUTU
+  target_bitable:
+    app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+    table_id: tbl4uAOEiXGMae9c  # 2026
+    # table_id: tblFHeiBG72Z2m8t  # 2025
+    # table_id: tblFMAvHWGqvVE73  # TMP
+  last_processed_date: 1781051119    # 20260610-08:25
+
+# 知识星球文件下载（支持多群组）
+zsxq_downloader:
+  groups:
+    - name: 人工智能之地                                    # 20231016
+      group_url: https://wx.zsxq.com/group/48884141111558
+      download_dir: /Volumes/DATADRIVE/shareAI/知识库_人工智能之地/new
+      last_download_date: 1781062647    # 20260610-11:37
+    - name: 产品经理大本营                                  # ~20221231@第?48页?by-20260425
+      group_url: https://wx.zsxq.com/group/28512128481421
+      download_dir: /Volumes/DATADRIVE/shareAI/知识库_AI产品经理大本营/daily
+      last_download_date: 1781012108    # 20260609-21:35
+    # - name: 映魅咨询-发现好报告和有意思的产品                 # due-20260128：20210418 20260131。已找到 266 个含文件帖子
+    #   group_url: https://wx.zsxq.com/group/15288441212482
+    #   download_dir: D:\资料s\AI相关\资料_映魅咨询\update
+    #   last_download_date: 20260128
+    # - name: 投行那些事儿VIP私域群                          # due-20230721：20200320 20230831。（20200314@共384页。找到 4516 个含文件的帖子）
+    #   group_url: https://wx.zsxq.com/group/88512858242152
+    #   download_dir: D:\资料s\AI相关\资料_投行那些事儿VIP私域群\update
+    #   last_download_date: 20230721
+    # - name: 睿练医健投研圈                                # due-20220807：20200601 20221031。（~20190625@第?66页?by-20260425），已找到 2618 个含文件帖子
+    #   group_url: https://wx.zsxq.com/group/222122185241
+    #   download_dir: D:\资料s\AI相关\资料_睿练医健投研圈\update
+    #   last_download_date: 20220807
+
+# 自动分类
+auto_classify:
+  llm:
+    provider: deepseek
+    model: deepseek-chat
+    base_url: https://api.deepseek.com/v1
+    max_tokens: 4096
+    temperature: 0.1
+  sample_tables:
+    - app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+      table_id: tblOb6Mx1K4tC5pQ   # 参考表
+    - app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+      table_id: tblFHeiBG72Z2m8t   # 2025表
+    - app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+      table_id: tbl4uAOEiXGMae9c   # 2026表
+  target_table:
+    app_token: LOBswegeNiQIf4kPDAtcJDbhnTg
+    table_id: tbl4uAOEiXGMae9c     # 2026表
+  batch_size: 10

@@ -1,0 +1,13 @@
+﻿链接,标题,日期,来源,精选日期,异常信息,记录时间
+https://lancedb.com,（LanceDB ）,20260530,,20260530,未提取来源信息,2026-05-31 11:17:42
+https://github.com/tencent-connect/openclaw-qqbot,（QQ Bot 插件 ）,20260530,Web-GitHub,20260530,"通用解析失败: HTTPSConnectionPool(host='github.com', port=443): Max retries exceeded with url: /tencent-connect/openclaw-qqbot (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)')))",2026-05-31 11:17:42
+https://github.com/NousResearch/hermes-agent,（Hermes Agent ）,20260530,Web-GitHub,20260530,"通用解析失败: HTTPSConnectionPool(host='github.com', port=443): Max retries exceeded with url: /NousResearch/hermes-agent (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)')))",2026-05-31 11:17:42
+https://nousresearch.com,NOUS RESEARCH - Open Source AI,20260530,,20260530,未提取来源信息,2026-05-31 11:17:42
+https://github.com/cloudwego/eino,（github.com/cloudwego/eino ）,20260530,Web-GitHub,20260530,"通用解析失败: HTTPSConnectionPool(host='github.com', port=443): Max retries exceeded with url: /cloudwego/eino (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)')))",2026-05-31 11:17:42
+https://github.com/HKUDS/OpenHarness,（github.com/HKUDS/OpenHarness ）,20260530,Web-GitHub,20260530,"通用解析失败: HTTPSConnectionPool(host='github.com', port=443): Max retries exceeded with url: /HKUDS/OpenHarness (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)')))",2026-05-31 11:17:42
+https://www.npmjs.com/package/@mariozechner/pi-agent-core,Just a moment...,20260530,,20260530,未提取来源信息,2026-05-31 11:17:42
+https://honcho.dev,（https://honcho.dev/）,20260530,,20260530,未提取来源信息,2026-05-31 11:17:42
+https://x.com/Moting284/status/2060254189746630799,JavaScript is not available.,20260530,Web-X,20260530,未提取日期,2026-05-31 11:17:42
+https://agi-is-going-to-arrive.github.io/workflow-cookbook,（https://agi-is-going-to-arrive.github.io/workflow-cookbook/）,20260530,,20260530,未提取来源信息,2026-05-31 11:17:42
+https://github.com/democra-ai/claude-workflow-viz,（https://github.com/democra-ai/claude-workflow-viz）,20260530,Web-GitHub,20260530,"通用解析失败: HTTPSConnectionPool(host='github.com', port=443): Max retries exceeded with url: /democra-ai/claude-workflow-viz (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)')))",2026-05-31 11:17:42
+https://cc-dynamic-workflows.pages.dev,Claude Code Dynamic Workflows — 使用调研报告,20260530,,20260530,未提取来源信息,2026-05-31 11:17:42

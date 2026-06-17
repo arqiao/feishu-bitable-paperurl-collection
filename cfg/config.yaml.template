@@ -1,0 +1,96 @@
+feishu:
+  app_id: "YOUR_APP_ID"
+  app_secret: "YOUR_APP_SECRET"
+  redirect_uri: "http://localhost:8080/callback"
+  scopes:
+    - "im:chat:readonly"
+    - "im:message:readonly"
+    - "bitable:app"
+    - "bitable:app:readonly"
+
+bitable_columns:
+  title: "标题"
+  publish_date: "日期"
+  weekday: "星期"
+  url: "链接"
+  source: "来源"
+
+sort_config:
+  priority_field: "兴趣优先级"
+
+auth:
+  access_token: ""
+  refresh_token: ""
+  token_expire_time: 0
+  user_access_token: ""
+  user_refresh_token: ""
+  user_token_expire_time: 0
+
+feishuMessage:
+  ai:
+    last_processed_time: 0
+    target_bitable:
+      app_token: ""
+      table_id: ""
+    target_chat:
+      name: ""
+      chat_id: ""
+  ot:
+    last_processed_time: 0
+    target_bitable:
+      app_token: ""
+      table_id: ""
+    target_chat:
+      name: ""
+      chat_id: ""
+
+# 自动分类
+auto_classify:
+  llm:
+    # 默认：DeepSeek OpenAI-compatible，适合日常低成本批量分类
+    provider: deepseek
+    model: deepseek-v4-flash
+    base_url: https://api.deepseek.com/v1
+    api_style: openai_chat
+    max_tokens: 4096
+    temperature: 0.1
+    strict_json: true
+    # 备选 1：OpenAI gpt-5.4-mini，OpenAI-compatible，适合抽样复核/更稳分类
+    # provider: openai
+    # model: gpt-5.4-mini
+    # base_url: https://api.openai.com/v1
+    # api_style: openai_chat
+    # max_tokens: 4096
+    # temperature: 0.1
+    # strict_json: true
+    # 备选 2：火山方舟，OpenAI-compatible；model: endpoint_id 表示从加密全局变量读取推理接入点
+    # provider: volcengine
+    # model: endpoint_id
+    # base_url: https://ark.cn-beijing.volces.com/api/v3
+    # api_style: openai_chat
+    # max_tokens: 4096
+    # temperature: 0.1
+    # strict_json: true
+    # 备选 3：MiniMax Anthropic-compatible，高速模型；strict JSON 由提示词约束
+    # provider: minimax
+    # model: MiniMax-M2.7-highspeed
+    # base_url: https://api.minimaxi.com/anthropic
+    # api_style: anthropic_messages
+    # anthropic_version: 2023-06-01
+    # max_tokens: 4096
+    # temperature: 0.1
+    # strict_json: false
+  prompt:
+    # 可不填；程序会根据 provider 给出默认值。这里的值会覆盖 provider 默认值。
+    max_candidate_options: 80
+    max_sample_categories: 24
+    samples_per_category: 1
+  sample_tables:
+    - app_token: ""
+      table_id: ""   # 参考表
+    - app_token: ""
+      table_id: ""   # 历史表
+  target_table:
+    app_token: ""
+    table_id: ""     # 目标表
+  batch_size: 10

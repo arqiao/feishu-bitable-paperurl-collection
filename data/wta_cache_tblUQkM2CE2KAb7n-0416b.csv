@@ -1,0 +1,423 @@
+﻿id,url,title,date,record_id,parent_id,layer,精选日期,date_added
+00000001,https://mp.weixin.qq.com/s/gu0pFEQlb8NeKBFU-cdhpA,Mythos 全面解读：Anthropic 最强模型发布,20260408,recvgZ4cPIHDEs,,0,20260408,2026-04-17 04:55:09
+00000002,https://red.anthropic.com/2026/mythos-preview/,Claude Mythos Preview \ red.anthropic.com,20260408,recvgZ4cPIMfH2,00000017,2,20260408,2026-04-17 04:55:09
+00000003,https://anthropic.com/claude-mythos-preview-system-card,（https://anthropic.com/claude-mythos-preview-system-card）,20260408,recvgZ4cPIcLM1,00000017,2,20260408,2026-04-17 04:55:09
+00000004,https://www.anthropic.com/glasswing,Project Glasswing: Securing critical software for the AI era \ Anthropic,20260408,recvgZ4cPIfjdy,00000017,2,20260408,2026-04-17 04:55:09
+00000005,https://www.anthropic.com/claude-mythos-preview-risk-report,（https://www.anthropic.com/claude-mythos-preview-risk-report）,20260408,recvgZ4cPIojbG,00000017,2,20260408,2026-04-17 04:55:09
+00000006,https://waytoagi.feishu.cn/wiki/S7K6wfSAqi4qGfk5ScmcbA5Dntg,一文看懂：Hermes Agent与OpenClaw全维度对比,20260408,recvgZ4cPIJLg4,00000012,1,20260408,2026-04-17 04:55:09
+00000007,https://waytoagi.feishu.cn/wiki/RSOfwXS4kiu9cDkeAJQcn3DYnxe,系统工程：构建真正可用的 Agentic 软件,20260408,recvgZ4cPIbv4n,,1,20260408,2026-04-17 04:55:09
+00000008,https://github.com/agno-agi/dash,GitHub - agno-agi/dash: A self-learning data agent built with systems engineering principles. It grounds answers in 6 layers of context and improves with every query. · GitHub,20260408,recvgZ4cPI87X7,00000007,2,20260408,2026-04-17 04:55:09
+00000009,https://x.com/ashpreetbedi/status/2041568919085854847,JavaScript is not available.,20260408,recvgZ4cPIJJZ6,00000007,2,20260408,2026-04-17 04:55:09
+00000010,https://waytoagi.feishu.cn/wiki/MNDZwUCK1iYSN9karvAcI3MPnj6,贝叶斯定理：AI 决策背后的秘密,20260408,recvgZ4cPIdre3,,1,20260408,2026-04-17 04:55:09
+00000011,https://x.com/TheVixhal/status/2041568489220272424,JavaScript is not available.,20260408,recvgZ4cPIdXCH,00000010,2,20260408,2026-04-17 04:55:09
+00000012,https://mp.weixin.qq.com/s/JWHBaFVvLE8S1t5jRXQxrg,一文看懂：Hermes Agent与OpenClaw全维度对比,20260408,recvgZ4cPIoipk,,0,20260408,2026-04-17 04:55:09
+00000013,https://x.com/Teknium,JavaScript is not available.,20260408,recvgZ4cPIXvli,00000006,2,20260408,2026-04-17 04:55:09
+00000014,https://hermes-agent.nousresearch.com/docs/,Hermes Agent Documentation | Hermes Agent,20260408,recvgZ4cPIjDoZ,00000006,2,20260408,2026-04-17 04:55:09
+00000015,https://hermes-doc.aigc.green/,Hermes Agent 文档 | Hermes Agent 中文文档,20260408,recvgZ4cPImMtQ,00000006,2,20260408,2026-04-17 04:55:09
+00000016,https://x.com/NousResearch,JavaScript is not available.,20260408,recvgZ4cPIqYWl,00000006,2,20260408,2026-04-17 04:55:09
+00000017,https://waytoagi.feishu.cn/wiki/UiqJweUYGi5QPUkIzbfcmYArnyd,Mythos 全面解读：Anthropic 最强模型发布,20260408,recvgZ4cPIuVlQ,00000001,1,20260408,2026-04-17 04:55:09
+00000018,https://mp.weixin.qq.com/s/EB8U290R1Dx6EqTFd5ZAiw,Meta 发布全新大模型：Muse Spark,20260409,recvgZ4cPI7pay,,0,20260409,2026-04-17 04:55:09
+00000019,https://ai.meta.com/static-resource/muse-spark-eval-methodology,Error,20260408,recvgZ4cPI3fKz,00000032,2,20260409,2026-04-17 04:55:09
+00000020,https://x.com/alexandr_wang/status/2041909376508985381,JavaScript is not available.,20260408,recvgZ4cPIEwpx,00000032,2,20260409,2026-04-17 04:55:09
+00000021,https://meta.ai/,Meta AI,20260408,recvgZ4cPIJdHc,00000032,2,20260409,2026-04-17 04:55:09
+00000022,https://x.com/AIatMeta/status/2041910285653737975,JavaScript is not available.,20260408,recvgZ4cPIJs1z,00000032,2,20260409,2026-04-17 04:55:09
+00000023,https://ai.meta.com/blog/introducing-muse-spark-msl/,Error,20260408,recvgZ4cPIYDUS,00000032,2,20260409,2026-04-17 04:55:09
+00000024,https://mp.weixin.qq.com/,（https://mp.weixin.qq.com/）,20260408,recvgZ4cPInkLY,00000032,2,20260409,2026-04-17 04:55:09
+00000025,https://waytoagi.feishu.cn/wiki/UboSw2JZjih6HRkX7s8cUuFjnrd,Openclaw和二师兄的猫——手把手教你做一个全自动的毛孩子日记站,20260409,recvgZ4cPIBcJ1,,1,20260409,2026-04-17 04:55:09
+00000026,https://emajjsky.github.io/cat-daily-site/,记录杰斯臭宝的每一天,20260409,recvgZ4cPI0EC0,00000025,2,20260409,2026-04-17 04:55:09
+00000027,https://github.com/emajjsky/cat-daily-public.git,GitHub - emajjsky/cat-daily-public · GitHub,20260409,recvgZ4cPIhN8A,00000025,2,20260409,2026-04-17 04:55:09
+00000028,https://mp.weixin.qq.com/s/gdi9AbCGpLUWt61h_KyG6A,Claude Code 实战：如何用一个工具支撑整个小团队丨Aakash Gupta,20260409,recvgZ4cPIHJhS,,0,20260409,2026-04-17 04:55:09
+00000029,https://www.youtube.com/watch?v=0UArKLQ6bXA,- YouTube,20260408,recvgZ4cPInBg3,00000033,2,20260409,2026-04-17 04:55:09
+00000030,https://mp.weixin.qq.com/s/sDOJddds1A1L532iuQ5mMQ,Anthropic 今天发了一个新产品，可能会让一批做 AI 智能体基础设施的团队失业,20260409,recvgZ4cPISnAD,,0,20260409,2026-04-17 04:55:09
+00000031,https://www.anthropic.com/engineering/managed-agents,Scaling Managed Agents: Decoupling the brain from the hands \ Anthropic,20260409,recvgZ4cPI8yJg,00000038,2,20260409,2026-04-17 04:55:09
+00000032,https://waytoagi.feishu.cn/wiki/GC4PwlwKmiYlv8kBmpyc5uKYndg,Meta 发布全新大模型：Muse Spark,20260408,recvgZ4cPIU9XM,00000018,1,20260409,2026-04-17 04:55:09
+00000033,https://waytoagi.feishu.cn/wiki/PbHRwt1oTihG9Ek2IXHc9pGDnBg,Claude Code 实战：如何用一个工具支撑整个小团队丨Aakash Gupta,20260408,recvgZ4cPIeJ4W,00000028,1,20260409,2026-04-17 04:55:09
+00000034,https://waytoagi.feishu.cn/wiki/DJuJwSsNsiAqMRkqBfXcxhsznRd,被骂惨了的即梦又悄悄推出了个Octo（文中附内测申请入口）,20260409,recvgZ4cPIkys3,00000035,1,20260409,2026-04-17 04:55:09
+00000035,https://mp.weixin.qq.com/s/UF9N_jurlwdetKHd9q0xZQ,被骂惨了的即梦又悄悄推出了个Octo（文中附内测申请入口）,20260409,recvgZ4cPIlMYe,,0,20260409,2026-04-17 04:55:09
+00000036,https://jimeng.jianying.com/,即梦AI - 即刻造梦,20260409,recvgZ4cPI8vYR,00000034,2,20260409,2026-04-17 04:55:09
+00000037,https://bytedance.larkoffice.com/share/base/form/shrcnNKuAiTjreypaRrUPyoIzyb,总结会议决策,20260409,recvgZ4cPIsmb1,00000034,2,20260409,2026-04-17 04:55:09
+00000038,https://waytoagi.feishu.cn/wiki/WArwwDGJviBNpykzL20cEJxTnBc,Anthropic 今天发了一个新产品，可能会让一批做 AI 智能体基础设施的团队失业,20260409,recvgZ4cPImCbs,00000030,1,20260409,2026-04-17 04:55:09
+00000039,https://mp.weixin.qq.com/s/KaQyPm0Y3RfDK-yONTlKJw,分析了8000条群聊记录后，我给知识库装上了自动进化的引擎,20260407,recvgZ4cPIqgc6,,0,20260409,2026-04-17 04:55:09
+00000040,https://github.com/hellodigua/ChatLab/blob/main/README.zh-CN.md,File not found · GitHub,20260409,recvgZ4cPIAzQy,00000043,2,20260409,2026-04-17 04:55:09
+00000041,https://mp.weixin.qq.com/s?__biz=MzA3MDA3NzI1Nw==&mid=2455088067&idx=1&sn=651def0d84978ecf749e4423bc0f4997,录了一期播客，分享我对AI时代个体生存的几点思考。,20260402,recvgZ4cPIIpg6,00000043,2,20260409,2026-04-17 04:55:09
+00000042,https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f,llm-wiki · GitHub,20260409,recvgZ4cPIdpJ6,00000043,2,20260409,2026-04-17 04:55:09
+00000043,https://waytoagi.feishu.cn/wiki/Jf33wn120i2hT4kDetKcnXk1nac,分析了8000条群聊记录后，我给知识库装上了自动进化的引擎,20260409,recvgZ4cPIwJCM,00000039,1,20260409,2026-04-17 04:55:09
+00000044,https://waytoagi.feishu.cn/wiki/Yh9Xw184yi1RIIksFcbcM4DhnKd,Deep Agents Deploy：一个面向 Claude Managed Agents 的开源替代方案,20260409,recvgZ4cPIyr60,,1,20260409,2026-04-17 04:55:09
+00000045,https://github.com/openai/agents.md,"GitHub - agentsmd/agents.md: AGENTS.md — a simple, open format for guiding coding agents · GitHub",20260409,recvgZ4cPI0cHj,00000044,2,20260409,2026-04-17 04:55:09
+00000046,https://docs.langchain.com/oss/python/deepagents/deploy?ref=blog.langchain.com,Deploy with the CLI - Docs by LangChain,20260409,recvgZ4cPI3naw,00000044,2,20260409,2026-04-17 04:55:09
+00000047,https://github.com/langchain-ai/deepagents/blob/main/deepagents-deploy.md?ref=blog.langchain.com,deepagents/deepagents-deploy.md at main · langchain-ai/deepagents · GitHub,20260409,recvgZ4cPI5lG4,00000044,2,20260409,2026-04-17 04:55:09
+00000048,https://agentskills.io/,Overview - Agent Skills,20260409,recvgZ4cPI8TRQ,00000044,2,20260409,2026-04-17 04:55:09
+00000049,https://www.anthropic.com/engineering/managed-agents,Scaling Managed Agents: Decoupling the brain from the hands \ Anthropic,20260409,recvgZ4cPICcXX,00000044,2,20260409,2026-04-17 04:55:09
+00000050,https://docs.langchain.com/oss/python/deepagents/memory?ref=blog.langchain.com,Memory - Docs by LangChain,20260409,recvgZ4cPIDzfO,00000044,2,20260409,2026-04-17 04:55:09
+00000051,https://github.com/langchain-ai/agent-protocol?ref=blog.langchain.com,GitHub - langchain-ai/agent-protocol at blog.langchain.com · GitHub,20260409,recvgZ4cPIIc09,00000044,2,20260409,2026-04-17 04:55:09
+00000052,https://docs.langchain.com/langsmith/deployments,LangSmith Deployment - Docs by LangChain,20260409,recvgZ4cPIJM99,00000044,2,20260409,2026-04-17 04:55:09
+00000053,https://docs.langchain.com/oss/javascript/deepagents/overview,Deep Agents overview - Docs by LangChain,20260409,recvgZ4cPIR77q,00000044,2,20260409,2026-04-17 04:55:09
+00000054,https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop,Human-in-the-loop - Docs by LangChain,20260409,recvgZ4cPIREWM,00000044,2,20260409,2026-04-17 04:55:09
+00000055,https://x.com/hwchase17/status/2042269195656921120,JavaScript is not available.,20260409,recvgZ4cPIbQef,00000044,2,20260409,2026-04-17 04:55:09
+00000056,https://docs.langchain.com/oss/python/deepagents/overview,Deep Agents overview - Docs by LangChain,20260409,recvgZ4cPIewqL,00000044,2,20260409,2026-04-17 04:55:09
+00000057,https://docs.langchain.com/langsmith/server-mcp,MCP endpoint in Agent Server - Docs by LangChain,20260409,recvgZ4cPIfyFd,00000044,2,20260409,2026-04-17 04:55:09
+00000058,https://docs.langchain.com/oss/python/deepagents/backends,Backends - Docs by LangChain,20260409,recvgZ4cPIlQuE,00000044,2,20260409,2026-04-17 04:55:09
+00000059,https://blog.langchain.com/the-anatomy-of-an-agent-harness/,The Anatomy of an Agent Harness,20260409,recvgZ4cPIpZ5g,00000044,2,20260409,2026-04-17 04:55:09
+00000060,https://docs.langchain.com/langsmith/server-a2a,A2A endpoint in Agent Server - Docs by LangChain,20260409,recvgZ4cPIyRDo,00000044,2,20260409,2026-04-17 04:55:09
+00000061,https://docs.langchain.com/oss/javascript/deepagents/skills,Skills - Docs by LangChain,20260409,recvgZ4cPIzD2R,00000044,2,20260409,2026-04-17 04:55:09
+00000062,https://x.com/lufzzliz/status/2042237123865297267?s=46,JavaScript is not available.,20260410,recvgZbYtq8Bqx,,0,20260410,2026-04-17 04:55:09
+00000063,https://dashscope.aliyuncs.com/compatible-mode/v1/,（https://dashscope.aliyuncs.com/compatible-mode/v1/）,20260410,recvgZbYtq0T5C,00000094,2,20260410,2026-04-17 04:55:09
+00000064,https://github.com/cclank/Hermes-Wiki,GitHub - cclank/Hermes-Wiki: Hermes agent + LLM Wiki + 源代码 完成 Hermes agent  wiki · GitHub,20260410,recvgZbYtq5hTx,00000094,2,20260410,2026-04-17 04:55:09
+00000065,https://learn.microsoft.com/en-us/windows/wsl/install,Install WSL | Microsoft Learn,20260410,recvgZbYtqSiGs,00000094,2,20260410,2026-04-17 04:55:09
+00000066,https://mp.weixin.qq.com/s/0SYL-HKbWGj3eToQPqnpBw,上手 Hermes Agent 后建议先尝试的十件事情,20260409,recvgZbYtqde2o,00000094,2,20260410,2026-04-17 04:55:09
+00000067,https://hermes-agent.nousresearch.com/docs/,Hermes Agent Documentation | Hermes Agent,20260410,recvgZbYtqhpRu,00000094,2,20260410,2026-04-17 04:55:09
+00000068,https://github.com/NousResearch/hermes-agent,GitHub - NousResearch/hermes-agent: The agent that grows with you · GitHub,20260410,recvgZbYtqzRHT,00000094,2,20260410,2026-04-17 04:55:09
+00000069,https://mp.weixin.qq.com/s/jn_0Sx8TqKRkg5XJCAOPag,Hermes Agent 的七个冷知识,20260410,recvgZbYtq9A3I,,0,20260410,2026-04-17 04:55:09
+00000070,https://github.com/joeynyc/hermes-skins,GitHub - joeynyc/hermes-skins: Custom skins (visual themes) for the Hermes CLI agent · GitHub,20260410,recvgZbYtqAhsY,00000096,2,20260410,2026-04-17 04:55:09
+00000071,https://mp.weixin.qq.com/s/wL1afNvQteWbbD_lqfGP9A,小开源：蒸馏版自己的 SEO 审计工具 seo-audit-skill,20260410,recvgZbYtqJXtg,,0,20260410,2026-04-17 04:55:09
+00000072,https://example.com,Example Domain,20260410,recvgZbYtq9cnd,00000074,2,20260410,2026-04-17 04:55:09
+00000073,https://github.com/JeffLi1993/seo-audit-skill,"GitHub - JeffLi1993/seo-audit-skill: SEO agent skill for OpenClaw,Claude Code, and AI agents. Generate beginner SEO audits and advanced technical SEO reports for any page. · GitHub",20260410,recvgZbYtqjMZX,00000074,2,20260410,2026-04-17 04:55:09
+00000074,https://waytoagi.feishu.cn/wiki/BBknw4M5fibNvYklDZ6cDnw8nRd,小开源：蒸馏版自己的 SEO 审计工具 seo-audit-skill,20260410,recvgZbYtqJgVR,00000071,1,20260410,2026-04-17 04:55:09
+00000075,https://waytoagi.feishu.cn/wiki/WEfAwQy5hikJiqkb0Yacke5dnJc,扩展 Claude 会话完整指南,20260410,recvgZbYtqJhSW,,1,20260410,2026-04-17 04:55:09
+00000076,https://pypi.org/project/notebooklm-py/,notebooklm-py · PyPI,20260312,recvgZbYtqCefG,00000075,2,20260410,2026-04-17 04:55:09
+00000077,https://x.com/hooeem/status/2042293751805329445,JavaScript is not available.,20260410,recvgZbYtqWEcn,00000075,2,20260410,2026-04-17 04:55:09
+00000078,https://github.com/teng-lin/notebooklm-py,"GitHub - teng-lin/notebooklm-py: Unofficial Python API and agentic skill for Google NotebookLM. Full programmatic access to NotebookLM's features—including capabilities the web UI doesn't expose—via Python, CLI, and AI agents like Claude Code, Codex, and OpenClaw. · GitHub",20260410,recvgZbYtqr0qq,00000075,2,20260410,2026-04-17 04:55:09
+00000079,https://skillsmp.com/,Just a moment...,20260410,recvgZbYtqxHDc,00000075,2,20260410,2026-04-17 04:55:09
+00000080,https://waytoagi.feishu.cn/wiki/V5unwb34Ei92owkEM8ScQ4ptnHf,当所有人都在蒸馏「同事.skill」，我想聊剩下的 90%,20260410,recvgZbYtqKLWK,00000095,1,20260410,2026-04-17 04:55:09
+00000081,https://waytoagi.feishu.cn/wiki/LXg1wZ6BzieMsVk9cVVco54lnlh,OiiOii正式版使用手册,20260410,recvgZbYtqPWxX,,1,20260410,2026-04-17 04:55:09
+00000082,https://oiioii.ai/,OiiOii.ai - AI Animation agent team for you,20260410,recvgZbYtqfQWQ,00000081,2,20260410,2026-04-17 04:55:09
+00000083,https://www.oiioii.ai/home,OiiOii.ai - AI Animation agent team for you,20260410,recvgZbYtqmUHS,00000081,2,20260410,2026-04-17 04:55:09
+00000084,https://www.oiioii.ai/auth-bendo-rule,OiiOii.ai - AI Animation agent team for you,20260410,recvgZbYtqtoQM,00000081,2,20260410,2026-04-17 04:55:09
+00000085,https://waytoagi.feishu.cn/wiki/BWrcwMJU4iKqpikcVWJcPhKlnlI,"那个会自己""进化""的 Hermes Agent 来了｜附Windows安装教程",20260410,recvgZbYtqSWqz,00000086,1,20260410,2026-04-17 04:55:09
+00000086,https://mp.weixin.qq.com/s/kdSIM6EXPpdGu-sQqkQgBA,"那个会自己""进化""的 Hermes Agent 来了｜附Windows安装教程",20260410,recvgZbYtqToi0,,0,20260410,2026-04-17 04:55:09
+00000087,https://www.python.org/downloads/,Download Python | Python.org,20260410,recvgZbYtq0v7R,00000085,2,20260410,2026-04-17 04:55:09
+00000088,https://git-scm.com/downloads,Redirecting…,20260410,recvgZbYtqFHk3,00000085,2,20260410,2026-04-17 04:55:09
+00000089,https://mp.weixin.qq.com/s/CRVWO4_5lQN7kyB33LTqxA,我用OpenClaw构建了一个AI记忆系统：从线性笔记到分层大脑,20260327,recvgZbYtqLLPk,00000085,2,20260410,2026-04-17 04:55:09
+00000090,https://agentskills.io,Overview - Agent Skills,20260410,recvgZbYtqOVkH,00000085,2,20260410,2026-04-17 04:55:09
+00000091,https://github.com/NousResearch/hermes-agent,GitHub - NousResearch/hermes-agent: The agent that grows with you · GitHub,20260410,recvgZbYtqQQfi,00000085,2,20260410,2026-04-17 04:55:09
+00000092,https://hermes-agent.nousresearch.com/docs/,Hermes Agent Documentation | Hermes Agent,20260410,recvgZbYtqQeU0,00000085,2,20260410,2026-04-17 04:55:09
+00000093,https://open.larkoffice.cn/app,（https://open.larkoffice.cn/app）,20260410,recvgZbYtqV07w,00000085,2,20260410,2026-04-17 04:55:09
+00000094,https://waytoagi.feishu.cn/wiki/VKuaw7GETi9J5Mkx3mncDrQCnke,上手 Hermes Agent 后建议先尝试的十件事情,20260410,recvgZbYtqXMqq,00000062,1,20260410,2026-04-17 04:55:09
+00000095,https://mp.weixin.qq.com/s/YW3uEYqtsWzji__EKuLxIA,当所有人都在蒸馏「同事.skill」，我想聊剩下的 90%,20260410,recvgZbYtqXOV6,,0,20260410,2026-04-17 04:55:09
+00000096,https://waytoagi.feishu.cn/wiki/So4Ww7h2XiPCoMkrgYscLnnTnsb,Hermes Agent 的七个冷知识,20260410,recvgZbYtqvoU6,00000069,1,20260410,2026-04-17 04:55:09
+00000097,https://mp.weixin.qq.com/s/tZL-8voYxXJlsxFe_C8R0g,深度｜LangChain联合创始人：模型不再是主角，智能体时代的“Harness”正在重塑一切,20260411,recvgZbYtqBYtS,,0,20260411,2026-04-17 04:55:09
+00000098,https://youtu.be/rSKh6bVuVZI?si=_CI6Ia2hVKI4MOyp,- YouTube,20260411,recvgZbYtqDIBl,00000113,2,20260411,2026-04-17 04:55:09
+00000099,https://mp.weixin.qq.com/s/3SSECMxYl4ZmbT6FSBs9kA,如何使用Hermes Agent稳定爬取公众号文章,20260411,recvgZbYtqb9lJ,,0,20260411,2026-04-17 04:55:09
+00000100,https://github.com/dracohu2025-cloud/draco-skills-collection/tree/main/wechat-article-browseruse,draco-skills-collection/wechat-article-browseruse at main · dracohu2025-cloud/draco-skills-collection · GitHub,20260411,recvgZbYtq9suK,00000116,2,20260411,2026-04-17 04:55:09
+00000101,https://github.com/dracohu2025-cloud/draco-skills-collection/tree/main/wechat-article-camofox,draco-skills-collection/wechat-article-camofox at main · dracohu2025-cloud/draco-skills-collection · GitHub,20260411,recvgZbYtqAype,00000116,2,20260411,2026-04-17 04:55:09
+00000102,https://browser-use.com/,Browser Use - The way AI uses the internet,20260411,recvgZbYtqZw2P,00000116,2,20260411,2026-04-17 04:55:09
+00000103,https://mp.weixin.qq.com/s?__biz=MzI2NzM4MTQwMg==&mid=2247495571&idx=1&sn=e4086471c33dcf39375d02f5df3d1523,Hermes Agent 的七个冷知识,20260410,recvgZbYtqvvKK,00000116,2,20260411,2026-04-17 04:55:09
+00000104,https://x.com/lxfater/status/2042848343949480173,JavaScript is not available.,20260411,recvgZbYtqiUEj,,0,20260411,2026-04-17 04:55:09
+00000105,https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f,llm-wiki · GitHub,20260411,recvgZbYtqNjwZ,00000119,2,20260411,2026-04-17 04:55:09
+00000106,https://x.com/karpathy/status/2039805659525644595,JavaScript is not available.,20260411,recvgZbYtqmjbE,00000119,2,20260411,2026-04-17 04:55:09
+00000107,https://claude.com/product/claude-code,"Claude Code by Anthropic | AI Coding Agent, Terminal, IDE",20260411,recvgZbYtqwmKk,00000119,2,20260411,2026-04-17 04:55:09
+00000108,https://waytoagi.feishu.cn/wiki/XedYw85WKiiMKmkfaDRcoG4Rnpc,像 Boris Cherny 那样使用 Claude Code 的 10 个 Slash Commands,20260411,recvgZbYtqmlKO,,1,20260411,2026-04-17 04:55:09
+00000109,https://x.com/@_avichawla,JavaScript is not available.,20260411,recvgZbYtqHGpB,00000108,2,20260411,2026-04-17 04:55:09
+00000110,https://x.com/_avichawla/status/2042929462908719352,JavaScript is not available.,20260411,recvgZbYtqj8Zn,00000108,2,20260411,2026-04-17 04:55:09
+00000111,https://waytoagi.feishu.cn/wiki/E0P6wFVV0iUmmTkqq7FcNqJinVf,Anthropic 官方指南：怎么给 Agent 设计工具,20260411,recvgZbYtqmunx,00000117,1,20260411,2026-04-17 04:55:09
+00000112,https://waytoagi.feishu.cn/wiki/TqyTwIE6Kiu3i4kVDMQcNvm6nig,5分钟上手，Hermes 丝滑接入个人微信,20260411,recvgZbYtqnPMA,00000114,1,20260411,2026-04-17 04:55:09
+00000113,https://waytoagi.feishu.cn/wiki/Xq2IwJsMviT1MkkIm42cjewenZg,深度｜LangChain联合创始人：模型不再是主角，智能体时代的“Harness”正在重塑一切,20260411,recvgZbYtqohy0,00000097,1,20260411,2026-04-17 04:55:09
+00000114,https://x.com/wangray/status/2042848718651822275,JavaScript is not available.,20260411,recvgZbYtqorHb,,0,20260411,2026-04-17 04:55:09
+00000115,https://hermes-agent.nousresearch.com/docs/user-guide/messaging/weixin,Weixin (WeChat) | Hermes Agent,20260411,recvgZbYtqQpBn,00000112,2,20260411,2026-04-17 04:55:09
+00000116,https://waytoagi.feishu.cn/wiki/OHC6wrM37iapyVk9BD8c7xXqn4c,如何使用Hermes Agent稳定爬取公众号文章,20260411,recvgZbYtqqBsX,00000099,1,20260411,2026-04-17 04:55:09
+00000117,https://mp.weixin.qq.com/s/eOkICy56oQFAzmStzgTxkw,Anthropic 官方指南：怎么给 Agent 设计工具,20260411,recvgZbYtqvxwy,,0,20260411,2026-04-17 04:55:09
+00000118,https://claude.com/blog/seeing-like-an-agent,Seeing like an agent: how we design tools in Claude Code | Claude,20260411,recvgZbYtq2nUA,00000111,2,20260411,2026-04-17 04:55:09
+00000119,https://waytoagi.feishu.cn/wiki/JPFnwC3SoiRaV9keqsccACgBnmc,Obsidian + Claude Code：用 AI 大神 Karpathy 的方法搭一个真正可用的第二大脑（全教程）,20260411,recvgZbYtqwpbb,00000104,1,20260411,2026-04-17 04:55:09
+00000120,https://waytoagi.feishu.cn/wiki/K59owupjYihoDNkqQQscv6gGnTd,40 个能把 Claude 变成生产力机器的 MCP Servers,20260411,recvgZbYtqxEN5,,1,20260411,2026-04-17 04:55:09
+00000121,https://github.com/nspady/google-calendar-mcp,GitHub - nspady/google-calendar-mcp: MCP integration for Google Calendar to manage events. · GitHub,20260411,recvgZbYtq0JmJ,00000120,2,20260411,2026-04-17 04:55:09
+00000122,https://github.com/aws-samples/sample-mcp-server,Page not found · GitHub · GitHub,20260411,recvgZbYtq0zvS,00000120,2,20260411,2026-04-17 04:55:09
+00000123,https://github.com/kiliczsh/mcp-mongo-server,GitHub - kiliczsh/mcp-mongo-server: A Model Context Protocol Server for MongoDB · GitHub,20260411,recvgZbYtq1p7W,00000120,2,20260411,2026-04-17 04:55:09
+00000124,https://github.com/jerhadf/linear-mcp-server,GitHub - jerhadf/linear-mcp-server: A server that integrates Linear's project management system with the Model Context Protocol (MCP) to allow LLMs to interact with Linear. · GitHub,20260411,recvgZbYtq1vQ0,00000120,2,20260411,2026-04-17 04:55:09
+00000125,https://github.com/DeusData/codebase-memory-mcp,"GitHub - DeusData/codebase-memory-mcp: High-performance code intelligence MCP server. Indexes codebases into a persistent knowledge graph — average repo in milliseconds. 66 languages, sub-ms queries, 99% fewer tokens. Single static binary, zero dependencies. · GitHub",20260411,recvgZbYtq2LGa,00000120,2,20260411,2026-04-17 04:55:09
+00000126,https://github.com/smithery-ai/obsidian-mcp,Page not found · GitHub · GitHub,20260411,recvgZbYtq6An7,00000120,2,20260411,2026-04-17 04:55:09
+00000127,https://github.com/elevenlabs/elevenlabs-mcp,GitHub - elevenlabs/elevenlabs-mcp: The official ElevenLabs MCP server · GitHub,20260411,recvgZbYtq6MIx,00000120,2,20260411,2026-04-17 04:55:09
+00000128,https://github.com/LucasHild/mcp-server-bigquery,GitHub - LucasHild/mcp-server-bigquery: A Model Context Protocol server that provides access to BigQuery · GitHub,20260411,recvgZbYtq7Svl,00000120,2,20260411,2026-04-17 04:55:09
+00000129,https://github.com/huggingface/mcp-course,GitHub - huggingface/mcp-course · GitHub,20260411,recvgZbYtqA1Uf,00000120,2,20260411,2026-04-17 04:55:09
+00000130,https://github.com/upstash/context7,GitHub - upstash/context7: Context7 Platform -- Up-to-date code documentation for LLMs and AI code editors · GitHub,20260411,recvgZbYtqBGTf,00000120,2,20260411,2026-04-17 04:55:09
+00000131,https://github.com/deepfates/mcp-replicate,GitHub - deepfates/mcp-replicate: Model Context Protocol server for Replicate's API · GitHub,20260411,recvgZbYtqBda9,00000120,2,20260411,2026-04-17 04:55:09
+00000132,https://github.com/mendableai/firecrawl-mcp-server,（https://github.com/mendableai/firecrawl-mcp-server）,20260411,recvgZbYtqDkNx,00000120,2,20260411,2026-04-17 04:55:09
+00000133,https://github.com/modelcontextprotocol/servers/tree/main/src/docker,File not found · GitHub,20260411,recvgZbYtqGOWB,00000120,2,20260411,2026-04-17 04:55:09
+00000134,https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem,servers/src/filesystem at main · modelcontextprotocol/servers · GitHub,20260411,recvgZbYtqH2FC,00000120,2,20260411,2026-04-17 04:55:09
+00000135,https://github.com/tavily-ai/tavily-mcp,"GitHub - tavily-ai/tavily-mcp: Production ready MCP server with real-time search, extract, map & crawl. · GitHub",20260411,recvgZbYtqNeef,00000120,2,20260411,2026-04-17 04:55:09
+00000136,https://github.com/cloudflare/mcp-server-cloudflare,GitHub - cloudflare/mcp-server-cloudflare · GitHub,20260411,recvgZbYtqOTvA,00000120,2,20260411,2026-04-17 04:55:09
+00000137,https://github.com/supabase-community/supabase-mcp,GitHub - supabase-community/supabase-mcp: Connect Supabase to your AI assistants · GitHub,20260411,recvgZbYtqOwch,00000120,2,20260411,2026-04-17 04:55:09
+00000138,https://github.com/haris-musa/excel-mcp-server,GitHub - haris-musa/excel-mcp-server: A Model Context Protocol server for Excel file manipulation · GitHub,20260411,recvgZbYtqRz1K,00000120,2,20260411,2026-04-17 04:55:09
+00000139,https://github.com/modelcontextprotocol/servers/tree/main/src/notion,File not found · GitHub,20260411,recvgZbYtqSUdq,00000120,2,20260411,2026-04-17 04:55:09
+00000140,https://github.com/strowk/mcp-k8s,Page not found · GitHub · GitHub,20260411,recvgZbYtqTAQf,00000120,2,20260411,2026-04-17 04:55:09
+00000141,https://github.com/eyaltoledano/claude-task-master,"GitHub - eyaltoledano/claude-task-master: An AI-powered task-management system you can drop into Cursor, Lovable, Windsurf, Roo, and others. · GitHub",20260411,recvgZbYtqUUU7,00000120,2,20260411,2026-04-17 04:55:09
+00000142,https://github.com/datawiz168/mcp-snowflake-service,GitHub - datawiz168/mcp-snowflake-service: MCP server implementation for Snowflake integration · GitHub,20260411,recvgZbYtqVZno,00000120,2,20260411,2026-04-17 04:55:09
+00000143,https://github.com/modelcontextprotocol/servers/tree/main/src/postgres,File not found · GitHub,20260411,recvgZbYtqWE47,00000120,2,20260411,2026-04-17 04:55:09
+00000144,https://github.com/jlowin/fastmcp,"GitHub - PrefectHQ/fastmcp: 🚀 The fast, Pythonic way to build MCP servers and clients. · GitHub",20260411,recvgZbYtqWjRI,00000120,2,20260411,2026-04-17 04:55:09
+00000145,https://github.com/nicobailon/gmail-mcp,Page not found · GitHub · GitHub,20260411,recvgZbYtqYKiR,00000120,2,20260411,2026-04-17 04:55:09
+00000146,https://github.com/modelcontextprotocol/servers/tree/main/src/git,servers/src/git at main · modelcontextprotocol/servers · GitHub,20260411,recvgZbYtqZ9QY,00000120,2,20260411,2026-04-17 04:55:09
+00000147,https://github.com/modelcontextprotocol/servers/tree/main/src/github,File not found · GitHub,20260411,recvgZbYtqZUj6,00000120,2,20260411,2026-04-17 04:55:09
+00000148,https://github.com/zcaceres/markdownify-mcp,GitHub - zcaceres/markdownify-mcp: A Model Context Protocol server for converting almost anything to Markdown · GitHub,20260411,recvgZbYtqaenB,00000120,2,20260411,2026-04-17 04:55:09
+00000149,https://github.com/vercel/mcp,Page not found · GitHub · GitHub,20260411,recvgZbYtqbg5P,00000120,2,20260411,2026-04-17 04:55:09
+00000150,https://github.com/modelcontextprotocol/servers/tree/main/src/gdrive,File not found · GitHub,20260411,recvgZbYtqcch8,00000120,2,20260411,2026-04-17 04:55:09
+00000151,https://github.com/modelcontextprotocol/servers/tree/main/src/memory,servers/src/memory at main · modelcontextprotocol/servers · GitHub,20260411,recvgZbYtqd9tE,00000120,2,20260411,2026-04-17 04:55:09
+00000152,https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer,File not found · GitHub,20260411,recvgZbYtqdFwH,00000120,2,20260411,2026-04-17 04:55:09
+00000153,https://github.com/modelcontextprotocol/servers/tree/main/src/slack,File not found · GitHub,20260411,recvgZbYtqgynD,00000120,2,20260411,2026-04-17 04:55:09
+00000154,https://x.com/@eng_khairallah1,JavaScript is not available.,20260411,recvgZbYtqgzsO,00000120,2,20260411,2026-04-17 04:55:09
+00000155,https://github.com/modelcontextprotocol/servers/tree/main/src/time,servers/src/time at main · modelcontextprotocol/servers · GitHub,20260411,recvgZbYtqhFaC,00000120,2,20260411,2026-04-17 04:55:09
+00000156,https://x.com/eng_khairallah1/status/2042891054471614752,JavaScript is not available.,20260411,recvgZbYtqidyK,00000120,2,20260411,2026-04-17 04:55:09
+00000157,https://github.com/samanhappy/mcphub,GitHub - samanhappy/mcphub: A unified hub for centrally managing and dynamically orchestrating multiple MCP servers/APIs into separate endpoints with flexible routing strategies · GitHub,20260411,recvgZbYtqkeSM,00000120,2,20260411,2026-04-17 04:55:09
+00000158,https://github.com/modelcontextprotocol/servers/tree/main/src/fetch,servers/src/fetch at main · modelcontextprotocol/servers · GitHub,20260411,recvgZbYtqnlnC,00000120,2,20260411,2026-04-17 04:55:09
+00000159,https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite,File not found · GitHub,20260411,recvgZbYtqqtTT,00000120,2,20260411,2026-04-17 04:55:09
+00000160,https://github.com/nicobailon/brave-search-mcp,Page not found · GitHub · GitHub,20260411,recvgZbYtqs2mv,00000120,2,20260411,2026-04-17 04:55:09
+00000161,https://github.com/executeautomation/mcp-playwright,"GitHub - executeautomation/mcp-playwright: Playwright Model Context Protocol Server - Tool to automate Browsers and APIs in Claude Desktop, Cline, Cursor IDE and More 🔌 · GitHub",20260411,recvgZbYtqummE,00000120,2,20260411,2026-04-17 04:55:09
+00000162,https://github.com/getsentry/sentry-mcp,GitHub - getsentry/sentry-mcp: An MCP server for interacting with Sentry via LLMs. · GitHub,20260411,recvgZbYtqvjT2,00000120,2,20260411,2026-04-17 04:55:09
+00000163,https://waytoagi.feishu.cn/wiki/DCofwO427iD8Y7kGklWcwmUWncc,深度｜前谷歌CEO：全球至少会有10家大模型公司；中国在机器人领域占优，低成本领域中国会赢,20260412,recvgZbYtq5aAG,00000174,1,20260412,2026-04-17 04:55:09
+00000164,https://waytoagi.feishu.cn/wiki/Cavlwb2Ubivf69k5rrbcyVMenqF,多智能体协作指南：五种主流模式怎么选、怎么用？【译】,20260412,recvgZbYtq9oVj,00000165,1,20260412,2026-04-17 04:55:09
+00000165,https://mp.weixin.qq.com/s/UowaONlXJb5mXQaPANB8vA,多智能体协作指南：五种主流模式怎么选、怎么用？【译】,20260412,recvgZbYtqEzBy,,0,20260412,2026-04-17 04:55:09
+00000166,https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them,When to use multi-agent systems (and when not to) | Claude,20260412,recvgZbYtqQebu,00000164,2,20260412,2026-04-17 04:55:09
+00000167,https://code.claude.com/docs/en/overview,Claude Code overview - Claude Code Docs,20260412,recvgZbYtqkJ11,00000164,2,20260412,2026-04-17 04:55:09
+00000168,https://mp.weixin.qq.com/s/JBduP8fJAT6XM0kgCS-AvQ,OpenAI：如何设计 AGI 时代的产业政策（全文翻译）,20260412,recvgZbYtqSO9r,,0,20260412,2026-04-17 04:55:09
+00000169,https://cdn.openai.com/pdf/561e7512-253e-424b-9734-ef4098440601/Industrial%20Policy%20for%20the%20Intelligence%20Age.pdf,（https://cdn.openai.com/pdf/561e7512-253e-424b-9734-ef4098440601/Industrial%20Policy%20for%20the%20Intelligence%20Age.pdf）,20260412,recvgZbYtqOx1L,00000178,2,20260412,2026-04-17 04:55:09
+00000170,https://waytoagi.feishu.cn/wiki/EUrRwksf5i0YmFkLswccDyEZnng,为什么 LLM 的长期记忆仍然是一个未解决的问题,20260412,recvgZbYtqdur9,,1,20260412,2026-04-17 04:55:09
+00000171,https://x.com/chrysb/status/2043020014035570784,JavaScript is not available.,20260412,recvgZbYtqjNTu,00000170,2,20260412,2026-04-17 04:55:09
+00000172,https://waytoagi.feishu.cn/wiki/X4MAw5uv8idqqXkqp9zc3YzxnwJ,AI Agentic Skills 设计的关键概念,20260412,recvgZbYtqeAib,,1,20260412,2026-04-17 04:55:09
+00000173,https://x.com/IntuitMachine/status/2043078828583514521,JavaScript is not available.,20260412,recvgZbYtqjClj,00000172,2,20260412,2026-04-17 04:55:09
+00000174,https://mp.weixin.qq.com/s/DXiM_YYKKI_D7wESlcb2XQ,深度｜前谷歌CEO：全球至少会有10家大模型公司；中国在机器人领域占优，低成本领域中国会赢,20260412,recvgZbYtqkiOA,,0,20260412,2026-04-17 04:55:09
+00000175,https://www.youtube.com/watch?v=DpwmmXmzvfo,- YouTube,20260412,recvgZbYtqAOyh,00000163,2,20260412,2026-04-17 04:55:09
+00000176,https://mp.weixin.qq.com/s/ceYwG_2A7D_OiaMd7epWmA,Anthropic工程主管：执行免费了，你的品味才是最后的护城河丨The Matt Podcast,20260411,recvgZbYtqp36O,,0,20260412,2026-04-17 04:55:09
+00000177,https://www.youtube.com/watch?v=9MEJ4syOVrQ,- YouTube,20260412,recvgZbYtq7S3H,00000179,2,20260412,2026-04-17 04:55:09
+00000178,https://waytoagi.feishu.cn/wiki/DpuNw9CgiiTNn8kPeIVcKmcznz5,OpenAI：如何设计 AGI 时代的产业政策（全文翻译）,20260412,recvgZbYtqqBYb,00000168,1,20260412,2026-04-17 04:55:09
+00000179,https://waytoagi.feishu.cn/wiki/YPLKwDOD0iCdOdkZNwtcZHVGnKe,Anthropic工程主管：执行免费了，你的品味才是最后的护城河丨The Matt Podcast,20260412,recvgZbYtquOAy,00000176,1,20260412,2026-04-17 04:55:09
+00000180,https://waytoagi.feishu.cn/wiki/Yq8OwCb6oiHKAMknhwDcW7lRncg,Box CEO：你的软件，是为人设计的还是为 Agent 设计的？ 丨a16z,20260413,recvgZbYtq0eP2,00000200,1,20260413,2026-04-17 04:55:09
+00000181,https://mp.weixin.qq.com/s/Y_uRMYBmdLWUPnz_ac7jWA,分享一个我用了2年的深度研究Prompt，半小时帮你搞懂任何陌生领域。,20260413,recvgZbYtq2PzA,,0,20260413,2026-04-17 04:55:09
+00000182,https://github.com/KKKKhazix/khazix-skills,GitHub - KKKKhazix/khazix-skills: 数字生命卡兹克开源的 AI Skills 合集 · GitHub,20260413,recvgZbYtqyAeR,00000203,2,20260413,2026-04-17 04:55:09
+00000183,https://waytoagi.feishu.cn/wiki/WbOwwEVRTisOS4krxzgckKKYnTc,AI 会带来大规模失业吗？｜42章经,20260413,recvgZbYtq32ZG,00000185,1,20260413,2026-04-17 04:55:09
+00000184,https://mp.weixin.qq.com/s/lBRIQuq0X6ezD7I597_ZEQ,做Agent产品，你不是在做AI助手，你是在重新分配责任,20260413,recvgZbYtq3Lfe,,0,20260413,2026-04-17 04:55:09
+00000185,https://mp.weixin.qq.com/s/sbV_-9zu8I2l84-hksG6UQ,AI 会带来大规模失业吗？｜42章经,20260412,recvgZbYtq9wlv,,0,20260413,2026-04-17 04:55:09
+00000186,https://mp.weixin.qq.com/s?__biz=MzIyMjAwNzAzNg==&mid=2650208702&idx=1&sn=caf17a5e309021910ac9c77e690c07c4,什么是品味（taste）？,20260218,recvgZbYtq3mX7,00000183,2,20260413,2026-04-17 04:55:09
+00000187,https://academic.oup.com/qje/article-abstract/139/3/1879/7614605,Just a moment...,20260413,recvgZbYtq9P5l,00000183,2,20260413,2026-04-17 04:55:09
+00000188,https://www.dwarkesh.com/p/ai-firm,What fully automated firms will look like,20260413,recvgZbYtqDYtK,00000183,2,20260413,2026-04-17 04:55:09
+00000189,https://www.bls.gov/ooh/,Access Denied,20260413,recvgZbYtqF2Y4,00000183,2,20260413,2026-04-17 04:55:09
+00000190,https://davidoks.blog/p/why-im-not-worried-about-ai-job-loss,Why I’m not worried about AI job loss - David Oks,20260413,recvgZbYtqXFsy,00000183,2,20260413,2026-04-17 04:55:09
+00000191,https://mp.weixin.qq.com/s?__biz=MzIyMDE5OTYyMw==&mid=2651051504&idx=1&sn=cc66fec24f5390a95cf049fd591c6f04,OpenClaw 之后，我只想未来 3-6 个月的事情｜42章经,20260322,recvgZbYtqXgCi,00000183,2,20260413,2026-04-17 04:55:09
+00000192,https://robonomics.substack.com/p/macro-ais-impact?utm_campaign=post-expanded-share&utm_medium=web&triedRedirect=true,Macro | AI's Impact - by FD - Robonomics,20260413,recvgZbYtqYpYw,00000183,2,20260413,2026-04-17 04:55:09
+00000193,https://www.reddit.com/r/singularity/comments/1runck6/ai_automation_risk_table_by_karpathy/,（https://www.reddit.com/r/singularity/comments/1runck6/ai_automation_risk_table_by_karpathy/）,20260413,recvgZbYtqb8l0,00000183,2,20260413,2026-04-17 04:55:09
+00000194,https://economics.mit.edu/sites/default/files/publications/the%20polarization%20of%20us%20labor%202006.pdf,（https://economics.mit.edu/sites/default/files/publications/the%20polarization%20of%20us%20labor%202006.pdf）,20260413,recvgZbYtqkQmv,00000183,2,20260413,2026-04-17 04:55:09
+00000195,https://davidoks.blog/p/why-the-atm-didnt-kill-bank-teller?r=601mc1&utm_medium=ios&triedRedirect=true,"Why ATMs didn’t kill bank teller jobs, but the iPhone did",20260413,recvgZbYtqoNnl,00000183,2,20260413,2026-04-17 04:55:09
+00000196,https://centerforhumanetechnology.substack.com/p/what-is-really-going-on-with-ai-and,What is Really Going on With AI and Jobs?,20260413,recvgZbYtqorX8,00000183,2,20260413,2026-04-17 04:55:09
+00000197,https://mp.weixin.qq.com/s?__biz=MzIyMDE5OTYyMw==&mid=2651051478&idx=1&sn=7957c064c8971751eda6ebc063e23732,从 Clawdbot 到 26 年 AI Coding 主题大爆发｜42章经,20260213,recvgZbYtqqSGS,00000183,2,20260413,2026-04-17 04:55:09
+00000198,https://marginalrevolution.com/marginalrevolution/2025/02/why-i-think-ai-take-off-is-relatively-slow.html,Just a moment...,20260413,recvgZbYtqsn5s,00000183,2,20260413,2026-04-17 04:55:09
+00000199,https://mp.weixin.qq.com/s?__biz=MzIyMDE5OTYyMw==&mid=2651051518&idx=1&sn=bd8ee1e86e5241f97020471f1033e798,我们是如何定义 OpenClaw for Teams 新产品形态的｜42章经,20260329,recvgZbYtqvZdj,00000183,2,20260413,2026-04-17 04:55:09
+00000200,https://mp.weixin.qq.com/s/L5AE6O3sjm5uJSJjWKmzcg,Box CEO：你的软件，是为人设计的还是为 Agent 设计的？ 丨a16z,20260412,recvgZbYtqLS0z,,0,20260413,2026-04-17 04:55:09
+00000201,https://www.youtube.com/watch?v=dvt_74kV-RM,- YouTube,20260413,recvgZbYtqWloV,00000180,2,20260413,2026-04-17 04:55:09
+00000202,https://waytoagi.feishu.cn/wiki/LUKMwoS6Gi1SHHkO48wcuIJ2n2c,Harness、LLM、Token、Agent、MCP…AI圈最烧脑的8个概念，一文彻底讲透,20260413,recvgZbYtqNBIZ,00000238,1,20260413,2026-04-17 04:55:09
+00000203,https://waytoagi.feishu.cn/wiki/YhpiwEYHQiWS9Ok1s7bcgHg2nne,分享一个我用了2年的深度研究Prompt，半小时帮你搞懂任何陌生领域。,20260413,recvgZbYtqZPFK,00000181,1,20260413,2026-04-17 04:55:09
+00000204,https://waytoagi.feishu.cn/wiki/LWHywW2Xxi7mGvkhhotc9tt6nHg,万字干货！Agent Skills从入门到精通,20260413,recvgZbYtqZaBw,00000227,1,20260413,2026-04-17 04:55:09
+00000205,https://waytoagi.feishu.cn/wiki/EZ0awlZHuitQR9kcpPkc2a9xnWc,4.6-4.12：本周顶级 AI 论文精选,20260413,recvgZbYtqZaso,,1,20260413,2026-04-17 04:55:09
+00000206,https://x.com/zxlzr/status/2041881875887878237,JavaScript is not available.,20260413,recvgZbYtq2DKb,00000205,2,20260413,2026-04-17 04:55:09
+00000207,https://arxiv.org/abs/2604.02460,Single-Agent LLMs Outperform Multi-Agent Systems on Multi-Hop Reasoning Under Equal Thinking Token Budgets,20260411,recvgZbYtq4NKq,00000205,2,20260413,2026-04-17 04:55:09
+00000208,https://arxiv.org/abs/2604.05013,Scaling Coding Agents via Atomic Skills,20260406,recvgZbYtq83PF,00000205,2,20260413,2026-04-17 04:55:09
+00000209,https://x.com/omarsar0/status/2042315710173528122,JavaScript is not available.,20260413,recvgZbYtqFU40,00000205,2,20260413,2026-04-17 04:55:09
+00000210,https://x.com/omarsar0/status/2041895109252542730,JavaScript is not available.,20260413,recvgZbYtqHOnb,00000205,2,20260413,2026-04-17 04:55:09
+00000211,https://arxiv.org/abs/2604.04323,How Well Do Agentic Skills Work in the Wild: Benchmarking LLM Skill Usage in Realistic Settings,20260406,recvgZbYtqIzJG,00000205,2,20260413,2026-04-17 04:55:09
+00000212,https://facebookresearch.github.io/RAM/blogs/thinking_midtraining/,"RAM @ Meta AI | A framework to study AI models in Reasoning, Alignment, and use of Memory (RAM).",20260413,recvgZbYtqLIeN,00000205,2,20260413,2026-04-17 04:55:09
+00000213,https://github.com/microsoft/memento,GitHub - microsoft/memento · GitHub,20260413,recvgZbYtqM6Dd,00000205,2,20260413,2026-04-17 04:55:09
+00000214,https://x.com/dair_ai/status/2043354446923465200,JavaScript is not available.,20260413,recvgZbYtqOBGT,00000205,2,20260413,2026-04-17 04:55:09
+00000215,https://x.com/jaseweston/status/2041864833214095484,JavaScript is not available.,20260413,recvgZbYtqPccc,00000205,2,20260413,2026-04-17 04:55:09
+00000216,https://x.com/dair_ai/status/2041540525539614797,JavaScript is not available.,20260413,recvgZbYtqQKG8,00000205,2,20260413,2026-04-17 04:55:09
+00000217,https://x.com/SRSchmidgall/status/2041973798589903260,JavaScript is not available.,20260413,recvgZbYtqRfoZ,00000205,2,20260413,2026-04-17 04:55:09
+00000218,https://arxiv.org/abs/2604.03679,LightThinker++: From Reasoning Compression to Memory Management,20260404,recvgZbYtqS4OK,00000205,2,20260413,2026-04-17 04:55:09
+00000219,https://x.com/dair_ai/status/2042237615492260249,JavaScript is not available.,20260413,recvgZbYtqWQyr,00000205,2,20260413,2026-04-17 04:55:09
+00000220,https://arxiv.org/abs/2604.04503,Memory Intelligence Agent,20260409,recvgZbYtqZRdI,00000205,2,20260413,2026-04-17 04:55:09
+00000221,https://x.com/SchmidhuberAI/status/2042601088029708704,JavaScript is not available.,20260413,recvgZbYtqb5xv,00000205,2,20260413,2026-04-17 04:55:09
+00000222,https://x.com/omarsar0/status/2041534488342360305,JavaScript is not available.,20260413,recvgZbYtqeiIY,00000205,2,20260413,2026-04-17 04:55:09
+00000223,https://x.com/omarsar0/status/2042249194409501054,JavaScript is not available.,20260413,recvgZbYtqgTeU,00000205,2,20260413,2026-04-17 04:55:09
+00000224,https://arxiv.org/abs/2604.06240,The Art of Building Verifiers for Computer Use Agents,20260405,recvgZbYtql3pT,00000205,2,20260413,2026-04-17 04:55:09
+00000225,https://arxiv.org/abs/2604.06425,Neural Computers,20260407,recvgZbYtqpsDE,00000205,2,20260413,2026-04-17 04:55:09
+00000226,https://arxiv.org/abs/2604.05081,MedGemma 1.5 Technical Report,20260406,recvgZbYtqydh2,00000205,2,20260413,2026-04-17 04:55:09
+00000227,https://mp.weixin.qq.com/s/inhBH4dgp5BPKu-4sVAaxA,万字干货！Agent Skills从入门到精通,20260413,recvgZbYtqbSFE,,0,20260413,2026-04-17 04:55:09
+00000228,https://www.skillsdirectory.com,"Skills Directory - Secure, Verified Agent Skills for Claude AI",20260413,recvgZbYtqFXoA,00000204,2,20260413,2026-04-17 04:55:09
+00000229,https://www.skillhub.club,SkillHub - Claude Skills & Agent Skills Marketplace | Claude Code Skills,20260413,recvgZbYtqFhi5,00000204,2,20260413,2026-04-17 04:55:09
+00000230,https://skillsmp.com,Just a moment...,20260413,recvgZbYtqPuAR,00000204,2,20260413,2026-04-17 04:55:09
+00000231,https://skillhub.tencent.com,SkillHub-专为中国用户优化的Skills社区,20260413,recvgZbYtqW13G,00000204,2,20260413,2026-04-17 04:55:09
+00000232,https://www.coze.cn/?skill_share_pid=7614920172729843731,扣子 - AI办公助手一站式平台 - 扣子提供AI写作|PPT|表格|设计|播客|生图,20260413,recvgZbYtqWMMM,00000204,2,20260413,2026-04-17 04:55:09
+00000233,https://github.com/numman-ali/openskills,GitHub - numman-ali/openskills: Universal skills loader for AI coding agents - npm i -g openskills · GitHub,20260413,recvgZbYtqfFZf,00000204,2,20260413,2026-04-17 04:55:09
+00000234,https://github.com/anthropics/skills/tree/main/skills/skill-creator,skills/skills/skill-creator at main · anthropics/skills · GitHub,20260413,recvgZbYtqfbKn,00000204,2,20260413,2026-04-17 04:55:09
+00000235,https://github.com/anthropics/skills,GitHub - anthropics/skills: Public repository for Agent Skills · GitHub,20260413,recvgZbYtqm1QY,00000204,2,20260413,2026-04-17 04:55:09
+00000236,https://github.com/anthropics/skills/tree/main/skills,skills/skills at main · anthropics/skills · GitHub,20260413,recvgZbYtqrRFV,00000204,2,20260413,2026-04-17 04:55:09
+00000237,https://agentskills.io,Overview - Agent Skills,20260413,recvgZbYtqsmZw,00000204,2,20260413,2026-04-17 04:55:09
+00000238,https://mp.weixin.qq.com/s/cmWlJh9XvyVxWu1jTJhvrg,Harness、LLM、Token、Agent、MCP…AI圈最烧脑的8个概念，一文彻底讲透,20260413,recvgZbYtqsqAA,,0,20260413,2026-04-17 04:55:09
+00000239,https://waytoagi.feishu.cn/wiki/Skzvwid6EihNZxkBNEKcERXdnmg,做Agent产品，你不是在做AI助手，你是在重新分配责任,20260413,recvgZbYtqzYu6,00000184,1,20260413,2026-04-17 04:55:09
+00000240,https://waytoagi.feishu.cn/wiki/GsP4wW2bciVST2k4YdicZ3cGnIb,分享10个你可能不知道的Claude Code隐藏命令和技巧。,20260414,recvgZbYtq6ND1,00000281,1,20260414,2026-04-17 04:55:09
+00000241,https://waytoagi.feishu.cn/wiki/JdzUwjBwQiw4ESkz4UxcIsCXnah,AI音乐周刊 W.A 023,20260414,recvgZbYtqBsfl,,1,20260414,2026-04-17 04:55:09
+00000242,https://research.adobe.com/news/when-the-music-fits-vidtune-helps-video-creators-find-the-right-soundtrack/?linkId=100000417077350,Adobe Research » When the Music Fits: VidTune Helps Video Creators Find the Right Soundtrack,20260414,recvgZbYtq0CoT,00000241,2,20260414,2026-04-17 04:55:09
+00000243,https://github.com/ace-step/ACE-Step-1.5,"GitHub - ace-step/ACE-Step-1.5: The most powerful local music generation model that outperforms almost all commercial alternatives, supporting Mac, AMD, Intel, and CUDA devices. · GitHub",20260414,recvgZbYtq1Uam,00000241,2,20260414,2026-04-17 04:55:09
+00000244,https://arxiv.org/abs/2604.05343,Anchored Cyclic Generation: A Novel Paradigm for Long-Sequence Symbolic Music Generation,20260407,recvgZbYtq2EYI,00000241,2,20260414,2026-04-17 04:55:09
+00000245,https://x.com/AdinaYakup/status/2041454115650224478?s=20,JavaScript is not available.,20260414,recvgZbYtq39Ml,00000241,2,20260414,2026-04-17 04:55:09
+00000246,https://huggingface.co/collections/ACE-Step/ace-step-15-xl,Ace-Step 1.5-xl - a ACE-Step Collection,20260402,recvgZbYtq3Zg9,00000241,2,20260414,2026-04-17 04:55:09
+00000247,https://arxiv.org/abs/2604.04841,Joint Fullband-Subband Modeling for High-Resolution SingFake Detection,20260406,recvgZbYtq3ttO,00000241,2,20260414,2026-04-17 04:55:09
+00000248,https://arxiv.org/abs/2604.07612,Towards Real-Time Human-AI Musical Co-Performance: Accompaniment Generation with Latent Diffusion Models and MAX/MSP,20260408,recvgZbYtq6OOc,00000241,2,20260414,2026-04-17 04:55:09
+00000249,https://arxiv.org/abs/2604.04348,OmniSonic: Towards Universal and Holistic Audio Generation from Video and Text,20260406,recvgZbYtqCgdX,00000241,2,20260414,2026-04-17 04:55:09
+00000250,https://www.minimaxi.com/audio/music,MiniMax 语音：让灵感声声悦耳,20260414,recvgZbYtqFfhN,00000241,2,20260414,2026-04-17 04:55:09
+00000251,https://arxiv.org/abs/2604.09054,HAFM: Hierarchical Autoregressive Foundation Model for Music Accompaniment Generation,20260413,recvgZbYtqH3tX,00000241,2,20260414,2026-04-17 04:55:09
+00000252,https://arxiv.org/abs/2604.05526,Controllable Singing Style Conversion with Boundary-Aware Information Bottleneck,20260407,recvgZbYtqMirR,00000241,2,20260414,2026-04-17 04:55:09
+00000253,https://x.com/MiniMax_AI/status/2042744996240199881?s=20,JavaScript is not available.,20260414,recvgZbYtqNkk8,00000241,2,20260414,2026-04-17 04:55:09
+00000254,https://arxiv.org/abs/2604.04025,Neurological Plausibility of AI-Generated Music for Commercial Environments: An In-Silico Cortical Investigation Using Wubble and TRIBE v2,20260405,recvgZbYtqQUvD,00000241,2,20260414,2026-04-17 04:55:09
+00000255,https://x.com/MiniMax_AI/status/2043750042113323308?s=20,JavaScript is not available.,20260414,recvgZbYtqXjzI,00000241,2,20260414,2026-04-17 04:55:09
+00000256,https://ace-step.github.io/ace-step-v1.5.github.io/#XLDemos,ACE-Step 1.5: Pushing the Boundaries of Open-Source Music Generation,20260414,recvgZbYtqZ4ah,00000241,2,20260414,2026-04-17 04:55:09
+00000257,https://x.com/AdobeResearch/status/2042984601023381798?s=20,JavaScript is not available.,20260414,recvgZbYtqebYs,00000241,2,20260414,2026-04-17 04:55:09
+00000258,https://www.linkedin.com/posts/editormarcuslawrence_this-is-a-big-deal-partnerships-like-this-share-7448055700192276480-topf?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEf4sYcB_7kwpHm7WTW6ML5ECD-H8EXZk8c,"This is a big deal. Partnerships like this between cleanly trained models (I hate saying the buzzword ""ethically trained"") are great for AI music — and music as a whole. The alternatives to the… | Marcus Lawrence",20260414,recvgZbYtqed6E,00000241,2,20260414,2026-04-17 04:55:09
+00000259,https://github.com/MiniMax-AI/skills,GitHub - MiniMax-AI/skills · GitHub,20260414,recvgZbYtqhIk8,00000241,2,20260414,2026-04-17 04:55:09
+00000260,https://arxiv.org/abs/2604.03333,Composer Vector: Style-steering Symbolic Music Generation in a Latent Space,20260403,recvgZbYtqiDQv,00000241,2,20260414,2026-04-17 04:55:09
+00000261,https://acemusic.ai/,ACE Music,20260414,recvgZbYtqjUxh,00000241,2,20260414,2026-04-17 04:55:09
+00000262,https://mp.weixin.qq.com/s/hBTEdMeupIU5CVaHeaDzYw,练琴党福音来啦！,20260409,recvgZbYtqlM1Q,00000241,2,20260414,2026-04-17 04:55:09
+00000263,https://arxiv.org/abs/2604.05076,GLANCE: A Global-Local Coordination Multi-Agent Framework for Music-Grounded Non-Linear Video Editing,20260406,recvgZbYtqwlBB,00000241,2,20260414,2026-04-17 04:55:09
+00000264,https://x.com/acemusicAI/status/2041764228739297376?s=20,JavaScript is not available.,20260414,recvgZbYtqwnm4,00000241,2,20260414,2026-04-17 04:55:09
+00000265,https://mp.weixin.qq.com/s/SL7jQO2SuWxaxJHu_qpZKQ,AI音乐周刊 W.A 023,20260414,recvgZbYtqx1bO,00000241,2,20260414,2026-04-17 04:55:09
+00000266,https://mp.weixin.qq.com/s/KYFyMoTxxyP5nbo73pAN9A,MiniMax Music 2.6：我们想讲四个人的故事,20260410,recvgZbYtqxZgw,00000241,2,20260414,2026-04-17 04:55:09
+00000267,https://www.digitalmusicnews.com/2026/04/09/suno-universal-music-lawsuit-settlement-impasse/,403 - Forbidden,20260414,recvgZbYtqypHn,00000241,2,20260414,2026-04-17 04:55:09
+00000268,https://www.digitalmusicnews.com/2026/04/09/udio-kobalt-deal/,403 - Forbidden,20260414,recvgZbYtqz66A,00000241,2,20260414,2026-04-17 04:55:09
+00000269,https://waytoagi.feishu.cn/wiki/HNvTwZeRhiefRakKCj8cp892nab,如何构建永不遗忘的Agent【译】,20260414,recvgZbYtqG2JP,,1,20260414,2026-04-17 04:55:09
+00000270,https://x.com/akshay_pachaar/status/2043745099792953508,JavaScript is not available.,20260414,recvgZbYtq2JTJ,00000269,2,20260414,2026-04-17 04:55:09
+00000271,https://x.com/@akshay_pachaar,JavaScript is not available.,20260414,recvgZbYtqGG54,00000269,2,20260414,2026-04-17 04:55:09
+00000272,https://github.com/topoteretes/cognee,GitHub - topoteretes/cognee: Knowledge Engine for AI Agent Memory in 6 lines of code · GitHub,20260414,recvgZbYtqTa8z,00000269,2,20260414,2026-04-17 04:55:09
+00000273,https://lilianweng.github.io/posts/2023-06-23-agent/,LLM Powered Autonomous Agents | Lil'Log,20230623,recvgZbYtqzpNv,00000269,2,20260414,2026-04-17 04:55:09
+00000274,https://waytoagi.feishu.cn/wiki/LaamwVJwjibJllkuL4bcwSEDn5f,全球AI大会2026精华总结，上午七场演讲一文看完,20260414,recvgZbYtqJZFS,,1,20260414,2026-04-17 04:55:09
+00000275,https://mp.weixin.qq.com/s/lrQRPy3L0v8JXvh3fc-MOQ,你的龙虾还在搬砖，海辛&阿文的龙虾已经住进了豪宅,20260301,recvgZbYtqKq8O,00000274,2,20260414,2026-04-17 04:55:09
+00000276,https://www.youtube.com/@Waytoagi_Japan,Waytoagi_Japan - YouTube,20260414,recvgZbYtqPEOk,00000274,2,20260414,2026-04-17 04:55:09
+00000277,https://mp.weixin.qq.com/s/A9Aqpr9iSihkT1VFdkM1iQ,全球AI大会2026精华总结，上午七场演讲一文看完,20260414,recvgZbYtqQ4VL,00000274,2,20260414,2026-04-17 04:55:09
+00000278,http://everos.evermind.ai,EverOS Cloud,20260414,recvgZbYtqr6kh,00000274,2,20260414,2026-04-17 04:55:09
+00000279,https://waytoagi.feishu.cn/wiki/HbzSw3iKTiRkE0kaHiBcD8rGnFb,"为什么你的""AI 优先""战略可能大错特错？",20260414,recvgZbYtqWZjq,00000286,1,20260414,2026-04-17 04:55:09
+00000280,https://waytoagi.feishu.cn/wiki/HdYIwdW1AiHVt6kimMScGLHknrh,完整解读：斯坦福 AI 年度报告｜26版发布，423页,20260414,recvgZbYtqepEH,00000283,1,20260414,2026-04-17 04:55:09
+00000281,https://mp.weixin.qq.com/s/lba5Nr60pg08S9oIn2BarA,分享你可能不知道的10个Claude Code隐藏命令和工作流技巧。,20260414,recvgZbYtqm8F5,,0,20260414,2026-04-17 04:55:09
+00000282,https://github.com/openai/codex-plugin-cc,GitHub - openai/codex-plugin-cc: Use Codex from Claude Code to review code or delegate tasks. · GitHub,20260414,recvgZbYtqMZIw,00000240,2,20260414,2026-04-17 04:55:09
+00000283,https://mp.weixin.qq.com/s/fDqQJkM4e5Z3bSppLZ7YMA,完整解读：斯坦福 AI 年度报告｜26版发布，423页,20260414,recvgZbYtqwupk,,0,20260414,2026-04-17 04:55:09
+00000284,https://mp.weixin.qq.com/s?__biz=MzkzNDQxOTU2MQ==&mid=2247500300&idx=1&sn=886215d13c6749d0264785ac80ac1a79,详解《斯坦福 AI 报告 2025》：国产模型崛起、清华论文领先，附原文 PDF,20250411,recvgZbYtqeEAA,00000280,2,20260414,2026-04-17 04:55:09
+00000285,https://hai.stanford.edu/ai-index/2026-ai-index-report,The 2026 AI Index Report | Stanford HAI,20260414,recvgZbYtqiUP6,00000280,2,20260414,2026-04-17 04:55:09
+00000286,https://mp.weixin.qq.com/s/RYKuHiQewwJ8p9zyBrAIzQ,"为什么你的""AI 优先""战略可能大错特错？",20260414,recvgZbYtqzj6s,,0,20260414,2026-04-17 04:55:09
+00000287,https://x.com/intuitiveml/article/2043545596699750791,JavaScript is not available.,20260414,recvgZbYtqnWIf,00000279,2,20260414,2026-04-17 04:55:09
+00000288,https://waytoagi.feishu.cn/wiki/BiZew3lpbiESvRk8JlrcGqRJnug,Mixture of Experts（MoE）架构 解析,20260409,recvgZ4cPIZdT2,,1,20260415,2026-04-17 04:55:09
+00000289,https://x.com/amitiitbhu/status/2042214049350664668,JavaScript is not available.,20260409,recvgZ4cPI2CnE,00000288,2,20260415,2026-04-17 04:55:09
+00000290,https://outcomeschool.com/,Outcome School | Get High Paying Tech Job,20260415,recvgZ4cPIPpUc,00000288,2,20260415,2026-04-17 04:55:09
+00000291,https://github.com/amitshekhariitbhu/ai-engineering-interview-questions,GitHub - amitshekhariitbhu/ai-engineering-interview-questions: Your Cheat Sheet for AI Engineering Interview – Questions and Answers. · GitHub,20260409,recvgZ4cPIqbLV,00000288,2,20260415,2026-04-17 04:55:09
+00000292,https://outcomeschool.com/blog/decoding-transformer-architecture,Decoding Transformer Architecture,20260407,recvgZ4cPItvXX,00000288,2,20260415,2026-04-17 04:55:09
+00000293,https://mp.weixin.qq.com/s/dXCzGO1fIzZdo2iOpuiz4A,AI视频镜头语言提示词大全之运镜篇，手把手教你写提示词，附可套用模板,20260415,recvgZbYtq3wNs,,0,20260415,2026-04-17 04:55:09
+00000294,https://mp.weixin.qq.com/s/I91I4lJkI5bgn8lGovRI3A,时间管理的新解法：我做了一个 AI 幕僚长丨Supra Insider,20260415,recvgZbYtq6lTU,,0,20260415,2026-04-17 04:55:09
+00000295,https://www.youtube.com/watch?v=B29HU6ThYYE,- YouTube,20260415,recvgZbYtqlYph,00000297,2,20260415,2026-04-17 04:55:09
+00000296,https://waytoagi.feishu.cn/wiki/HBTmwtgk2imj6zkGnS6cg8Vdnph,神级CLI写作大法,20260415,recvgZbYtqB3UQ,00000330,1,20260415,2026-04-17 04:55:09
+00000297,https://waytoagi.feishu.cn/wiki/RIPpw1eCoitpPok4zH4cV6Q4nye,时间管理的新解法：我做了一个 AI 幕僚长丨Supra Insider,20260415,recvgZbYtqDbRN,00000294,1,20260415,2026-04-17 04:55:09
+00000298,https://mp.weixin.qq.com/s/xhVIUfwbNvB4PU_5PkeXZQ,刚刚！全网爆火 Hermes Agent 原生支持接入飞书了，小白保姆级教程 5 分钟上手。,20260415,recvgZbYtqLEEG,,0,20260415,2026-04-17 04:55:09
+00000299,https://mp.weixin.qq.com/s?__biz=MzYzMzEyMTU5NA==&mid=2247483947&idx=1&sn=6d1c63afa549fee8f27319e277401a92,龙虾最强开源对手来了！两个月冲上 5 万星的 Hermes Agent，是平替 Openclaw，还是另一条路？,20260411,recvgZbYtq8Qav,00000328,2,20260415,2026-04-17 04:55:09
+00000300,https://x.com/LufzzLiz/status/2044258384556556743,JavaScript is not available.,20260415,recvgZbYtqMsnN,,0,20260415,2026-04-17 04:55:09
+00000301,https://github.com/cclank/modelbox/blob/main/README.md,modelbox/README.md at main · cclank/modelbox · GitHub,20260415,recvgZbYtq1ZFF,00000329,2,20260415,2026-04-17 04:55:09
+00000302,https://github.com/cclank/modelbox,GitHub - cclank/modelbox: ModelBox: OpenAI-protocol proxy for context debugging (mock/passthrough + payload capture) · GitHub,20260415,recvgZbYtq8ATJ,00000329,2,20260415,2026-04-17 04:55:09
+00000303,https://waytoagi.feishu.cn/wiki/Lo4twZrGUiyDhKkfSEOcE6hRnm1,AI 知识层：让每个 Agent 都变聪明的双层系统,20260415,recvgZbYtqTok9,,1,20260415,2026-04-17 04:55:09
+00000304,https://x.com/shannholmberg/status/2044111115878326444,JavaScript is not available.,20260415,recvgZbYtqTXls,00000303,2,20260415,2026-04-17 04:55:09
+00000305,https://mp.weixin.qq.com/s/P_LgdTYrR6TozFIVTJ31Dw,AI 知识层：让每个 Agent 都变聪明的双层系统,20260415,recvgZbYtquFaT,00000303,2,20260415,2026-04-17 04:55:09
+00000306,https://waytoagi.feishu.cn/wiki/DlEXwex4fipfjLkoQxXcLDaDnwc,贾栾：别羡慕龙虾了！用 Claude Code + 飞书，自己造一个更强的 AI 助理（零基础保姆级教程） ,20260415,recvgZbYtqiclk,,1,20260415,2026-04-17 04:55:09
+00000307,https://github.com/chenhg5/cc-connect/blob/main/INSTALL.md,cc-connect/INSTALL.md at main · chenhg5/cc-connect · GitHub,20260415,recvgZbYtqCusS,00000306,2,20260415,2026-04-17 04:55:09
+00000308,https://github.com/farion1231/cc-switch/releases,Releases · farion1231/cc-switch · GitHub,20260415,recvgZbYtqD9iS,00000306,2,20260415,2026-04-17 04:55:09
+00000309,https://docs.anthropic.com/en/docs/claude-code/skills,Extend Claude with skills - Claude Code Docs,20260415,recvgZbYtqFxJe,00000306,2,20260415,2026-04-17 04:55:09
+00000310,https://zhuanlan.zhihu.com/p/2021327251799569584,刚刚，飞书 CLI 开源了，我用 Claude Code 玩转几大企业级场景，绝了！,20260328,recvgZbYtqGnad,00000306,2,20260415,2026-04-17 04:55:09
+00000311,https://www.woshipm.com/ai/6369629.html,我用Claude Code+飞书CLI，实现了知识库的零手动迁移（提效实战分享） | 人人都是产品经理,20260403,recvgZbYtqHB36,00000306,2,20260415,2026-04-17 04:55:09
+00000312,https://www.53ai.com/news/LargeLanguageModel/2025092335016.html,用Claude Code Hook实现任务完成后发送飞书提醒（可复用到微信、钉钉、桌面提醒） - 53AI-AI知识库|企业AI知识库|大模型知识库|AIHub,20260415,recvgZbYtqNRTt,00000306,2,20260415,2026-04-17 04:55:09
+00000313,https://github.com/chenhg5/cc-connect/blob/main/docs/feishu.md,cc-connect/docs/feishu.md at main · chenhg5/cc-connect · GitHub,20260415,recvgZbYtqSLgu,00000306,2,20260415,2026-04-17 04:55:09
+00000314,https://github.com/farion1231/cc-switch,"GitHub - farion1231/cc-switch: A cross-platform desktop All-in-One assistant tool for Claude Code, Codex, OpenCode, openclaw & Gemini CLI. · GitHub",20260415,recvgZbYtqTc7n,00000306,2,20260415,2026-04-17 04:55:09
+00000315,https://nodejs.org/,Node.js — Run JavaScript Everywhere,20260415,recvgZbYtqWIfD,00000306,2,20260415,2026-04-17 04:55:09
+00000316,https://github.com/chenhg5/cc-connect/blob/main/docs/usage.zh-CN.md,Rate limit · GitHub,20260415,recvgZbYtqYwbq,00000306,2,20260415,2026-04-17 04:55:09
+00000317,https://github.com/chenhg5/cc-connect/issues,Issues · chenhg5/cc-connect · GitHub,20260415,recvgZbYtqayms,00000306,2,20260415,2026-04-17 04:55:09
+00000318,https://github.com/chenhg5/cc-connect,"GitHub - chenhg5/cc-connect: Bridge local AI coding agents (Claude Code, Cursor, Gemini CLI, Codex) to messaging platforms (Feishu/Lark, DingTalk, Slack, Telegram, Discord, LINE, WeChat Work). Chat with your AI dev assistant from anywhere — no public IP required for most platforms. · GitHub",20260415,recvgZbYtqceCf,00000306,2,20260415,2026-04-17 04:55:09
+00000319,https://docs.anthropic.com/en/docs/claude-code/overview,Claude Code overview - Claude Code Docs,20260415,recvgZbYtqiPuG,00000306,2,20260415,2026-04-17 04:55:09
+00000320,https://github.com/farion1231/cc-switch/blob/main/README_ZH.md,cc-switch/README_ZH.md at main · farion1231/cc-switch · GitHub,20260415,recvgZbYtqnI8s,00000306,2,20260415,2026-04-17 04:55:09
+00000321,https://modelcontextprotocol.io/,What is the Model Context Protocol (MCP)? - Model Context Protocol,20260415,recvgZbYtqnWrj,00000306,2,20260415,2026-04-17 04:55:09
+00000322,https://open.feishu.cn/app,开发者后台 - 飞书开放平台,20260415,recvgZbYtqojA5,00000306,2,20260415,2026-04-17 04:55:09
+00000323,https://github.com/larksuite/cli/blob/main/README.zh.md,Rate limit · GitHub,20260415,recvgZbYtqt3Un,00000306,2,20260415,2026-04-17 04:55:09
+00000324,https://code.claude.com/docs/en/scheduled-tasks,Run prompts on a schedule - Claude Code Docs,20260415,recvgZbYtqto0o,00000306,2,20260415,2026-04-17 04:55:09
+00000325,https://github.com/farion1231/cc-switch/blob/main/docs/proxy-guide-zh.md,cc-switch/docs/proxy-guide-zh.md at main · farion1231/cc-switch · GitHub,20260415,recvgZbYtqx6Jp,00000306,2,20260415,2026-04-17 04:55:09
+00000326,https://github.com/chenhg5/cc-connect/blob/main/README.zh-CN.md,cc-connect/README.zh-CN.md at main · chenhg5/cc-connect · GitHub,20260415,recvgZbYtqzCil,00000306,2,20260415,2026-04-17 04:55:09
+00000327,https://waytoagi.feishu.cn/wiki/N3A2wjNC1i3rWakhnbecqsfTnFc,AI视频镜头语言提示词大全之运镜篇，手把手教你写提示词，附可套用模板,20260415,recvgZbYtql8mz,00000293,1,20260415,2026-04-17 04:55:09
+00000328,https://waytoagi.feishu.cn/wiki/YC81wRG62ikFAZkPESmczN4bnYc,刚刚！全网爆火 Hermes Agent 原生支持接入飞书了，小白保姆级教程 5 分钟上手。,20260415,recvgZbYtqnwIp,00000298,1,20260415,2026-04-17 04:55:09
+00000329,https://waytoagi.feishu.cn/wiki/NRPewYIPtiXgZDk16qNcR0vdnRe,抽丝剥茧：深度解析 Hermes Agent 万字系统提示词（System Prompt）构成 ,20260415,recvgZbYtqpPiy,00000300,1,20260415,2026-04-17 04:55:09
+00000330,https://mp.weixin.qq.com/s/SuUMCE8TJ5E-CnrE9r2TEQ,神级CLI写作大法,20260415,recvgZbYtqxuxp,,0,20260415,2026-04-17 04:55:09
+00000331,https://waytoagi.feishu.cn/wiki/KUSYwJPpCiZSUqkSy6GcE1xyn0e,如何在 6 个月内成为 AI 自动化工程师（附学习资源）【译】,20260414,recvgZbYtqMpnW,,1,20260416,2026-04-17 04:55:09
+00000332,https://hunter.io/,Find email addresses and send cold emails • Hunter,20260414,recvgZbYtq0Wan,00000331,2,20260416,2026-04-17 04:55:09
+00000333,https://www.youtube.com/watch?v=bTF3tACqPRU,- YouTube,20260414,recvgZbYtq1c1e,00000331,2,20260416,2026-04-17 04:55:09
+00000334,https://docs.apollo.io/,Apollo API Documentation,20260414,recvgZbYtq26MP,00000331,2,20260416,2026-04-17 04:55:09
+00000335,https://otter.ai/api,Otter Voice Meeting Notes - Otter.ai,20260414,recvgZbYtq326z,00000331,2,20260416,2026-04-17 04:55:09
+00000336,https://learning.postman.com/,Postman Docs | Postman Docs,20260414,recvgZbYtq3MFO,00000331,2,20260416,2026-04-17 04:55:09
+00000337,https://hunter.io/api-documentation,Hunter's API Reference V2,20260414,recvgZbYtq4jKh,00000331,2,20260416,2026-04-17 04:55:09
+00000338,https://platform.openai.com/tokenizer,（https://platform.openai.com/tokenizer）,20260414,recvgZbYtq5KF7,00000331,2,20260416,2026-04-17 04:55:09
+00000339,https://cookbook.openai.com/,Cookbook,20260414,recvgZbYtq5LAR,00000331,2,20260416,2026-04-17 04:55:09
+00000340,https://www.crewai.com/,The Leading Multi-Agent Platform,20260414,recvgZbYtq5Vo7,00000331,2,20260416,2026-04-17 04:55:09
+00000341,https://developers.hubspot.com/docs/api/overview,2026-03 API reference - HubSpot docs,20260414,recvgZbYtq5qyR,00000331,2,20260416,2026-04-17 04:55:09
+00000342,https://langfuse.com/,Langfuse,20260414,recvgZbYtq63ZD,00000331,2,20260416,2026-04-17 04:55:09
+00000343,https://n8n.io/workflows/?categories=AI,Discover 9167  Automation Workflows from the n8n's Community,20260414,recvgZbYtq7vZL,00000331,2,20260416,2026-04-17 04:55:09
+00000344,https://api.slack.com/block-kit,Block Kit | Slack Developer Docs,20260414,recvgZbYtq9PHU,00000331,2,20260416,2026-04-17 04:55:09
+00000345,https://docs.n8n.io/flow-logic/error-handling/,Error handling | n8n Docs,20260414,recvgZbYtq9aXe,00000331,2,20260416,2026-04-17 04:55:09
+00000346,https://github.com/openai/whisper,GitHub - openai/whisper: Robust Speech Recognition via Large-Scale Weak Supervision · GitHub,20260414,recvgZbYtqBhWu,00000331,2,20260416,2026-04-17 04:55:09
+00000347,https://www.upwork.com/,Challenge - Upwork,20260414,recvgZbYtqCOxG,00000331,2,20260416,2026-04-17 04:55:09
+00000348,https://docs.fireflies.ai/,Introduction - Fireflies.ai API Documentation,20260414,recvgZbYtqCpQF,00000331,2,20260416,2026-04-17 04:55:09
+00000349,https://onlinejobs.ph/,"Oops, something went wrong",20260414,recvgZbYtqEZuE,00000331,2,20260416,2026-04-17 04:55:09
+00000350,https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf,（https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf）,20260414,recvgZbYtqEduh,00000331,2,20260416,2026-04-17 04:55:09
+00000351,https://docs.anthropic.com/en/docs/get-started,Get started with Claude - Claude API Docs,20260414,recvgZbYtqEe97,00000331,2,20260416,2026-04-17 04:55:09
+00000352,https://www.loom.com/,Free screen recorder for Mac and PC | Loom,20260414,recvgZbYtqFOGm,00000331,2,20260416,2026-04-17 04:55:09
+00000353,https://retool.com/,"Retool | Build internal software better, with AI.",20260414,recvgZbYtqFeev,00000331,2,20260416,2026-04-17 04:55:09
+00000354,https://www.amazon.com/Built-Sell-Creating-Business-Without/dp/1591845823,Amazon.com,20260414,recvgZbYtqG0xU,00000331,2,20260416,2026-04-17 04:55:09
+00000355,https://www.anthropic.com/research/building-effective-agents,Building Effective AI Agents \ Anthropic,20260414,recvgZbYtqGIHq,00000331,2,20260416,2026-04-17 04:55:09
+00000356,https://www.youtube.com/watch?v=rfscVS0vtbw,- YouTube,20260414,recvgZbYtqIrjo,00000331,2,20260416,2026-04-17 04:55:09
+00000357,https://www.assemblyai.com/docs,AssemblyAI Documentation | AssemblyAI | Documentation,20260414,recvgZbYtqItBf,00000331,2,20260416,2026-04-17 04:55:09
+00000358,https://developers.pipedrive.com/,Pipedrive Developers Corner | Pipedrive API sandbox,20260414,recvgZbYtqIzHN,00000331,2,20260416,2026-04-17 04:55:09
+00000359,https://supabase.com/docs/guides/ai,AI & Vectors | Supabase Docs,20260416,recvgZbYtqJ9QF,00000331,2,20260416,2026-04-17 04:55:09
+00000360,https://simonwillison.net/2025/Sep/30/designing-agentic-loops/,Designing agentic loops,20260414,recvgZbYtqJk4U,00000331,2,20260416,2026-04-17 04:55:09
+00000361,https://x.com/DeRonin_/status/2043722737080819983,JavaScript is not available.,20260414,recvgZbYtqK0PV,00000331,2,20260416,2026-04-17 04:55:09
+00000362,https://academy.make.com/,Make Academy,20260414,recvgZbYtqK62r,00000331,2,20260416,2026-04-17 04:55:09
+00000363,https://docs.n8n.io/,Explore n8n Docs: Your Resource for Workflow Automation and Integrations | n8n Docs,20260414,recvgZbYtqKQ0R,00000331,2,20260416,2026-04-17 04:55:09
+00000364,https://www.notion.so/templates,"Choose from 30,000+ Notion templates | Notion Marketplace",20260414,recvgZbYtqKpEh,00000331,2,20260416,2026-04-17 04:55:09
+00000365,https://docs.llamaindex.ai/,Welcome to LlamaIndex 🦙 ! | LlamaIndex OSS Documentation,20260414,recvgZbYtqM3w7,00000331,2,20260416,2026-04-17 04:55:09
+00000366,https://github.com/anthropics/prompt-eng-interactive-tutorial,GitHub - anthropics/prompt-eng-interactive-tutorial: Anthropic's Interactive Prompt Engineering Tutorial · GitHub,20260414,recvgZbYtqM8NW,00000331,2,20260416,2026-04-17 04:55:09
+00000367,https://www.fiverr.com/,It needs a human touch,20260414,recvgZbYtqMPmy,00000331,2,20260416,2026-04-17 04:55:09
+00000368,https://contra.com/,Contra - A professional network for the jobs and skills of the future,20260414,recvgZbYtqNRYL,00000331,2,20260416,2026-04-17 04:55:09
+00000369,https://developers.attio.com/,Overview - Attio Docs,20260414,recvgZbYtqQqEB,00000331,2,20260416,2026-04-17 04:55:09
+00000370,https://simonwillison.net/,Simon Willison’s Weblog,20260414,recvgZbYtqQyfX,00000331,2,20260416,2026-04-17 04:55:09
+00000371,https://docs.n8n.io/courses/,Text courses | n8n Docs,20260414,recvgZbYtqRqwB,00000331,2,20260416,2026-04-17 04:55:09
+00000372,https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent/,AI Agent node documentation | n8n Docs,20260414,recvgZbYtqSQVf,00000331,2,20260416,2026-04-17 04:55:09
+00000373,https://genai.owasp.org/llm-top-10/,LLMRisks Archive - OWASP Gen AI Security Project,20250312,recvgZbYtqSXGA,00000331,2,20260416,2026-04-17 04:55:09
+00000374,https://railway.app/,Railway,20260414,recvgZbYtqTDQF,00000331,2,20260416,2026-04-17 04:55:09
+00000375,https://openai.com/api/pricing,（https://openai.com/api/pricing）,20260414,recvgZbYtqVQdE,00000331,2,20260416,2026-04-17 04:55:09
+00000376,https://automatetheboringstuff.com/,Automate the Boring Stuff with Python - Automate the Boring Stuff with Python,20260414,recvgZbYtqW51W,00000331,2,20260416,2026-04-17 04:55:09
+00000377,https://www.youtube.com/@nicksaraev,Nick Saraev - YouTube,20260414,recvgZbYtqWXxh,00000331,2,20260416,2026-04-17 04:55:09
+00000378,https://learnprompting.org/,Learn Prompting: Your Guide to Communicating with AI,20260414,recvgZbYtqX3Ku,00000331,2,20260416,2026-04-17 04:55:09
+00000379,https://smartlead.ai/,Home,20260414,recvgZbYtqXcTU,00000331,2,20260416,2026-04-17 04:55:09
+00000380,https://www.blotato.com/,Blotato - AI Content Engine,20260414,recvgZbYtqXlpA,00000331,2,20260416,2026-04-17 04:55:09
+00000381,https://zapier.com/blog/what-are-webhooks/,What are webhooks? | Zapier,20260414,recvgZbYtqaCj3,00000331,2,20260416,2026-04-17 04:55:09
+00000382,https://buffer.com/developers/api,Buffer API - Developers,20260414,recvgZbYtqaHsg,00000331,2,20260416,2026-04-17 04:55:09
+00000383,https://apollo.io/,"AI Sales Platform | Apollo.io - Outbound, Inbound & Automation",20260414,recvgZbYtqaN44,00000331,2,20260416,2026-04-17 04:55:09
+00000384,https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview,Overview of HTTP - HTTP | MDN,20260126,recvgZbYtqaZ48,00000331,2,20260416,2026-04-17 04:55:09
+00000385,https://apify.com/,Apify: Full-stack web scraping and data extraction platform,20260414,recvgZbYtqbRHo,00000331,2,20260416,2026-04-17 04:55:09
+00000386,https://blog.postman.com/how-to-read-api-documentation/,Just a moment...,20260414,recvgZbYtqbpew,00000331,2,20260416,2026-04-17 04:55:09
+00000387,https://instantly.ai/,Sales Engagement and Lead Intelligence | Instantly,20260414,recvgZbYtqcbOq,00000331,2,20260416,2026-04-17 04:55:09
+00000388,https://instantly.ai/blog,Instantly Blog | Sales Engagement & Lead Intelligence Tips,20260413,recvgZbYtqcksE,00000331,2,20260416,2026-04-17 04:55:09
+00000389,https://fireflies.ai/,Fireflies.ai | The #1 AI Notetaker for Your Meetings,20260414,recvgZbYtqeNvz,00000331,2,20260416,2026-04-17 04:55:09
+00000390,https://www.youtube.com/@AndrejKarpathy,Andrej Karpathy - YouTube,20260414,recvgZbYtqefVV,00000331,2,20260416,2026-04-17 04:55:09
+00000391,https://betterstack.com/,"Better Stack - 30x cheaper than Datadog, Exceptional support",20260414,recvgZbYtqejvI,00000331,2,20260416,2026-04-17 04:55:09
+00000392,https://n8n.io/cloud/,AI Workflow Automation Platform - n8n,20260414,recvgZbYtqgpYd,00000331,2,20260416,2026-04-17 04:55:09
+00000393,https://phantombuster.com/,PhantomBuster,20260414,recvgZbYtqhHb7,00000331,2,20260416,2026-04-17 04:55:09
+00000394,https://www.anthropic.com/pricing,Plans & Pricing | Claude by Anthropic,20260414,recvgZbYtqiPBW,00000331,2,20260416,2026-04-17 04:55:09
+00000395,https://www.clay.com/,Clay |  Go to market with unique data—and the ability to act on it,20260414,recvgZbYtqijtd,00000331,2,20260416,2026-04-17 04:55:09
+00000396,https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.wait/,Wait | n8n Docs,20260414,recvgZbYtqjaaq,00000331,2,20260416,2026-04-17 04:55:09
+00000397,https://sahillavingia.com/,Sahil Lavingia,20260414,recvgZbYtqlSC9,00000331,2,20260416,2026-04-17 04:55:09
+00000398,https://www.onlinejobs.ph/,"Oops, something went wrong",20260414,recvgZbYtqmRHF,00000331,2,20260416,2026-04-17 04:55:09
+00000399,https://platform.openai.com/docs/guides/prompt-engineering,（https://platform.openai.com/docs/guides/prompt-engineering）,20260414,recvgZbYtqmVFG,00000331,2,20260416,2026-04-17 04:55:09
+00000400,https://restfulapi.net/,What is REST?: REST API Tutorial,20250401,recvgZbYtqneuK,00000331,2,20260416,2026-04-17 04:55:09
+00000401,https://docs.n8n.io/workflows/sticky-notes/,Sticky Notes | n8n Docs,20260414,recvgZbYtqoISz,00000331,2,20260416,2026-04-17 04:55:09
+00000402,https://docs.stripe.com/api,Stripe API Reference,20260414,recvgZbYtqoPkf,00000331,2,20260416,2026-04-17 04:55:09
+00000403,https://docs.n8n.io/workflows/executions/,Executions | n8n Docs,20260414,recvgZbYtqoVkW,00000331,2,20260416,2026-04-17 04:55:09
+00000404,https://www.clay.com/learn,Clay University | The fastest way to master Clay,20260414,recvgZbYtqoboB,00000331,2,20260416,2026-04-17 04:55:09
+00000405,https://www.youtube.com/@productivedude,Productive Dude - YouTube,20260414,recvgZbYtqolOT,00000331,2,20260416,2026-04-17 04:55:09
+00000406,https://www.coursera.org/specializations/python,Python for Everybody | Coursera,20260414,recvgZbYtqpfCX,00000331,2,20260416,2026-04-17 04:55:09
+00000407,https://x.com/EXM7777/status/2011800604709175808,JavaScript is not available.,20260414,recvgZbYtqq6pT,00000331,2,20260416,2026-04-17 04:55:09
+00000408,https://www.amazon.com/E-Myth-Revisited-Small-Businesses-About/dp/0887307280,Amazon.com,20260414,recvgZbYtqqknM,00000331,2,20260416,2026-04-17 04:55:09
+00000409,https://www.langchain.com/langgraph,LangGraph: Agent Orchestration Framework for Reliable AI Agents,20260414,recvgZbYtqr1dX,00000331,2,20260416,2026-04-17 04:55:09
+00000410,https://developers.notion.com/,Notion Docs - Notion Docs,20260414,recvgZbYtqrevk,00000331,2,20260416,2026-04-17 04:55:09
+00000411,https://langfuse.com/docs/prompts,Get Started - Langfuse,20260414,recvgZbYtqsTM8,00000331,2,20260416,2026-04-17 04:55:09
+00000412,https://docs.n8n.io/credentials/,Credentials library | n8n Docs,20260414,recvgZbYtqsoO4,00000331,2,20260416,2026-04-17 04:55:09
+00000413,https://render.com/docs/deploy-n8n,Deploy n8n on Render – Render Docs,20260414,recvgZbYtqt4vm,00000331,2,20260416,2026-04-17 04:55:09
+00000414,https://github.com/microsoft/autogen,GitHub - microsoft/autogen: A programming framework for agentic AI · GitHub,20260414,recvgZbYtqxSX3,00000331,2,20260416,2026-04-17 04:55:09
+00000415,https://otter.ai/,"Otter Meeting Agent - AI Notetaker, Transcription, Insights",20260414,recvgZbYtqxfyy,00000331,2,20260416,2026-04-17 04:55:09
+00000416,https://n8n.io/creators/,Verified n8n Automation Workflows Creators,20260414,recvgZbYtqyH3s,00000331,2,20260416,2026-04-17 04:55:09
+00000417,https://streamlit.io/,Streamlit • A faster way to build and share data apps,20260414,recvgZbYtqyNQm,00000331,2,20260416,2026-04-17 04:55:09
+00000418,https://budibase.com/,"Budibase | Build AI Agents, Workflows & Internal Tools",20260414,recvgZbYtqyj76,00000331,2,20260416,2026-04-17 04:55:09
+00000419,https://developer.lemlist.com/,Lemlist Developer Docs,20260414,recvgZbYtqyqIK,00000331,2,20260416,2026-04-17 04:55:09
+00000420,https://platform.openai.com/docs/quickstart,（https://platform.openai.com/docs/quickstart）,20260414,recvgZbYtqzbmL,00000331,2,20260416,2026-04-17 04:55:09
+00000421,https://n8n.io/workflows/?q=rag,Discover 9167  Automation Workflows from the n8n's Community,20260414,recvgZbYtqzdb9,00000331,2,20260416,2026-04-17 04:55:09
+00000422,https://nomadlist.com/forum/post/3471,Digital Nomad Chat on Telegram,20260414,recvgZbYtqzzUd,00000331,2,20260416,2026-04-17 04:55:09

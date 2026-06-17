@@ -1,0 +1,66 @@
+﻿序号,URL,链接文字,是否重要,周报时间
+1,https://mp.weixin.qq.com/s/D5Ob_KZb4QGGYlHo2YKjvg,ChatGPT Pulse是OpenAI超越Google之路的开始,是,251011周
+2,https://mp.weixin.qq.com/s/Qq4Tus7MAfo7OQXtoRg5HQ,Sam Altman最新访谈：ChatGPT、Sora和Altman自己,是,251011周
+3,https://t.zsxq.com/hNa9Y,周日换频道（278）_尽量不要“错配”（绝大多数人，40岁之后，才可能get到这个关键问题）_20250427,是,251011周
+4,https://mp.weixin.qq.com/s/G5M0dmcv9XKr7LUpakMG5Q,Richard Sutton：LLM只是模仿，不包含智能的本质，真正的学习不是训练,是,251011周
+5,https://mp.weixin.qq.com/s/pOVRXWH8BInvglKuSEbq_g,汪军对话Rich Sutton：LLM在一定程度上，分散了我们对智能理解的注意力,否,251011周
+6,https://mp.weixin.qq.com/s/z07CF9MAdYlNbhQcMp6v8Q,训练LLM，是召唤幽灵，而非创造动物：Andrej Karpathy回应Sutton的“LLM是死路一条”观点,否,251011周
+7,https://mp.weixin.qq.com/s/pyMnl_p8OgID6P4jxoaI1g,接近温和拐点，AI将迎来“比撒手速度”的周期,是,251011周
+8,https://mp.weixin.qq.com/s/kALhwiRIQHdRlZMy8hBxjg,AI产品的技术路线选择：提示词、RAG与模型微调,是,251011周
+9,https://mp.weixin.qq.com/s/HG-QE3pw_h-QK4tIyYk6rA,OpenAI运作模式的底层死结，决定了它自己、甚至中美AI竞争态势的出口,是,251011周
+10,https://t.zsxq.com/q8ky3,Agent Builder不是Coze或Dify，工作流不是真正的Agent,否,251011周
+11,https://t.zsxq.com/dxcyW,LLM的真正普及，可能需要等AI安全等领域，有更大进展,否,251011周
+12,https://t.zsxq.com/pwELZ,什么时候用国内AI产品、什么时候用国外AI产品？,否,251011周
+13,https://t.zsxq.com/kWHUv,AI时代，AI公司做产业投资，可能比之前更“重”,否,251011周
+14,https://t.zsxq.com/u7ZzH,“赚钱视角”看AI的一个干货视频,否,251011周
+15,https://mp.weixin.qq.com/s/eTHt3fRg5hP-2wglqwFYSg,黄仁勋最新访谈：英伟不再是芯片公司，而是全球AI Infra核心合作伙伴；向OpenAI投资100亿，建造自己的AI工厂,否,251011周
+16,https://mp.weixin.qq.com/s/qy7yTSDvT-iDIQy1aI_DKw?click_id=10,罗永浩对谈周鸿祎：AI将走向何方？,否,251011周
+17,https://mp.weixin.qq.com/s/MM4qMZP8qtVjnUTBJdjeJA,AI 时代创业的大机会，是专业服务规模化,否,251011周
+18,https://mp.weixin.qq.com/s/skCelBVuGM-WAGDCO2s-oA,OpenAI 推出“ChatGPT Pulse”每日简报功能，就标志着 AI 从生成内容，转向生成服务,否,251011周
+19,https://mp.weixin.qq.com/s/JFU4uLF-ZO7sF-Q9lAlxsQ,白强：AI是“人类主导的最后一次技术革ming”，未来将由AI自我迭代；To C娱乐与机器人将成中国突破点,否,251011周
+20,https://mp.weixin.qq.com/s/ichZ7dy1pi9Mk7sRIyz5-g,Trickle创始人：探索3年、经历3款产品，最终找到PMF,否,251011周
+21,http://xhslink.com/o/8AFBmnNBmxA,美tiktok网红在中国试用机器腿，一天超千万人观看（5分42秒）,否,251011周
+22,http://xhslink.com/o/8b0eNfJoHnN,AI视频：你知道自己是AI吗？看庄子、孔子、老子如何回答（30秒）,否,251011周
+23,http://xhslink.com/o/8E8sMdDcdGO,AI视频：张杰演唱会转场——中国风与未来感融合（1分50秒）,否,251011周
+24,http://xhslink.com/o/8QBcVjqsoV,AI视频：一场跨地域的“文物”中秋月饼宴（47秒）,否,251011周
+25,http://xhslink.com/o/8Rilhmfj28N,AI视频：敦煌瑞兽的皮影美学（一镜到底，51秒）,否,251011周
+26,https://mp.weixin.qq.com/s/Zp8q0C1dEqV86txdKpardw,豆包P图全攻略：从基础修图到情感写真，朋友圈零门槛出片指南,是,251011周
+27,https://mp.weixin.qq.com/s/FxG09Ia1z1Ciup709rPpXQ,国产音画同步视频模型 GAGA-1,否,251011周
+28,http://gaga.art/,体验地址,否,251011周
+29,https://mp.weixin.qq.com/s/0dcGm5WcO8Cp_EFWTYiBeg,发布了Magi-1,否,251011周
+30,https://100.datavizproject.com/,工具网站：一个数据集的100种可视化,否,251011周
+31,https://mp.weixin.qq.com/s/fVeBta950i6G7eC_y7JU0g,视觉推理模型 Gemini 2.5 Computer Use，超越 Sonnet 4.5 与 OpenAI Operator：AI 开始真正“会用电脑”,否,251011周
+32,https://gemini.browserbase.com/,体验地址,否,251011周
+33,https://m.okjike.com/originalPosts/68e679cdbe5dac10f8e15541,使用超1万亿Token的30个 Open AI 大客户名单,否,251011周
+34,https://mp.weixin.qq.com/s/n23pElxtufKy_rTc5V1BUw,Altimeter 合伙人深度解析 Prediction Market：从“投票真相”到“知识资产化”的新物种,是,251011周
+35,https://mp.weixin.qq.com/s/oMsItbQUJr6sqgkJy_yA_A,OpenAI 年度发布会：Agent平台/Sora API/第三方接入ChatGPT/...,否,251011周
+36,https://mp.weixin.qq.com/s/YpNMlOVAviKq6-GXkYUG5A,Connector Registry,否,251011周
+37,https://mp.weixin.qq.com/s/1OHG5SqW_N66-1W_hldRwQ,刘小排相关文章,否,251011周
+38,https://developers.openai.com/codex/cli,Codex入门（官方教程）,否,251011周
+39,https://chatgpt.com/,网页,否,251011周
+40,https://mp.weixin.qq.com/s/UYToRXmbE6O91WmP6xGPzA,OpenAI 推出 Sora 2——AI版抖音（只包含由 AI 生成的视频内容）,否,251011周
+41,https://mp.weixin.qq.com/s/X9HUkS-o3KZq7kDWZ26egQ,我的12个“2024AI猜想”,否,251011周
+42,https://mp.weixin.qq.com/s/GMeDAxIOPvkDv3b1lU3ZHg?click_id=1,OpenAI上线“即时结账”功能，ChatGPT对话，可直接完成商品购买,否,251011周
+43,https://mp.weixin.qq.com/s/K-zyw_XWrfPDjdFMZ5lCRg,奥特曼亲赴韩国，与韩国总统李在明、三星电子会长李在镕、SK集团会长崔泰源会晤，并达成合作,否,251011周
+44,https://mp.weixin.qq.com/s/UBnOcwUrVFHdGVvlNAisig,奥特曼：AI 超越人类只剩 5 年；GPT-8 将成为划时代分水岭，2030 年或将实现 AGI,否,251011周
+45,https://mp.weixin.qq.com/s/NvRmYwdmzT720EDjbaTh8g,受益于智驾内卷，无人配送车，半年获35亿投资,否,251011周
+46,https://mp.weixin.qq.com/s/SKo-HdiOB8Tfb467EftbqA,理想第二款纯电SUV——i6 发布，锁定20-30万元的纯电市场,否,251011周
+47,https://mp.weixin.qq.com/s/rRvbBpBiFw7syic_LrFI9g,"特斯拉开源新专利——""基于全局基准点的自动化外饰件装配系统""，单车装配时间压缩到秒级，是汽车工业生产体系的全面升级",否,251011周
+48,https://mp.weixin.qq.com/s/yCMffiFjJBxub1ydMA7slw,xAI现高管离职潮+裁员1/3的Grok数据团队（但会大规模招聘「专业」标注员）,否,251011周
+49,https://mp.weixin.qq.com/s/Ngh5qQTYZzhGSs9roJfbTw,xAI正进行200亿美元融资，英伟达参投20亿美元,否,251011周
+50,https://mp.weixin.qq.com/s/2KZgrNDfJuIhDHS15f6A_w,清华物理系传奇姚顺宇离职，不认同Anthropic（反华价值观），加入DeepMind,否,251011周
+51,https://mp.weixin.qq.com/s/7xL8_McRWGnzjSy5cbx5TA,Anthropic新研究：250份有毒文，即可给大模型植入后门，远低于业界预期,否,251011周
+52,https://mp.weixin.qq.com/s/FomQXc9ZzcLZ9OoUVHYNng,英国前首相苏纳克，担任微软和Anthropic公司的高级顾问，提供战略、宏观经济和地缘政治趋势方面的建议,否,251011周
+53,https://mp.weixin.qq.com/s/dB5z9Lta7TTiytPV3b2sNQ,在AI时代，数据不再是隐私，而是商品。你的声音、习惯、情绪，随时都可能被打包进训练集，变成别人赚钱的筹码。利润多，但风险大,否,251011周
+54,https://mp.weixin.qq.com/s/z6yjOH8xvAOeM6HNaq3IWg?click_id=46,Reflection AI获20亿美元融资，要做美版DeepSeek,否,251011周
+55,https://mp.weixin.qq.com/s/fFcj-E1pjXVebdLWv1Vtgw,Thinking Machines 推出 Tinker：让模型微调，像改代码一样简单,否,251011周
+56,https://mp.weixin.qq.com/s/OBnvgkTxcbIx3KNILK2zcg,AI 编码长出一个新赛道：专门负责“代码审查/Review ”的 AI 应用,否,251011周
+57,https://mp.weixin.qq.com/s/im-SVS4EtOfOxSsVRC6GSA,玩具产业权力洗牌，成人消费与IP收藏驱动新增长,否,251011周
+58,https://mp.weixin.qq.com/s/wLjroO9Bn4oG9cuLOO-dWw,AI 大佬集体涌入小红书：AMA（Ask Me Anything） 热潮背后的平台逻辑、新叙事,否,251011周
+59,https://mp.weixin.qq.com/s/J9d0mxDbL5b_MpRQaSBbEg,九月中文大模型基准测评结果发布,否,251011周
+60,https://mp.weixin.qq.com/s/0UpIKQvZnz8uBwqyDd4jaA,十位离职华为的「天才少年」,否,251011周
+61,https://mp.weixin.qq.com/s/6Hegk_nZJBFYtrbBtF9yiQ,对话Lukasz Kaiser（“Transformer八子”之一、GPT5发明者）,是,251011周
+62,https://t.zsxq.com/ODBnJ,反共识：2025年，Agent可能不会爆发_20250124,否,251011周
+63,https://mp.weixin.qq.com/s/q5-F7-69_VTsed3H6ze7tA,通用机器人是陷阱，要用场景驱动，可靠性才是第一位,否,251011周
+64,https://t.zsxq.com/cANV9,周日换频道（292）_团员分享_做“AI日报志愿者”的收获复盘｜被“奖励函数”点亮的每一天 @知之,否,251011周
+65,https://t.zsxq.com/99uy3,新增3个JD in 深圳 & 合肥（含1个实习JD）_AI产品经理_共计89个,否,251011周

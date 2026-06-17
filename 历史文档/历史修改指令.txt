@@ -1,0 +1,97 @@
+
+
+对于如下来源网址，补充对链接进行截断处理的规则。
+所有“头条_video”文章，仅保留链接字符串的第一个“?”字符之前的字符串内容。
+所有“App-微博”文章，仅保留链接字符串的第一个“?”字符之前的字符串内容。
+所有微信公众号文章，仅保留链接字符串的第一个“?”字符之前的字符串内容。
+
+下面来完善一下“App-微博”类文章的日期及标题解析。
+以这个网址为例，https://m.weibo.cn/status/5263671978887837，
+日期应为20260207。
+标题就选取其正文文字的第一行即可，此文对应为“每天都有 AI 产品“炸裂”，但我已经不焦虑了”。
+
+下面来完善一下“头条_video”类文章的日期及标题解析。
+以这个网址为例，https://m.toutiao.com/video/7591109484378849332/，
+日期应为20260103。
+标题应为“特斯拉一体压铸优点缺点都有#特斯拉#特斯拉modely #新能源汽车”。
+
+下面来完善一下“飞书OT分享”类文章的日期及标题解析。
+以这个网址为例，https://waytoagi.feishu.cn/wiki/PPniw6JDKiJMgTkQAJtckyv6nYd，
+日期应为20260207。
+标题应为“DemoDay：新手小白也能做出来的保姆级coding教程”。
+
+
+
+
+
+【20260210】：
+链接解析时，对所有以"https://m.toutiao.com/w/"开头的链接，识别为“头条OT”。对这类文章，仅保留链接字符串的第一个“?”字符之前的字符串内容。
+链接解析时，对所有以"https://m.bilibili.com/video/"开头的链接，识别为“APP-哔哩哔哩”。对这类文章，仅保留链接字符串的第一个“?”字符之前的字符串内容。
+链接解析时，对所有包含".feishu.cn/wiki/"内容的字符串的链接，识别为“飞书OT分享”。
+
+如下几个链接，未能解析出其标题及日期，查一下是什么原因？
+https://forchangesz.feishu.cn/wiki/Nndpw4zstiNpeKkA42KclGHanwc
+https://mp.weixin.qq.com/s/JSHFRlzDsplX9z3Bl8MgcQ
+https://m.toutiao.com/w/1856725917720584/
+https://m.bilibili.com/video/BV1duFrztESM
+
+在对所有链接进行内容解析时，应该去查找文章最新更新日期。
+例如，https://forchangesz.feishu.cn/wiki/Nndpw4zstiNpeKkA42KclGHanwc
+这个链接的日期应该解析为20260208。
+
+内容解析时，以 https://m.toutiao.com/w/1856725917720584/ 为例，
+其文章标题应解析为“AI写代码比我快千倍，上网却像个第一天摸电脑的新手”
+
+
+
+
+
+【20260211】：
+对表格中之前收录过的文章（以URL相同为判别依据），在表格的"是否重复"列写入"重复"。
+被Pin的消息，在文件表格的"标记"列写入"Pin"。
+删除那个脚本，请在确认撤回此消息提示时补充一个"a=确认剩余全部"的功能，放在q退出前面。
+
+【20260212】：
+验证撤回结果的时候，不需让服务器等待3分钟同步。
+完善主程序，消息链接转移到表格后，该消息就从飞书群里直接删除。通过命令行参数（--recall）来执行带删除的操作。
+将 delete_messages.py 更名为 recall_messages.py，将所有程序中涉及到delete相关概念的地方，根据准确度及必要性改为recall表述。
+
+【20260212-版本管理】：
+进行版本管理，将当前版本作为 v1.0.0 正式发布。
+- 创建 VERSION 文件（1.0.0）
+- 创建 CHANGELOG.md（完整变更日志）
+- 创建 docs/PRD.md（产品需求文档）
+- 更新 README.md、PROJECT_STRUCTURE.md、docs/README.md 中的文件引用和结构树
+- 更新 _todo.md 移除已完成的版本管理待办
+- PRD 目录规范化：PRD.md 迁移至 docs/prd/PRD-001.md，新建 docs/PRD_REGISTRY.md 总集台账
+
+【20260212-PRD代码核对】：
+PRD 与代码全面核对，修复以下问题：
+- feishu_client.py：append_spreadsheet_values() 增加最多3次重试逻辑（对齐 PRD US-04）
+- main.py、auth.py、recall_messages.py：修复脚本路径提示（auth.py → src/auth.py，main.py → src/main.py）
+- PRD-001.md US-02：业务规则补充"富文本消息"处理说明，验收标准同步更新
+- PRD-001.md 附录 7.1：补充"小宇宙OT"来源
+- README.md：来源识别规则表补充"小宇宙OT"
+
+
+【20260213-几处更新】：
+链接解析时，对所有包含".feishu.cn/docx/"内容的字符串的链接，识别为“飞书OT分享”。对这类文章，仅保留链接字符串的第一个“?”字符之前的字符串内容。
+链接解析时，对所有包含".10jqka.com.cn/m/post"内容的字符串的链接，识别为“APP-同花顺”。对这类文章，仅保留链接字符串中“?pid”这组参数之前的字符串内容。
+
+以这个网址为例，https://t.10jqka.com.cn/m/post/articleShare/articleshare.html?pid=595509493&type=circle&client_userid=LRiuM&share_hxapp=gsc&share_action=&back_source=wxhy，
+日期应为20260212。
+标题应为“DemoDay：雷军公布小米机器人进展，消费级显卡上实时推理拆积木、叠毛巾等真机画面首曝光
+
+以这个网址为例，https://aiwarts101.feishu.cn/docx/XCqmdsRMxoxf7VxRycRcS5qznOe
+日期应为20260211。
+标题应为“即梦2 提示语+视频”
+
+
+发现新网站类型：Web-观猹
+标识符：“watcha.cn/products/”
+示例：https://watcha.cn/products/nowmee
+标题：NOWMEE 糯米 - 帮你找到三观匹配好友的社交 APP。 - 产品详情｜观猹
+日期：
+
+
+
