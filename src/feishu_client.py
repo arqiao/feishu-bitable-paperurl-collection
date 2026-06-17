@@ -792,7 +792,10 @@ class FeishuClient:
         return all_records
 
     def get_raw_bitable_records(self, app_token: str, table_id: str,
-                                field_names: List[str] = None) -> List[Dict]:
+                                field_names: List[str] = None,
+                                text_field_as_array: bool = False,
+                                display_formula_ref: bool = False,
+                                automatic_fields: bool = False) -> List[Dict]:
         """分页读取多维表格原始记录 items，保留 record_id 和 fields 结构。"""
         all_records = []
         page_token = None
@@ -800,6 +803,12 @@ class FeishuClient:
 
         while True:
             params = {"page_size": 500}
+            if text_field_as_array:
+                params["text_field_as_array"] = "true"
+            if display_formula_ref:
+                params["display_formula_ref"] = "true"
+            if automatic_fields:
+                params["automatic_fields"] = "true"
             if field_names:
                 params["field_names"] = json.dumps(field_names, ensure_ascii=False)
             if page_token:

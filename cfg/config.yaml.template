@@ -44,6 +44,25 @@ feishuMessage:
       name: ""
       chat_id: ""
 
+# 多维表格物理排序
+reorderBitable:
+  target_table:
+    app_token: ""
+    table_id: ""
+  sort_config:
+    category_field: "主题分类"
+    date_field: "日期"
+    date_range:
+      start: 20260101
+      end: 20260131
+    org_field: "企业组织"
+    parent_field: "父记录"
+    preview_count: 100
+    priority_field: "兴趣优先级"
+    title_field: "标题"
+    url_field: "链接"
+    collection_field: "精选合集"
+
 # 自动分类
 auto_classify:
   llm:

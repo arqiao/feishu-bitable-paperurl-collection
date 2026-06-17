@@ -48,15 +48,24 @@ class TreeBuilder:
             return None
 
         if isinstance(parent_value, dict):
+            record_ids = parent_value.get('record_ids', [])
+            if record_ids:
+                return record_ids[0]
             link_ids = parent_value.get('link_record_ids', [])
             if link_ids:
                 return link_ids[0]
-            return None
+            return parent_value.get('record_id') or parent_value.get('id')
 
         if isinstance(parent_value, list) and len(parent_value) > 0:
             first_link = parent_value[0]
             if isinstance(first_link, dict):
-                return first_link.get('record_id')
+                record_ids = first_link.get('record_ids', [])
+                if record_ids:
+                    return record_ids[0]
+                link_ids = first_link.get('link_record_ids', [])
+                if link_ids:
+                    return link_ids[0]
+                return first_link.get('record_id') or first_link.get('id')
             return first_link
 
         if isinstance(parent_value, str):
