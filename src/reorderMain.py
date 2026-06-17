@@ -9,6 +9,8 @@
 #       只读取表格、计算目标顺序并打印预览，不写入、不删除记录。
 #   python src/reorderMain.py --execute
 #       打印预览后批量创建新记录、批量更新父记录、批量删除旧记录。
+#   python src/reorderMain.py --execute --max-temp-records 1500
+#       按每批最多新增 1500 条记录分批执行，避免超过单表记录上限。
 #   python src/reorderMain.py --show-records
 #       预览时显示范围内目标顺序明细；默认只显示统计摘要。
 #   python src/reorderMain.py --help
@@ -32,6 +34,8 @@ SKIP_FIELDS = {
     '_id', '_record_id', 'record_id', 'created_time', 'last_modified_time',
     'created_by', 'last_modified_by'
 }
+BITABLE_RECORD_LIMIT = 20000
+DEFAULT_RECORD_LIMIT_MARGIN = 200
 
 
 class ReorderBitable:
@@ -366,11 +370,150 @@ def _create_records_with_stable_mapping(
     return id_map
 
 
+def _split_records_by_family_batches(tree: TreeBuilder, record_ids: List[str],
+                                     max_batch_records: int) -> List[List[str]]:
+    if max_batch_records <= 0:
+        print("  错误：每批最大新增记录数必须大于 0")
+        sys.exit(1)
+
+    record_id_set = set(record_ids)
+    families = []
+    seen = set()
+    for record_id in record_ids:
+        if record_id in seen:
+            continue
+        root_id = tree.get_root_record_id(record_id)
+        family = [
+            rid for rid in tree.get_family_tree(root_id)
+            if rid in record_id_set
+        ]
+        if not family:
+            family = [record_id]
+        for rid in family:
+            seen.add(rid)
+        families.append(family)
+
+    batches = []
+    current_batch = []
+    current_count = 0
+    for family in families:
+        family_size = len(family)
+        if family_size > max_batch_records:
+            print(
+                f"  错误：家族树 {family[0]} 共 {family_size} 条，"
+                f"超过每批最大新增记录数 {max_batch_records}"
+            )
+            sys.exit(1)
+        if current_batch and current_count + family_size > max_batch_records:
+            batches.append(current_batch)
+            current_batch = []
+            current_count = 0
+        current_batch.extend(family)
+        current_count += family_size
+
+    if current_batch:
+        batches.append(current_batch)
+    return batches
+
+
+def _resolve_max_temp_records(total_records: int,
+                              requested_max_temp_records: int = None,
+                              record_limit: int = BITABLE_RECORD_LIMIT,
+                              safety_margin: int = DEFAULT_RECORD_LIMIT_MARGIN) -> int:
+    available = record_limit - total_records - safety_margin
+    if requested_max_temp_records:
+        return min(requested_max_temp_records, available)
+    return available
+
+
+def _execute_reorder_batch(
+    bitable: ReorderBitable,
+    tree: TreeBuilder,
+    sorter: Sorter,
+    batch_records: List[str],
+    number_fields: set,
+    text_fields: set,
+    batch_index: int,
+    total_batches: int
+) -> Dict:
+    parent_field = sorter.tree.parent_field
+    print(
+        f"\n  [批次 {batch_index}/{total_batches}] "
+        f"处理 {len(batch_records)} 条记录"
+    )
+
+    old_ids_in_order = []
+    records_to_create = []
+    for old_id in batch_records:
+        record = tree.get_record(old_id)
+        if not record:
+            print(f"  错误：记录 {old_id} 不存在，停止执行")
+            sys.exit(1)
+        old_ids_in_order.append(old_id)
+        records_to_create.append(
+            _prepare_fields(
+                record, parent_field, number_fields, text_fields, sorter.url_field
+            )
+        )
+
+    print("    [1/3] 创建新记录...")
+    id_map = _create_records_with_stable_mapping(
+        bitable, sorter, tree, old_ids_in_order, records_to_create
+    )
+    if any(not new_id for new_id in id_map.values()):
+        print("  错误：部分新记录缺少 record_id，停止执行")
+        sys.exit(1)
+    print(f"    已创建 {len(id_map)} 条新记录")
+
+    parent_updates = []
+    expected_parent_map = {}
+    batch_old_ids = set(old_ids_in_order)
+    for old_id in old_ids_in_order:
+        parent_old_id = tree.parent_map.get(old_id)
+        if parent_old_id is None:
+            parent_old_id = tree._get_parent_id(tree.get_record(old_id))
+        if parent_old_id and parent_old_id in batch_old_ids:
+            expected_parent_map[id_map[old_id]] = id_map[parent_old_id]
+            parent_updates.append({
+                'record_id': id_map[old_id],
+                'fields': {parent_field: [id_map[parent_old_id]]}
+            })
+
+    print("    [2/3] 更新新记录父子关系...")
+    if parent_updates:
+        update_result = bitable.batch_update_records(parent_updates)
+        if update_result.get('failed', 0) > 0:
+            print(f"  错误：批量更新父记录失败 {update_result['failed']} 条，停止执行")
+            for failed in update_result.get('failed_records', [])[:10]:
+                print(f"    {failed.get('record_id')}: {failed.get('error', '')}")
+            sys.exit(1)
+        if update_result.get('success', 0) != len(parent_updates):
+            print(
+                f"  错误：父记录更新数量不一致，期望 {len(parent_updates)} 条，"
+                f"实际 {update_result.get('success', 0)} 条"
+            )
+            sys.exit(1)
+    print(f"    已更新 {len(parent_updates)} 条父记录")
+
+    print("    [3/3] 删除旧记录...")
+    to_delete = list(reversed(old_ids_in_order))
+    if to_delete and not bitable.batch_delete_records(to_delete):
+        print("  错误：批量删除旧记录失败")
+        sys.exit(1)
+    print(f"    已删除 {len(to_delete)} 条旧记录")
+
+    return {
+        'old_ids': old_ids_in_order,
+        'id_map': id_map,
+        'expected_parent_map': expected_parent_map,
+    }
+
+
 def execute_reorder(bitable: ReorderBitable, tree: TreeBuilder, sorter: Sorter,
                     in_range_records: List[str], number_fields: set,
-                    text_fields: set = None):
+                    text_fields: set = None,
+                    max_temp_records: int = None):
     """两阶段批量重排序：创建新记录，回填父记录，再删除旧记录。"""
-    parent_field = sorter.tree.parent_field
     target_order, _, _ = sorter.generate_target_order()
 
     in_range_root_ids = []
@@ -390,70 +533,39 @@ def execute_reorder(bitable: ReorderBitable, tree: TreeBuilder, sorter: Sorter,
     total_records = len(in_range_records)
     print(f"  共 {total_roots} 个家族树，{total_records} 条记录需要处理")
 
-    old_ids_in_order = []
-    records_to_create = []
-    for old_id in in_range_records:
-        record = tree.get_record(old_id)
-        if not record:
-            print(f"  错误：记录 {old_id} 不存在，停止执行")
-            sys.exit(1)
-        old_ids_in_order.append(old_id)
-        records_to_create.append(
-            _prepare_fields(
-                record, parent_field, number_fields, text_fields, sorter.url_field
-            )
-        )
-
-    print("\n  [1/3] 批量创建新记录...")
-    id_map = _create_records_with_stable_mapping(
-        bitable, sorter, tree, old_ids_in_order, records_to_create
+    resolved_max_temp_records = _resolve_max_temp_records(
+        len(tree.records), max_temp_records
     )
-    if any(not new_id for new_id in id_map.values()):
-        print("  错误：部分新记录缺少 record_id，停止执行")
+    if resolved_max_temp_records <= 0:
+        print(
+            "  错误：当前表格记录数已接近或超过单表上限，"
+            "没有可用于复制重排的临时新增空间"
+        )
         sys.exit(1)
-    print(f"  已创建 {len(id_map)} 条新记录")
+    print(f"  每批最多临时新增 {resolved_max_temp_records} 条记录")
 
-    parent_updates = []
-    expected_parent_map = {}
-    for old_id in old_ids_in_order:
-        parent_old_id = tree.parent_map.get(old_id)
-        if parent_old_id is None:
-            parent_old_id = tree._get_parent_id(tree.get_record(old_id))
-        if parent_old_id and parent_old_id in id_map:
-            expected_parent_map[id_map[old_id]] = id_map[parent_old_id]
-            parent_updates.append({
-                'record_id': id_map[old_id],
-                'fields': {parent_field: [id_map[parent_old_id]]}
-            })
+    batches = _split_records_by_family_batches(
+        tree, in_range_records, resolved_max_temp_records
+    )
+    print(f"  将按家族树切分为 {len(batches)} 个批次执行")
 
-    print("\n  [2/3] 批量更新新记录父子关系...")
-    if parent_updates:
-        update_result = bitable.batch_update_records(parent_updates)
-        if update_result.get('failed', 0) > 0:
-            print(f"  错误：批量更新父记录失败 {update_result['failed']} 条，停止执行")
-            for failed in update_result.get('failed_records', [])[:10]:
-                print(f"    {failed.get('record_id')}: {failed.get('error', '')}")
-            sys.exit(1)
-        if update_result.get('success', 0) != len(parent_updates):
-            print(
-                f"  错误：父记录更新数量不一致，期望 {len(parent_updates)} 条，"
-                f"实际 {update_result.get('success', 0)} 条"
-            )
-            sys.exit(1)
-    print(f"  已更新 {len(parent_updates)} 条父记录")
+    all_old_ids = []
+    all_id_map = {}
+    all_expected_parent_map = {}
+    for index, batch_records in enumerate(batches, start=1):
+        batch_result = _execute_reorder_batch(
+            bitable, tree, sorter, batch_records, number_fields, text_fields,
+            index, len(batches)
+        )
+        all_old_ids.extend(batch_result['old_ids'])
+        all_id_map.update(batch_result['id_map'])
+        all_expected_parent_map.update(batch_result['expected_parent_map'])
 
-    print("\n  [3/3] 批量删除旧记录...")
-    to_delete = list(reversed(old_ids_in_order))
-    if to_delete and not bitable.batch_delete_records(to_delete):
-        print("  错误：批量删除旧记录失败")
-        sys.exit(1)
-    print(f"  已删除 {len(to_delete)} 条旧记录")
-
-    print(f"\n  移动完成！共处理 {len(old_ids_in_order)} 条记录")
+    print(f"\n  移动完成！共处理 {len(all_old_ids)} 条记录")
     return {
-        'old_ids': old_ids_in_order,
-        'id_map': id_map,
-        'expected_parent_map': expected_parent_map,
+        'old_ids': all_old_ids,
+        'id_map': all_id_map,
+        'expected_parent_map': all_expected_parent_map,
     }
 
 
@@ -693,6 +805,8 @@ def main():
     parser = argparse.ArgumentParser(description='飞书多维表格记录物理排序工具')
     parser.add_argument('--execute', action='store_true',
                         help='执行复制和删除；默认只预览，不写表')
+    parser.add_argument('--max-temp-records', type=int, default=None,
+                        help='每批最多临时新增记录数；默认按 20000 上限和安全余量自动计算')
     parser.add_argument('--show-records', action='store_true',
                         help='预览时显示范围内目标顺序明细；默认只显示统计摘要')
     args = parser.parse_args()
@@ -797,7 +911,8 @@ def main():
 
     print("\n[5/5] 执行记录移动...")
     reorder_result = execute_reorder(
-        bitable, tree, sorter, in_range, number_fields, text_fields
+        bitable, tree, sorter, in_range, number_fields, text_fields,
+        args.max_temp_records
     )
 
     print("\n[验证] 检查结果...")

@@ -475,4 +475,4 @@ DELETE /open-apis/im/v1/messages/:message_id
 
 - `recall_messages.py` - 撤回消息脚本
 - `feishu_client.py` - 飞书 API 客户端（包含 `recall_message` 方法）
-- `config.yaml` - 配置文件（包含授权信息）
+- `cfg/config.yaml` - 业务配置文件；授权 Token 由本机密钥配置维护

@@ -250,6 +250,46 @@ class ReorderTests(unittest.TestCase):
         )
         self.assertEqual(fake_bitable.deleted_ids, ['child', 'root', 'other'])
 
+    def test_execute_reorder_batches_by_family_tree(self):
+        records = [
+            make_record('root_a', date='20260101'),
+            make_record('child_a', date='20260101', parent='root_a'),
+            make_record('root_b', date='20260102'),
+            make_record('child_b', date='20260102', parent='root_b'),
+        ]
+        tree = TreeBuilder(records, '父记录')
+        tree.build()
+        sorter = Sorter(
+            tree=tree,
+            date_field='日期',
+            category_field='主题分类',
+            org_field='企业组织',
+            priority_field='兴趣优先级',
+            category_options=['A'],
+            org_options=['Org1'],
+            priority_options=['P1'],
+            date_start=20260101,
+            date_end=20260110,
+            title_field='标题',
+        )
+        _, _, in_range = sorter.generate_target_order()
+        fake_bitable = FakeBitable()
+
+        with contextlib.redirect_stdout(io.StringIO()):
+            execute_reorder(
+                fake_bitable, tree, sorter, in_range, set(),
+                max_temp_records=2
+            )
+
+        self.assertEqual(fake_bitable.create_batch_sizes, [2, 2])
+        self.assertEqual(
+            fake_bitable.updated_records,
+            [
+                {'record_id': 'new_child_a', 'fields': {'父记录': ['new_root_a']}},
+                {'record_id': 'new_child_b', 'fields': {'父记录': ['new_root_b']}},
+            ]
+        )
+
     def test_execute_reorder_maps_created_records_by_create_response_order(self):
         records = [
             make_record('a', url='https://mp.weixin.qq.com/s/root', collection='合集1'),
@@ -598,7 +638,7 @@ class FakeBitable:
         }
 
     def batch_update_records(self, records):
-        self.updated_records = records
+        self.updated_records.extend(records)
         return {'success': len(records), 'failed': 0, 'failed_records': []}
 
     def batch_delete_records(self, record_ids):

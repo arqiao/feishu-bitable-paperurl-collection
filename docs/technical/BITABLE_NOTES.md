@@ -78,11 +78,50 @@ Content-Type: application/json
 }
 ```
 
+### 批量创建、更新和删除记录
+
+多维表格物理排序工具使用批量接口减少 API 调用：
+
+- 批量创建：`batch_create_record`，单次最多 500 条。
+- 批量更新：`batch_update_record`，单次最多 500 条。
+- 批量删除：`batch_delete_record`，单次最多 500 条。
+
+排序工具不会直接“移动”记录，因为飞书没有提供调整物理顺序的专用接口。当前做法是：
+
+1. 按目标顺序创建新记录。
+2. 把新记录中的父记录字段从旧父节点 ID 更新为新父节点 ID。
+3. 删除旧记录。
+
+父记录字段在显示层面可能是标题文本，但 API 原始返回值中会包含类似下面的 `record_ids`，应优先使用它识别父节点：
+
+```json
+[
+  {
+    "record_ids": ["recxxxxxxxxxxx"],
+    "table_id": "tblxxxxxxxxxxx",
+    "text": "父记录标题",
+    "type": "text"
+  }
+]
+```
+
+### 单表记录数上限
+
+飞书多维表格单表记录总数不能超过 20000 条。物理排序执行时会临时新增记录，因此如果当前表已有 18000 条，不能一次复制数千条记录。
+
+`src/reorderMain.py` 会自动计算临时空间：
+
+```text
+可用临时新增数 = 20000 - 当前记录数 - 200
+```
+
+然后按完整家族树分批执行，确保同一个家族树不会被拆开。如果单个家族树超过可用临时空间，需要缩小日期范围或先清理表格空间。
+
 ## 踩坑记录
 
 ### 1. app_token 被误清空
 
-**问题**：config.yaml 中的 `app_token` 被意外清空，导致程序尝试调用 wiki API 获取，但没有 `wiki:wiki:readonly` 权限而失败。
+**问题**：`cfg/config.yaml` 中的 `app_token` 被意外清空，导致程序尝试调用 wiki API 获取，但没有 `wiki:wiki:readonly` 权限而失败。
 
 **解决**：直接在配置中填写 app_token（与 wiki_token 相同），不依赖 wiki API。
 
@@ -138,8 +177,28 @@ if key == 'publish_date' and isinstance(value, str) and value.isdigit():
 - 4 = MultiSelect（多选）
 - 5 = DateTime（日期时间，这个才需要毫秒时间戳）
 
+### 5. 链接字段可能返回富文本结构
+
+**问题**：飞书多维表格的链接字段在显示层面可能展示标题文本，API 返回值也可能是富文本数组。如果只取 `text`，会把链接标题误当成 URL，导致重复记录映射错误。
+
+**解决**：
+- 读取原始记录时保留字段结构。
+- 从字段值中提取真实 `http(s)` URL，检查 `link`、`url`、`href`、`text` 等可能位置。
+- 排序工具执行前做链接字段审计：链接字段非空但无法提取真实 URL 时停止。
+- 不把显示标题作为 URL fallback。
+
+### 6. 父记录字段不要用标题文本反查
+
+**问题**：父记录字段显示的是标题文本，同名标题或重复 URL 场景下，用标题反查会把子节点挂到错误父节点。
+
+**解决**：
+- 优先使用 API 原始返回中的 `record_ids`。
+- 只有在确实没有 `record_ids` 时才进入兼容逻辑，并且无法唯一识别时停止执行。
+- 创建新记录后统一批量更新父记录字段，把旧父节点 ID 映射为新父节点 ID。
+
 ## 参考文档
 
 - [多维表格概述](https://open.feishu.cn/document/server-docs/docs/bitable-v1/bitable-overview)
 - [获取记录](https://open.feishu.cn/document/server-docs/docs/bitable-v1/app-table-record/list)
 - [新增记录](https://open.feishu.cn/document/server-docs/docs/bitable-v1/app-table-record/create)
+- [多维表格物理排序工具指南](../guides/REORDER_BITABLE_GUIDE.md)

@@ -1,5 +1,7 @@
 # 飞书 Token 管理说明
 
+当前项目的业务配置位于 `cfg/config.yaml`；飞书应用密钥和用户 Token 由本机密钥配置加载，并在刷新后写回本机密钥配置。仓库中不再维护 `credentials.*` 或 `llm_credentials.*` 凭证文件。
+
 ## Token 类型和有效期
 
 ### 1. user_access_token（用户访问令牌）
@@ -44,7 +46,7 @@
 ```python
 if not client.check_token_valid():
     if not client.refresh_access_token():
-        print("请运行: python src/auth.py")
+        print("请运行: python src/modules/feishu_auth.py")
 ```
 
 ### 第二层：API 调用中自动刷新
@@ -114,8 +116,8 @@ def _request(self, method, endpoint, use_user_token=True, max_retries=3, ...):
 def get_tenant_access_token(self) -> str:
     url = f"{self.base_url}/auth/v3/tenant_access_token/internal"
     data = {
-        "app_id": self.config['feishu']['app_id'],
-        "app_secret": self.config['feishu']['app_secret']
+        "app_id": self.credentials['feishu']['app_id'],
+        "app_secret": self.credentials['feishu']['app_secret']
     }
     response = requests.post(url, json=data)
     result = response.json()
@@ -133,7 +135,7 @@ def get_tenant_access_token(self) -> str:
 ```python
 def check_token_status(self):
     """检查 token 状态并预警"""
-    expire_time = self.config['auth'].get('user_token_expire_time', 0)
+    expire_time = self.credentials['auth_feishuMSG-xls'].get('user_token_expire_time', 0)
     current_time = int(time.time())
 
     # 计算剩余时间
@@ -143,7 +145,7 @@ def check_token_status(self):
         print(f"⚠️  警告: access_token 将在 {remaining_hours:.1f} 小时后过期")
 
     # 检查 refresh_token（假设30天有效期）
-    last_auth_time = self.config['auth'].get('last_auth_time', 0)
+    last_auth_time = self.credentials['auth_feishuMSG-xls'].get('last_auth_time', 0)
     refresh_remaining_days = 30 - (current_time - last_auth_time) / 86400
 
     if refresh_remaining_days < 7:
@@ -156,10 +158,10 @@ def check_token_status(self):
 
 **原因：**
 - 刷新 API 请求体中缺少 `app_id` 或 `app_secret` 参数
-- 或者 config.yaml 中缺少这些配置
+- 或者本机密钥配置中缺少这些配置
 
 **解决方法：**
-1. 确保 config.yaml 包含正确的应用凭证：
+1. 确保本机密钥配置包含正确的应用凭证：
 ```yaml
 feishu:
   app_id: "cli_xxxxx"
@@ -189,8 +191,8 @@ feishu:
    - 超过 30 天不运行，refresh_token 会过期
    - 需要重新授权
 
-3. **保护 config.yaml**
-   - 不要删除或修改 auth 部分
+3. **保护本机密钥配置**
+   - 不要删除或修改当前项目的 auth 部分
    - 不要提交到版本控制
 
 ### Q4: refresh_token 过期了怎么办？
@@ -271,10 +273,10 @@ Token 已过期或无效，尝试刷新...
 
 ### Token 存储
 
-Token 存储在 `config.yaml` 中：
+Token 存储在本机密钥配置中，当前项目使用 `auth_feishuMSG-xls` 作为项目级 Token key：
 
 ```yaml
-auth:
+auth_feishuMSG-xls:
   user_access_token: "u-xxxxx"      # 2小时有效
   user_refresh_token: "ur-xxxxx"    # 30天有效
   user_token_expire_time: 1234567890  # 过期时间戳
@@ -321,7 +323,7 @@ Content-Type: application/json
 
 **最佳实践：**
 - ✅ 设置定时任务，每天运行一次
-- ✅ 保护好 config.yaml 文件
+- ✅ 保护好本机密钥配置
 - ✅ 不要长时间（超过30天）不使用
-- ❌ 不要频繁删除 config.yaml
+- ❌ 不要频繁删除本机密钥配置
 - ❌ 不要手动修改 auth 部分

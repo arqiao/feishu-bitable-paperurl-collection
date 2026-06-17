@@ -62,7 +62,7 @@ URL 输入
 
 负责与飞书 API 交互，使用两种身份调用不同接口：
 
-**配置文件**：`config.yaml`（业务配置）+ `credentials.yaml`（敏感凭证），通过 `self.config` 和 `self.credentials` 分别访问。
+**配置来源**：`cfg/config.yaml` 保存业务配置；飞书应用密钥、Token、LLM Key 等敏感信息通过本机密钥配置加载，避免提交到仓库。
 
 **应用身份**（`tenant_access_token`，通过 app_id + app_secret 获取，**带缓存**有效期 2 小时）：
 - `get_chat_messages()` — 获取群聊消息
@@ -71,7 +71,7 @@ URL 输入
 **用户身份**（`user_access_token`，2 小时过期，需通过 refresh_token 刷新）：
 - `get_chat_list()` / `find_chat_by_name()` — 获取群聊列表
 - `get_spreadsheet_*()` / `append_spreadsheet_values()` — 电子表格读写
-- `get_bitable_*()` / `add_bitable_record()` / `batch_add_bitable_records()` — 多维表格操作
+- `get_bitable_*()` / `get_raw_bitable_records()` / `batch_add_bitable_records()` / `batch_update_bitable_records()` / `batch_delete_bitable_records()` — 多维表格操作
 - `recall_message()` — 撤回消息
 
 **API 调用保护**：
@@ -117,6 +117,16 @@ URL 输入
 - 批量处理：按 `batch_size` 分批读取未分类记录 → 构建 LLM prompt → 调用 LLM API → 解析分类结果 → 写回多维表格
 - 支持试运行模式（`--dry-run`），仅预览分类结果不写入
 - 配置项：LLM 提供商/模型/参数、参考表列表、目标表、批量大小
+
+#### reorderMain.py（多维表格物理排序）
+- 读取 `cfg/config.yaml` 的 `reorderBitable` 段，默认只预览目标顺序
+- 通过 `get_raw_bitable_records(..., text_field_as_array=True, display_formula_ref=True)` 获取包含原始字段结构的记录，保留父记录字段中的 `record_ids`
+- `reorderTreeBuilder.py` 构建父子关系树，按完整家族树处理记录
+- `reorderSorter.py` 计算目标顺序：日期范围外保持原位，范围内根记录按日期、主题分类、企业组织、兴趣优先级、标题排序
+- 根记录 URL 相同的记录保持相邻；如果分类不同，采用首次出现记录的分类作为排序依据
+- `--execute` 采用“批量创建新记录 → 批量更新父记录 → 批量删除旧记录”改变物理顺序
+- 执行时按家族树分批，自动控制临时新增记录数，避免超过飞书单表 20000 条记录上限
+- 链接字段审计要求提取真实 `http(s)` URL，避免把飞书显示标题误当作链接值
 
 ## 扩展性设计
 
@@ -195,30 +205,22 @@ URL 识别 (url_parser.py)
   ↓
 写入飞书表格 (feishu_client.py)
   ↓
-更新处理状态 (config.yaml)
+更新处理状态 (cfg/config.yaml / 本机密钥配置)
 ```
 
 ## 配置管理
 
-### 双文件配置
+### 配置来源
 
-项目采用配置文件拆分：
-- `config.yaml` — 业务配置（profiles、bitable_columns、sort_config、weekly_report、waytoagi）
-- `credentials.yaml` — 敏感凭证（auth token、feishu app 凭证、zhihu cookie、zsxq token、feishu_user_token）
+项目采用“仓库内业务配置 + 本机密钥配置”的拆分方式：
+- `cfg/config.yaml` — 业务配置（profiles、bitable_columns、sort_config、weekly_report、waytoagi、reorderBitable、auto_classify 等）
+- 本机密钥配置 — 敏感凭证（飞书 app 凭证、auth token、zhihu cookie、zsxq token、LLM Key 等）
 
-feishu_client.py 通过 `self.config` 和 `self.credentials` 分别访问，token 刷新写回 credentials.yaml，profile/state 写回 config.yaml。
+`feishu_client.py` 通过 `self.config` 访问业务配置，通过 `self.credentials` 访问本机密钥配置。Token 刷新写回本机密钥配置，profile/state 等业务状态写回 `cfg/config.yaml`。
 
-### config.yaml 结构
+### cfg/config.yaml 结构
 
 ```yaml
-feishu:
-  app_id: "..."
-  app_secret: "..."
-
-auth:
-  user_access_token: "..."
-  user_refresh_token: "..."
-
 target_chat:
   name: "群聊名称"
   chat_id: "..."
@@ -235,6 +237,15 @@ table_columns:
   title: "文章标题"
   publish_date: "文章发表日期"
   # ... 其他列映射 ...
+
+reorderBitable:
+  target_table:
+    app_token: "..."
+    table_id: "..."
+  sort_config:
+    date_field: "日期"
+    parent_field: "父记录"
+    url_field: "链接"
 ```
 
 ## 错误处理策略
@@ -247,6 +258,7 @@ table_columns:
 ## 性能优化
 
 - **批量写入多维表格**（使用 `batch_create_record` 接口，单次最多 500 条）
+- **多维表格物理排序分批执行**：按完整家族树切分批次，默认按 20000 单表上限和 200 条安全余量计算临时新增空间
 - **tenant_access_token 缓存**（有效期 2 小时，提前 5 分钟刷新）
 - **限流/额度保护**（识别错误码立即返回，不重试）
 - **全局 HTTP 超时**（`feishu_client._request` 默认 30s，防止无限等待）
@@ -262,6 +274,7 @@ table_columns:
 
 ```bash
 python tests/test_parser.py
+python -m unittest tests/test_reorder.py
 ```
 
 ## 未来扩展方向

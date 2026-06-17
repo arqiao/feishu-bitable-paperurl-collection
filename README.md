@@ -1,8 +1,8 @@
 # 飞书群消息整理工具
 
-**当前版本**: v1.7.0
+**当前版本**: v1.8.0
 
-自动读取飞书群聊消息，提取网络链接，解析文章信息，写入本地 CSV 和飞书多维表格，处理后自动撤回群聊消息。
+自动读取飞书群聊消息，提取网络链接，解析文章信息，写入本地 CSV 和飞书多维表格，处理后自动撤回群聊消息；同时包含周报、知识库、公众号、自动分类和多维表格物理排序等辅助工具。
 
 > **📢 重要提示**：项目目录结构已重新组织（2026-02-11）
 > - 所有Python源代码已移至 `src/` 目录
@@ -25,6 +25,7 @@
 - ✅ Token 自动刷新机制
 - ✅ 灵活的命令行参数控制
 - ✅ 自动分类：利用 LLM 对多维表格记录自动打标签/分类
+- ✅ 多维表格物理排序：按日期/分类/组织/父子关系重排记录顺序，支持安全预览和分批执行
 
 ## 环境要求
 
@@ -69,16 +70,11 @@ http://localhost:8080/callback
 
 在飞书中将你的应用机器人添加到目标群聊中。
 
-### 3. 配置 config.yaml
+### 3. 配置 cfg/config.yaml
 
-打开 `config.yaml` 文件，填写以下信息：
+打开 `cfg/config.yaml` 文件，填写业务配置；飞书应用密钥和 Token 等敏感信息由本机密钥配置加载，请勿提交到仓库：
 
 ```yaml
-feishu:
-  app_id: "YOUR_APP_ID"          # 替换为你的 App ID
-  app_secret: "YOUR_APP_SECRET"  # 替换为你的 App Secret
-  redirect_uri: "http://localhost:8080/callback"
-
 target_chat:
   name: "from_微信WeChat"  # 目标群聊名称
 
@@ -97,12 +93,24 @@ target_bitable:
 python src/auth.py
 ```
 
-脚本会自动打开浏览器，完成授权后会自动保存 Token 到 `config.yaml`。
+脚本会自动打开浏览器，完成授权后会自动保存 Token 到本机密钥配置。
 
 ### 5. 运行主程序
 
 ```bash
 python src/goMessage.py
+```
+
+### 6. 可选：预览多维表格物理排序
+
+```bash
+python src/reorderMain.py
+```
+
+默认只读取数据并打印排序预览，不写入、不删除记录。确认后再运行：
+
+```bash
+python src/reorderMain.py --execute
 ```
 
 ## 使用说明
@@ -162,6 +170,19 @@ python src/goMessage.py --list-nolink
 ```bash
 python src/goMessage.py --help
 ```
+
+### 多维表格物理排序工具
+
+排序工具读取 `cfg/config.yaml` 的 `reorderBitable` 段，按日期范围和排序字段计算目标顺序。执行时采用“批量创建新记录 → 批量更新父记录 → 批量删除旧记录”的流程，并按完整家族树分批，避免超过飞书单表 20000 条记录上限。
+
+```bash
+python src/reorderMain.py                                # 只预览，不写表
+python src/reorderMain.py --show-records                 # 显示范围内目标顺序明细
+python src/reorderMain.py --execute                      # 执行排序
+python src/reorderMain.py --execute --max-temp-records 1500  # 控制每批临时新增数
+```
+
+详细说明请查看：[多维表格物理排序工具指南](docs/guides/REORDER_BITABLE_GUIDE.md)。
 
 ### 首次运行
 
@@ -302,7 +323,6 @@ python src/auth.py
 - **docs/PRD_REGISTRY.md** - PRD 总集台账
 
 ```
-├── config.yaml.template         # 配置文件模板
 ├── requirements.txt           # Python 依赖包
 ├── README.md                  # 本文档
 ├── QUICKSTART.md              # 快速开始指南
@@ -311,7 +331,7 @@ python src/auth.py
 │
 ├── cfg/                       # 配置文件目录
 │   ├── config.yaml            # 业务配置（不提交到版本控制）
-│   ├── credentials.yaml       # 敏感凭证（不提交到版本控制）
+│   ├── config.yaml.template   # 配置模板
 │   └── wxgzh_list.yaml        # 微信公众号清单配置
 │
 ├── src/                       # 源代码目录
@@ -320,6 +340,9 @@ python src/auth.py
 │   ├── goWTA.py               # WaytoAGI 知识库处理主程序
 │   ├── goWXGZH.py               # 微信公众号历史文章处理主程序
 │   ├── autoClassify.py          # 自动分类主程序（LLM 驱动）
+│   ├── reorderMain.py           # 多维表格物理排序主程序
+│   ├── reorderSorter.py         # 多维表格排序规则模块
+│   ├── reorderTreeBuilder.py    # 多维表格父子树构建模块
 │   ├── auth.py                  # 授权脚本
 │   ├── feishu_client.py       # 飞书 API 客户端
 │   ├── url_parser.py          # URL 解析器
@@ -335,6 +358,7 @@ python src/auth.py
 ├── tests/                     # 测试脚本目录
 │   ├── test_parser.py         # URL 识别测试脚本
 │   ├── test_toutiao.py        # 头条解析测试
+│   ├── test_reorder.py        # 多维表格物理排序测试
 │   └── test_all_improvements.py  # 综合测试
 │
 ├── docs/                      # 文档目录
@@ -415,7 +439,7 @@ python src/archive/recall_messages.py --indices 1,3,5 --confirm-each
 
 ## 注意事项
 
-1. **配置文件安全**: `cfg/credentials.yaml` 包含敏感信息，请勿提交到版本控制系统
+1. **配置文件安全**: 飞书密钥、Token、LLM Key 等敏感信息由本机密钥配置加载，请勿写入仓库文件
 2. **权限申请**: 确保在飞书开放平台申请了所有必需的权限
 3. **网络访问**: 部分网站（如小红书、微博）可能需要登录才能访问，会在备注中记录
 4. **请求频率**: 程序会自动控制请求频率，避免触发限流
@@ -428,7 +452,7 @@ A: 重新运行授权脚本：`python src/auth.py`
 
 ### Q: 找不到目标群聊？
 
-A: 检查 `config.yaml` 中的群聊名称是否正确，确保与飞书中的群名完全一致。
+A: 检查 `cfg/config.yaml` 中的群聊名称是否正确，确保与飞书中的群名完全一致。
 
 ### Q: 无法访问某些网站？
 

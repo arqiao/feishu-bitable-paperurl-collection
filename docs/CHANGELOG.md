@@ -4,6 +4,27 @@
 
 ---
 
+## [Unreleased] - 2026-06-18
+
+### 新增
+- 新增 `src/reorderMain.py`、`src/reorderSorter.py`、`src/reorderTreeBuilder.py`：多维表格物理排序工具迁入本项目，默认预览，`--execute` 执行。
+- 新增 `reorderBitable` 配置段，排序工具直接使用本项目 `FeishuClient` 和当前授权体系。
+- 新增 `docs/guides/REORDER_BITABLE_GUIDE.md`，集中说明配置、运行参数、排序规则、批量执行算法、20000 记录上限和 API 调用量。
+
+### 变更
+- 排序执行算法改为“批量创建新记录 → 批量更新父记录 → 批量删除旧记录”，并按完整家族树分批执行。
+- `--execute` 不再二次交互确认；默认无参数仍只预览，不写表。
+- 预览默认隐藏详细记录清单，使用 `--show-records` 才展开。
+- 根记录排序支持相同 URL 聚类；分类不一致时以首次出现记录的分类为排序依据。
+- 链接字段处理只接受真实 `http(s)` URL，不把飞书显示标题作为 URL fallback。
+- 执行前后增加父记录、链接字段、新旧记录映射和排序结果校验。
+- 活跃文档同步为 `cfg/config.yaml` 和本机密钥配置的当前结构，不再引导使用仓库内 `credentials.*` 或 `llm_credentials.*` 文件。
+
+### 测试
+- 新增/更新 `tests/test_reorder.py`，覆盖家族树构建、排序规则、重复链接、新旧 ID 映射、父记录回填和按家族树分批执行。
+
+---
+
 ## [1.8.0] - 2026-04-20 ~ 2026-04-22
 
 ### 新增

@@ -41,12 +41,15 @@ http://localhost:8080/callback
 
 ## 第三步：填写配置文件
 
-打开 `config.yaml`，填写：
+打开 `cfg/config.yaml`，填写飞书应用和业务配置。敏感凭证由本机密钥配置加载，不要提交到仓库。
 
 ```yaml
-feishu:
-  app_id: "cli_xxxxxxxxxxxxx"      # 你的 App ID
-  app_secret: "xxxxxxxxxxxxx"      # 你的 App Secret
+target_chat:
+  name: "from_微信WeChat"
+
+target_bitable:
+  app_token: "..."
+  table_id: "..."
 ```
 
 ## 第四步：运行授权
@@ -123,6 +126,19 @@ python src/autoClassify.py --batch-size 20       # 指定每批处理数量
 ```
 
 **配置说明**：在 `cfg/config.yaml` 的 `auto_classify` 段配置 LLM 参数、参考表和目标表。
+
+### 多维表格物理排序（reorderMain.py）
+
+按 `cfg/config.yaml` 的 `reorderBitable` 段预览或执行目标表记录的物理重排。默认只预览，不写表。
+
+```bash
+python src/reorderMain.py                                # 预览排序结果
+python src/reorderMain.py --show-records                 # 预览并显示范围内明细
+python src/reorderMain.py --execute                      # 执行排序
+python src/reorderMain.py --execute --max-temp-records 1500  # 限制每批临时新增数
+```
+
+工具会按完整家族树分批执行“批量创建 → 批量更新父记录 → 批量删除旧记录”，并自动避开飞书单表 20000 条记录上限。详细说明见 `docs/guides/REORDER_BITABLE_GUIDE.md`。
 
 ## 撤回消息功能
 
@@ -240,7 +256,7 @@ python src/auth.py
 
 ### 找不到群聊
 
-检查 `config.yaml` 中的群聊名称是否与飞书中完全一致。
+检查 `cfg/config.yaml` 中的群聊名称是否与飞书中完全一致。
 
 ### 权限不足
 

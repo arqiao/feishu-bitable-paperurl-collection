@@ -16,13 +16,15 @@
 
 ### guides/ - 使用指南
 面向用户的使用说明文档：
+- **REORDER_BITABLE_GUIDE.md** - 多维表格物理排序工具使用指南
 - **RECALL_MESSAGES_GUIDE.md** - 消息撤回功能详细使用指南
 - **MESSAGE_INDEX_GUIDE.md** - 消息序号功能说明
-- **MESSAGE_DELETION_FAQ.md** - 常见问题解答
+- **MESSAGE_RECALL_FAQ.md** - 消息撤回常见问题解答
 
 ### technical/ - 技术文档
 面向开发者的技术说明文档：
 - **ARCHITECTURE.md** - 项目架构设计说明
+- **BITABLE_NOTES.md** - 飞书多维表格开发笔记
 - **CSV_LOG_SPEC.md** - CSV 日志和缓存文件规范
 - **TOKEN_MANAGEMENT.md** - Token管理机制说明
 - **FEISHU_ACCESS_NOTE.md** - 飞书Wiki访问限制说明
