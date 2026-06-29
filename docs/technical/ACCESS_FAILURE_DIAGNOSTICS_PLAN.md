@@ -25,30 +25,32 @@
 
 公共模块只负责结构化判断，不直接打印用户文案。
 
-建议模块：
+已落地模块：
 
 ```text
 src/modules/http_diagnostics.py
 ```
 
-建议职责：
+当前职责：
 
 - 将 HTTP 状态码、请求异常、响应解析异常归类。
 - 给出是否可重试的建议。
 - 保留原始状态码、服务错误码、简短错误信息。
+- 不直接打印、不执行重试、不推进状态，由调用方决定如何展示和处理。
 
-建议基础分类：
+基础分类：
 
 | 分类 | 典型情况 | 默认重试 |
 | --- | --- | --- |
 | `auth` | 401、Token 失效、未登录 | 否 |
 | `permission` | 403、无群组/文档/资源权限 | 否 |
 | `rate_limit` | 429、服务限流 | 是 |
-| `server` | 5xx、服务端异常 | 是 |
+| `server_error` | 5xx、服务端异常 | 是 |
+| `temporary` | 平台业务码表示的临时异常，例如知识星球 `1059` | 是 |
 | `timeout` | 请求超时 | 是 |
 | `network` | DNS、连接失败、连接重置 | 是 |
 | `bad_response` | 非 JSON、响应结构缺字段 | 视场景 |
-| `unknown` | 无法归类 | 是 |
+| `unknown` | 无法归类 | 否 |
 
 ### 2. 平台适配层
 
@@ -164,8 +166,8 @@ last_download_date 未更新，原因：本次没有发现可下载文件
 | done | `goAIPM.py --towiki` 安全重试与输出优化 | 网页/PDF 读取、图片下载、飞书文档整份重建、认证与权限提示 | `PYTHONPATH=src python -m unittest tests.test_towiki_output`；两条实际 `--towiki` 命令 | 只读请求直接重试；结果未知的写请求不原地重发，失败后重新清空并整份写入；Docling 预检并明确报告 PyMuPDF 回退成功 |
 | done | `goMessage.py --profile` 汇总输出优化 | profile、解析异常、CSV、Bitable、撤回及状态推进 | `PYTHONPATH=src python -m unittest tests.test_gomessage_output`；`python src/goMessage.py --profile ai` | 解析异常不再计入解析成功，保持原有写日志、撤回及状态策略 |
 | done | 五个核心脚本全部 CLI 参数审计 | 历史/增量/只读/修复/范围模式的状态安全、校验和汇总 | `docs/technical/CLI_PARAMETER_AUDIT.md`；`PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'` | 历史和部分运行不推进增量状态；高副作用参数只做模拟验证；终端不显示后台 Token；飞书消息访问失败不再伪装成空结果 |
-| next | 增加公共 HTTP 诊断模型 | `src/modules/http_diagnostics.py` | 新增单元测试覆盖 401/403/429/5xx/timeout/network | 只做结构化分类，不直接打印 |
-| todo | 抽出知识星球平台适配 | `src/modules/zsxq_client.py` 或等价小模块 | 覆盖 token 缺失、token 失效、无权限、限流 | 先服务 `dfZSXQ.py`，再考虑 `goAIPM.py` |
+| done | 增加公共 HTTP 诊断模型 | `src/modules/http_diagnostics.py` | `PYTHONPATH=src python -m unittest tests.test_http_diagnostics` | 已覆盖 401/403/429/5xx/timeout/network/知识星球 1059；只做结构化分类，不直接打印 |
+| next | 抽出知识星球平台适配 | `src/modules/zsxq_client.py` 或等价小模块 | 覆盖 token 缺失、token 失效、无权限、限流 | 先服务 `dfZSXQ.py`，再考虑 `goAIPM.py` |
 | todo | 对齐 `goAIPM.py` 的知识星球访问提示 | 知识星球文章解析/周报处理 | 现有测试 + 新增认证失败测试 | 复用平台适配层，避免两套文案 |
 | todo | 梳理飞书访问故障提示 | `src/feishu_client.py` 及调用方 | 飞书 token/权限/限流测试 | 保留现有自动刷新逻辑 |
 | todo | 梳理微信/微博/小红书等网页访问提示 | URL 解析器及对应模块 | 针对性解析失败测试 | 登录态和页面结构变化应分开提示 |
