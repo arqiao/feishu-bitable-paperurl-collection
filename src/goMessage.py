@@ -6,16 +6,16 @@
   python src/goMessage.py --profile ai       # 指定 profile 运行
   python src/goMessage.py --profile ot       # 指定 ot profile
   python src/goMessage.py --all              # 全量拉取（忽略 last_processed_time）
-  python src/goMessage.py --reset            # 重置处理时间
+  python src/goMessage.py --reset            # 全量处理，成功后重设处理时间
   python src/goMessage.py --list-nolink      # 列出无链接消息
-  python src/goMessage.py --start T --end T  # 指定时间戳范围（毫秒）
+  python src/goMessage.py --start N --end N  # 指定提取后链接序号范围
 
 参数:
   --profile NAME     指定 config.yaml 中的 profile 名称（ai/ot）
   --all              全量拉取，不受 last_processed_time 限制
-  --reset            重置 last_processed_time 为 0
-  --start TIMESTAMP  起始时间戳（毫秒）
-  --end TIMESTAMP    终止时间戳（毫秒）
+  --reset            从历史起点处理，成功后覆盖 last_processed_time
+  --start N          起始链接序号（从 1 开始）
+  --end N            结束链接序号（包含）
   --list-nolink      列出无链接的消息
 
 输出文件:
@@ -86,6 +86,13 @@ def print_no_new_messages_summary(last_processed_time):
     print(f"当前 last_processed_time: {last_processed_time}", flush=True)
 
 
+def print_message_fetch_failure(error):
+    print(f'\n群聊消息获取失败：{error or "未知错误"}', flush=True)
+    print('本次消息结果作废，不按“没有新消息”处理', flush=True)
+    print('last_processed_time 未更新，原因：群聊消息列表抓取失败',
+          flush=True)
+
+
 def print_run_summary(stats):
     print("\n" + "=" * 60, flush=True)
     print("处理完成", flush=True)
@@ -112,6 +119,53 @@ def print_run_summary(stats):
         print(f"last_processed_time 已更新: {stats['state_time']}", flush=True)
     else:
         print(f"last_processed_time 未更新: {stats['state_reason']}", flush=True)
+
+
+def validate_cli_args(args):
+    if args.reset and args.all:
+        raise ValueError('--reset 与 --all 不能同时使用')
+    if args.list_nolink and (
+        args.reset or args.start is not None or args.end is not None
+    ):
+        raise ValueError(
+            '--list-nolink 不能与 --reset、--start 或 --end 同时使用')
+    if args.start is not None and args.start < 1:
+        raise ValueError('--start 必须是大于等于 1 的链接序号')
+    if args.end is not None and args.end < 1:
+        raise ValueError('--end 必须是大于等于 1 的链接序号')
+    if (args.start is not None and args.end is not None
+            and args.start > args.end):
+        raise ValueError('--start 不能大于 --end')
+
+
+def resolve_fetch_start(args, configured_last_processed_time):
+    if args.reset:
+        print('\n使用 --reset：本次从历史起点处理，'
+              '成功完成后覆盖 last_processed_time', flush=True)
+        return 0
+    if args.all:
+        print('\n使用 --all：本次处理所有历史消息，'
+              '不会在开始前修改状态', flush=True)
+        return 0
+    if configured_last_processed_time > 0:
+        last_time_text = datetime.fromtimestamp(
+            configured_last_processed_time / 1000).strftime(
+                '%Y-%m-%d %H:%M:%S')
+        print(f'\n上次处理时间: {last_time_text}', flush=True)
+    else:
+        print('\n上次处理时间: 首次运行', flush=True)
+    return configured_last_processed_time
+
+
+def get_state_advance_decision(has_urls, bitable_write_ok,
+                               has_bitable_rows, partial_range):
+    if partial_range:
+        return False, '部分范围运行不推进状态，避免跳过未选中的链接'
+    if not has_urls:
+        return False, '本次没有待处理链接'
+    if has_bitable_rows and not bitable_write_ok:
+        return False, '存在待写入多维表格记录但写入未完成'
+    return True, ''
 
 
 def load_index_cache(chat_id: str) -> dict:
@@ -317,14 +371,18 @@ def main():
     parser.add_argument('--reset', action='store_true',
                         help='重置处理时间，从头开始处理所有消息')
     parser.add_argument('--start', type=int, default=None,
-                        help='起始消息索引（从1开始）')
+                        help='起始链接序号（从1开始）')
     parser.add_argument('--end', type=int, default=None,
-                        help='结束消息索引（包含）')
+                        help='结束链接序号（包含）')
     parser.add_argument('--list-nolink', action='store_true',
                         help='显示未含链接的消息清单')
     parser.add_argument('--profile', type=str, default=None,
                         help='指定配置 profile 名称（对应 config.yaml 中 profiles 下的键）')
     args = parser.parse_args()
+    try:
+        validate_cli_args(args)
+    except ValueError as error:
+        parser.error(str(error))
 
     print("=" * 60, flush=True)
     print("飞书群消息整理工具", flush=True)
@@ -391,34 +449,19 @@ def main():
         print(f"\n✓ 使用已配置的群聊 ID: {chat_id}", flush=True)
 
     # 获取上次处理时间
-    last_processed_time = client.config.get('last_processed_time', 0)
-
-    # 根据命令行参数决定是否重置时间
-    if args.reset:
-        last_processed_time = 0
-        client.config['last_processed_time'] = 0
-        set_config_value_preserve_comments(
-            client.config_path,
-            _config_path_for_profile(client, 'last_processed_time'),
-            0,
-            comment='19700101-00:00',
-        )
-        print("\n✓ 已重置处理时间，将处理所有历史消息", flush=True)
-    elif args.all:
-        last_processed_time = 0
-        print("\n✓ 使用 --all 参数，将处理所有历史消息", flush=True)
-    else:
-        if last_processed_time > 0:
-            last_time_str = datetime.fromtimestamp(last_processed_time/1000).strftime('%Y-%m-%d %H:%M:%S')
-            print(f"\n上次处理时间: {last_time_str}", flush=True)
-        else:
-            print(f"\n上次处理时间: 首次运行", flush=True)
+    configured_last_processed_time = client.config.get(
+        'last_processed_time', 0)
+    last_processed_time = resolve_fetch_start(
+        args, configured_last_processed_time)
 
     # 获取消息并分配序号
     print("\n正在获取群聊消息...", flush=True)
     if args.reset or args.all:
         # 全量模式：拉取所有消息，重建缓存
         all_messages = client.get_chat_messages(chat_id, start_time=0)
+        if all_messages is None:
+            print_message_fetch_failure(getattr(client, 'last_error', ''))
+            return
         cache = {'chat_id': chat_id, 'next_index': 1, 'mapping': {}}
         for msg in all_messages:
             mid = msg.get('message_id', '')
@@ -435,6 +478,9 @@ def main():
         cache = load_index_cache(chat_id)
         fetch_start = last_processed_time if cache['mapping'] else 0
         fetched = client.get_chat_messages(chat_id, start_time=fetch_start)
+        if fetched is None:
+            print_message_fetch_failure(getattr(client, 'last_error', ''))
+            return
         total_count = len(cache['mapping'])
         new_msgs = []
         for msg in fetched:
@@ -527,16 +573,21 @@ def main():
         print(f"✓ 发现 {len(messages_without_links)} 条未含链接的消息（使用 --list-nolink 参数可查看详情）", flush=True)
 
     # 应用范围参数
-    if args.start or args.end:
+    partial_range = args.start is not None or args.end is not None
+    if partial_range:
         start_idx = (args.start - 1) if args.start else 0
         end_idx = args.end if args.end else len(url_messages)
         url_messages = url_messages[start_idx:end_idx]
-        print(f"✓ 应用范围参数，处理第 {start_idx + 1} 到第 {end_idx} 条链接，共 {len(url_messages)} 条", flush=True)
+        shown_end = min(end_idx, start_idx + len(url_messages))
+        print(f"✓ 应用范围参数，处理第 {start_idx + 1} 到第 "
+              f"{shown_end} 条链接，共 {len(url_messages)} 条", flush=True)
+        print("  本次为部分范围运行，last_processed_time 不会更新",
+              flush=True)
 
     if len(url_messages) == 0:
         print("\n没有包含链接的消息", flush=True)
         # 更新最后处理时间
-        if messages:
+        if messages and not partial_range:
             latest_time = max(int(msg.get('create_time', '0')) for msg in messages)
             client.config['last_processed_time'] = latest_time
             set_config_value_preserve_comments(
@@ -547,6 +598,10 @@ def main():
             )
             latest_time_str = datetime.fromtimestamp(latest_time/1000).strftime('%Y-%m-%d %H:%M:%S')
             print(f"✓ 已更新处理时间: {latest_time_str}", flush=True)
+        elif partial_range:
+            print('last_processed_time 未更新，原因：'
+                  '部分范围运行不推进状态，避免跳过未选中的链接',
+                  flush=True)
         return
 
     # 从本地 CSV 读取已有 URL（用于重复检测）
@@ -858,10 +913,14 @@ def main():
             print("\n没有需要撤回的消息", flush=True)
 
     # 仅在入库成功时推进最后处理时间，避免写入失败后跳过未入库消息
-    should_advance_state = (not bitable_rows) or bitable_write_ok
+    should_advance_state, state_reason = get_state_advance_decision(
+        has_urls=bool(url_messages),
+        bitable_write_ok=bitable_write_ok,
+        has_bitable_rows=bool(bitable_rows),
+        partial_range=partial_range,
+    )
     state_advanced = False
     state_time = ''
-    state_reason = '存在待写入多维表格记录但写入未完成'
     if url_messages and should_advance_state:
         latest_time = max(item['message_time'] for item in url_messages)
         client.config['last_processed_time'] = latest_time
@@ -876,7 +935,8 @@ def main():
         state_advanced = True
         state_time = latest_time_str
     elif url_messages:
-        print("\n未更新 last_processed_time，原因：存在待写入多维表格记录但写入未完成", flush=True)
+        print(f"\n未更新 last_processed_time，原因：{state_reason}",
+              flush=True)
 
     print_run_summary({
         'total': len(url_messages),

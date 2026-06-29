@@ -49,6 +49,16 @@ class GoMessageOutputTests(unittest.TestCase):
         self.assertIn('last_processed_time 未更新', text)
         self.assertIn('2026-06-28 15:36:44', text)
 
+    def test_message_fetch_failure_is_not_reported_as_no_new_messages(self):
+        with contextlib.redirect_stdout(io.StringIO()) as output:
+            goMessage.print_message_fetch_failure('no permission')
+
+        text = output.getvalue()
+        self.assertIn('群聊消息获取失败', text)
+        self.assertIn('no permission', text)
+        self.assertIn('last_processed_time 未更新', text)
+        self.assertNotIn('没有新消息需要处理', text)
+
 
 if __name__ == '__main__':
     unittest.main()

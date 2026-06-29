@@ -6,6 +6,7 @@
   python src/goWXGZH.py --his 20260322 20260331   # 历史批量处理
   python src/goWXGZH.py --update                   # 增量更新
   python src/goWXGZH.py --searchbiz "名称"          # 搜索公众号 fakeid
+  python src/goWXGZH.py --repair-last-update        # 修复增量状态
   python src/goWXGZH.py --update --list <file>     # 指定公众号清单文件
   python src/goWXGZH.py --update --refresh-cache   # 刷新多维表格缓存
 
@@ -15,6 +16,7 @@
   --searchbiz KEYWORD  搜索公众号 fakeid
   --list FILE        指定公众号清单文件（默认 cfg/wxgzh_list.yaml）
   --refresh-cache    强制刷新多维表格 URL 缓存
+  --repair-last-update  根据可信本地/多维表格状态修复 last_update
 
 输出文件:
   log-err/wxgzh_error_log.csv        解析失败日志
@@ -945,6 +947,22 @@ def print_no_articles_summary(fetch_errors, last_update):
         print('  原因：本次时间范围内没有发现新文章')
 
 
+def update_account_last_update(account, new_timestamp, advance_state=True):
+    old_timestamp = account.get('last_update', 0) or 0
+    if not advance_state:
+        print('  last_update 未更新，原因：历史模式不推进增量状态')
+        return False
+    if new_timestamp <= old_timestamp:
+        print(f'  last_update 未更新，原因：新时间戳未晚于当前值 '
+              f'({old_timestamp})')
+        return False
+    account['last_update'] = new_timestamp
+    timestamp_text = datetime.fromtimestamp(
+        new_timestamp).strftime('%Y-%m-%d %H:%M')
+    print(f'  更新 last_update: {new_timestamp} ({timestamp_text})')
+    return True
+
+
 def parse_articles(url_parser, articles, account_name=''):
     """用 UrlParser 解析每篇文章的详细信息
 
@@ -1105,6 +1123,64 @@ def write_to_bitable(client, parsed_rows, wxgzh_config, existing_urls):
                 return 0, [], False
 
 
+def validate_date_range(start_date, end_date):
+    for label, value in (('START', start_date), ('END', end_date)):
+        if not re.fullmatch(r'\d{8}', value or ''):
+            raise ValueError(f'{label} 必须是 YYYYMMDD 格式')
+        try:
+            datetime.strptime(value, '%Y%m%d')
+        except ValueError as error:
+            raise ValueError(f'{label} 不是有效日期: {value}') from error
+    if start_date > end_date:
+        raise ValueError('START 不能晚于 END')
+    return start_date, end_date
+
+
+def validate_cli_args(args):
+    primary_count = sum(bool(value) for value in (
+        args.his,
+        args.update,
+        args.searchbiz,
+        args.repair_last_update,
+    ))
+    if primary_count != 1:
+        raise ValueError(
+            '必须且只能指定一个主模式：--his、--update、'
+            '--searchbiz 或 --repair-last-update')
+    if args.refresh_cache and not (args.his or args.update):
+        raise ValueError('--refresh-cache 只能与 --his 或 --update 同时使用')
+    if args.searchbiz and args.list:
+        raise ValueError('--list 不适用于 --searchbiz 模式')
+    if args.his:
+        args.his = validate_date_range(*args.his)
+
+
+def get_cli_mode(args):
+    if args.his:
+        return '历史批量'
+    if args.update:
+        return '增量更新'
+    if args.searchbiz:
+        return '搜索公众号'
+    if args.repair_last_update:
+        return '修复 last_update'
+    return '未指定'
+
+
+def print_backend_token_ready():
+    print('后台 token 获取成功', flush=True)
+
+
+def print_run_summary(mode, accounts, fetched, written, errors,
+                      state_updates):
+    print(f'\n{"=" * 60}', flush=True)
+    print(f'运行模式: {mode}', flush=True)
+    print(f'公众号: {accounts} 个', flush=True)
+    print(f'抓取: {fetched} 篇，写入: {written} 条，'
+          f'异常: {errors} 条', flush=True)
+    print(f'last_update 更新: {state_updates} 个公众号', flush=True)
+
+
 def main():
     """主函数"""
     _setup_encoding()
@@ -1123,13 +1199,21 @@ def main():
     ap.add_argument('--refresh-cache', action='store_true',
                     help='强制从多维表格全量重建本地 URL 缓存')
     ap.add_argument('--repair-last-update', action='store_true',
-                    help='Repair last_update from local success state or bitable')
+                    help='根据本地成功状态或多维表格修复 last_update')
     args = ap.parse_args()
-    if not (args.his or args.update or args.searchbiz or args.repair_last_update):
-        ap.error('one of --his/--update/--searchbiz/--repair-last-update is required')
+    try:
+        validate_cli_args(args)
+    except ValueError as error:
+        ap.error(str(error))
+
+    print('=' * 60, flush=True)
+    print('微信公众号历史文章 → 飞书多维表格', flush=True)
+    print('=' * 60, flush=True)
+    print(f'运行模式: {get_cli_mode(args)}', flush=True)
 
     # --search 模式：搜索公众号后直接退出
     if args.searchbiz:
+        print(f'搜索关键词: {args.searchbiz}', flush=True)
         creds = _load_secrets_credentials()
         cookie = creds.get('wechat', {}).get('cookie', '')
         if not cookie:
@@ -1142,17 +1226,15 @@ def main():
         results = search_biz(args.searchbiz, cookie, token)
         if not results:
             print(f'未找到与 "{args.searchbiz}" 匹配的公众号')
+            print('搜索完成：找到 0 个公众号')
             return
         print(f'\n搜索 "{args.searchbiz}" 结果:\n')
         for r in results:
             alias_str = f'  alias={r["alias"]}' if r['alias'] else ''
             print(f'  {r["nickname"]}{alias_str}')
             print(f'    biz: {r["fakeid"]}')
+        print(f'\n搜索完成：找到 {len(results)} 个公众号')
         return
-
-    print('=' * 60, flush=True)
-    print('微信公众号历史文章 → 飞书多维表格', flush=True)
-    print('=' * 60, flush=True)
 
     # 加载公众号清单
     list_file = args.list or DEFAULT_LIST_FILE
@@ -1185,21 +1267,16 @@ def main():
 
     wechat_cookie = credentials.get('wechat_cookie', '')
     mp_token = None
-    if args.repair_last_update:
-        pass
-    elif not wechat_cookie:
+    if not args.repair_last_update and not wechat_cookie:
         print('\n未配置微信 cookie，尝试从 Chrome 登录态自动获取...', flush=True)
         wechat_cookie = _refresh_wechat_cookie_from_chrome(client)
         if wechat_cookie:
             credentials['wechat_cookie'] = wechat_cookie
             url_parser.credentials['wechat_cookie'] = wechat_cookie
 
-    # 获取微信后台 token
-    print('\n获取微信后台 token...', flush=True)
-    if args.repair_last_update:
-        mp_token = 'repair-skip'
-    else:
-        print('\nGetting WeChat backend token...', flush=True)
+    # 修复模式只读取飞书和本地状态，不需要微信公众号后台 token。
+    if not args.repair_last_update:
+        print('\n获取微信后台 token...', flush=True)
         mp_token = _get_mp_token(wechat_cookie)
         if not mp_token:
             fresh_cookie = _refresh_wechat_cookie_from_chrome(client)
@@ -1208,11 +1285,11 @@ def main():
                 credentials['wechat_cookie'] = wechat_cookie
                 url_parser.credentials['wechat_cookie'] = wechat_cookie
                 mp_token = _get_mp_token(wechat_cookie)
-    if not mp_token:
-        print('无法获取后台 token，请更新 ~/.config/secrets/gtokens.yaml 中的 '
-              'wechat.cookie（需要公众号后台登录态）')
-        return
-    print(f'后台 token: {mp_token}', flush=True)
+        if not mp_token:
+            print('无法获取后台 token，请更新 ~/.config/secrets/gtokens.yaml 中的 '
+                  'wechat.cookie（需要公众号后台登录态）')
+            return
+        print_backend_token_ready()
 
     # 检查飞书 token
     if not client.check_token_valid():
@@ -1242,6 +1319,8 @@ def main():
         else:
             print('没有可修复的 last_update，或本地/多维表格缺乏可用依据',
                   flush=True)
+        print(f'修复完成：更新 {len(repaired)} 个公众号的 last_update',
+              flush=True)
         return
 
     # 初始化 URL 缓存（替代每次全量拉取多维表格）
@@ -1270,25 +1349,6 @@ def main():
 
     # 遍历公众号处理
     all_error_rows = []
-    if args.repair_last_update:
-        print('\n寮€濮嬩慨澶?last_update...', flush=True)
-        source_to_ts = build_bitable_last_update_map(client, wxgzh_config)
-        repaired = repair_last_update_from_state(
-            accounts, success_state, source_to_ts)
-        if repaired:
-            save_account_list(list_file, accounts)
-            print(f'宸蹭慨澶?{len(repaired)} 涓叕浼楀彿鐨?last_update:', flush=True)
-            for item in repaired:
-                old_str = (datetime.fromtimestamp(item['old_ts']).strftime('%Y-%m-%d %H:%M')
-                           if item['old_ts'] else '0')
-                new_str = datetime.fromtimestamp(item['new_ts']).strftime('%Y-%m-%d %H:%M')
-                print(f'  {item["name"]}: {old_str} -> {new_str} ({item["reason"]})',
-                      flush=True)
-        else:
-            print('娌℃湁鍙慨澶嶇殑 last_update锛屾垨鏈湴/澶氱淮琛ㄦ牸缂轰箯鍙敤渚濇嵁',
-                  flush=True)
-        return
-
     total_fetched = 0
     total_written = 0
     _prev_total_fetched = 0
@@ -1367,18 +1427,16 @@ def main():
         if articles and write_ok:
             max_success_ts = max(a['publish_ts'] for a in articles)
             if args.his:
-                # --his 模式：更新为本批次最新文章时间戳
                 new_ts = max(a['publish_ts'] for a in articles)
             else:
                 # --update 模式：更新为本次运行时间（ts_end）
                 new_ts = ts_end
-            old_ts = acct.get('last_update', 0) or 0
-            if new_ts > old_ts:
-                acct['last_update'] = new_ts
-                ts_str = datetime.fromtimestamp(
-                    new_ts).strftime('%Y-%m-%d %H:%M')
-                print(f'  更新 last_update: {new_ts} ({ts_str})')
-            record_successful_account_update(success_state, acct, max_success_ts)
+            advance_state = not bool(args.his)
+            update_account_last_update(
+                acct, new_timestamp=new_ts, advance_state=advance_state)
+            if advance_state:
+                record_successful_account_update(
+                    success_state, acct, max_success_ts)
         elif articles:
             print('  未更新 last_update，原因：多维表格写入未完成')
 
@@ -1398,10 +1456,14 @@ def main():
         print(f'\n错误日志已写入: {ERROR_LOG_FILE} '
               f'({len(all_error_rows)} 条)')
 
-    # 汇总
-    print(f'\n{"="*60}', flush=True)
-    print(f'处理完成: 抓取 {total_fetched} 篇，'
-          f'写入 {total_written} 条', flush=True)
+    print_run_summary(
+        mode=get_cli_mode(args),
+        accounts=len(accounts),
+        fetched=total_fetched,
+        written=total_written,
+        errors=len(all_error_rows),
+        state_updates=len(updated),
+    )
 
 
 if __name__ == '__main__':

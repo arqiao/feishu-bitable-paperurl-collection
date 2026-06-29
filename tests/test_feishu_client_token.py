@@ -1,7 +1,7 @@
 import unittest
 from contextlib import redirect_stdout
 from io import StringIO
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import sys
 from pathlib import Path
@@ -58,6 +58,27 @@ class FeishuClientTokenTest(unittest.TestCase):
 
         with redirect_stdout(StringIO()):
             self.assertFalse(client.refresh_access_token())
+
+    def test_message_api_failure_is_not_returned_as_empty_success(self):
+        client = self.make_client({
+            "feishu": {"app_id": "app", "app_secret": "secret"},
+        })
+        response = Mock()
+        response.json.return_value = {
+            "code": 99991672,
+            "msg": "no permission",
+        }
+        client._session = Mock()
+        client._session.get.return_value = response
+
+        with patch.object(
+            client, "_get_tenant_access_token", return_value="tenant-token"
+        ):
+            with redirect_stdout(StringIO()):
+                result = client.get_chat_messages("chat-id")
+
+        self.assertIsNone(result)
+        self.assertIn("no permission", client.last_error)
 
 
 if __name__ == "__main__":

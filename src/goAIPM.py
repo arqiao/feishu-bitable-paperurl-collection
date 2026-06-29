@@ -1570,7 +1570,7 @@ def process_weekly(client, parser, config, wiki_url):
     m = re.search(r'/wiki/([A-Za-z0-9]+)', wiki_url)
     if not m:
         print(f'无法从 URL 提取 doc_token: {wiki_url}')
-        return
+        return False
     doc_token = m.group(1)
 
     # 阶段一：提取周报 URL
@@ -1578,7 +1578,7 @@ def process_weekly(client, parser, config, wiki_url):
     list_wiki = extract_urls_from_doc(client, doc_token)
     if not list_wiki:
         print('  未提取到 URL，退出')
-        return
+        return False
     weekly_time = list_wiki[0]['weekly_time']
     print(f'  提取到 {len(list_wiki)} 个 URL，周报时间: {weekly_time}')
 
@@ -1589,7 +1589,7 @@ def process_weekly(client, parser, config, wiki_url):
     table_id = bt_cfg.get('table_id', '')
     if not app_token or not table_id:
         print('  多维表格配置缺失，退出')
-        return
+        return False
 
     filter_str = f'CurrentValue.[周报时间]= "{weekly_time}"'
     records = client.search_bitable_records(
@@ -1662,7 +1662,9 @@ def process_weekly(client, parser, config, wiki_url):
         result = client.batch_update_bitable_records(
             app_token, table_id, update_records)
         print(f'  更新完成: 成功 {result["success"]}, 失败 {result["failed"]}')
+        update_failed = result['failed']
     else:
+        update_failed = 0
         print('\n阶段五：无需更新已有记录')
 
     # 初始化缓存
@@ -1692,6 +1694,7 @@ def process_weekly(client, parser, config, wiki_url):
             new_urls.append(row['链接'])
         result = client.batch_add_bitable_records(app_token, table_id, new_records)
         print(f'  新增完成: 成功 {result["success"]}, 失败 {result["failed"]}')
+        add_failed = result['failed']
         if bitable_cache:
             created = result.get('records', [])
             cache_entries = []
@@ -1704,6 +1707,7 @@ def process_weekly(client, parser, config, wiki_url):
                 bitable_cache.append(cache_entries)
                 print(f'  追加 {len(cache_entries)} 条到缓存')
     else:
+        add_failed = 0
         print('\n阶段六：无新记录需新增')
 
     # 汇总
@@ -1712,6 +1716,7 @@ def process_weekly(client, parser, config, wiki_url):
     print(f'  更新: {len(updates)} 条  新增: {len(parsed_rows)} 条'
           f'  异常: {len(error_rows)} 条')
     print('=' * 40)
+    return update_failed == 0 and add_failed == 0
 
 
 def _towiki_user_token(client):
@@ -3566,6 +3571,58 @@ def process_one_doc(client, parser, config, doc_token, doc_url, doc_index, total
     return stats, cache_entries
 
 
+def get_cli_mode(args):
+    if args.file:
+        return '单篇周报'
+    if args.list:
+        return '批量周报'
+    if args.daily:
+        return '单篇日报'
+    if args.update:
+        return '日报增量更新'
+    if args.weekly:
+        return '周报完善'
+    if args.towiki:
+        return '写入 Wiki'
+    return '未指定'
+
+
+def validate_cli_input(args):
+    if args.list:
+        list_path = args.list
+        if not os.path.isabs(list_path):
+            list_path = os.path.join(PROJECT_ROOT, list_path)
+        list_path = os.path.abspath(list_path)
+        if not os.path.isfile(list_path):
+            raise ValueError(f'列表文件不存在: {list_path}')
+        args.list = list_path
+    if args.towiki:
+        source, target = (value.strip() for value in args.towiki)
+        if not source:
+            raise ValueError('--towiki 源内容不能为空')
+        if not target:
+            raise ValueError('--towiki 目标文档不能为空')
+        if (not source.lower().startswith(('http://', 'https://'))
+                and not Path(source).expanduser().is_file()):
+            raise ValueError(f'--towiki 源文件不存在: {source}')
+        args.towiki = [source, target]
+
+
+def print_cli_mode(args):
+    print(f'运行模式: {get_cli_mode(args)}', flush=True)
+    if args.file:
+        print(f'输入文档: {args.file}', flush=True)
+    elif args.list:
+        print(f'输入列表: {args.list}', flush=True)
+    elif args.daily:
+        print(f'输入日报: {args.daily}', flush=True)
+    elif args.weekly:
+        print(f'输入周报: {args.weekly}', flush=True)
+    elif args.towiki:
+        print(f'源内容: {args.towiki[0]}', flush=True)
+        print(f'目标文档: {args.towiki[1]}', flush=True)
+
+
 def main():
     """主函数"""
     _setup_encoding()
@@ -3590,7 +3647,7 @@ def main():
     sys.stderr = Tee(sys.stderr, log_path)
 
     ap = argparse.ArgumentParser(description='星球周报 → 飞书多维表格')
-    group = ap.add_mutually_exclusive_group()
+    group = ap.add_mutually_exclusive_group(required=True)
     group.add_argument('--file', metavar='<url>', help='单个周报文档 URL')
     group.add_argument('--list', metavar='<listfile>', help='周报文档列表文件路径')
     group.add_argument('--daily', metavar='<url>', help='单个日报文档 URL（zsxq 短链或直链）')
@@ -3599,10 +3656,15 @@ def main():
     group.add_argument('--towiki', nargs=2, metavar=('<src>', '<dst>'),
                        help='把源网页 URL 或 PDF 文件内容写入目标飞书 wiki/docx')
     args = ap.parse_args()
+    try:
+        validate_cli_input(args)
+    except ValueError as error:
+        ap.error(str(error))
 
     print('=' * 60, flush=True)
     print('星球周报 → 飞书多维表格')
     print('=' * 60, flush=True)
+    print_cli_mode(args)
 
     client = FeishuClient()
     feishu_auth = client.credentials.get('auth_feishuMSG-xls',
@@ -3631,8 +3693,6 @@ def main():
         doc_urls = [args.file.strip()]
     elif args.list:
         list_path = args.list
-        if not os.path.isabs(list_path):
-            list_path = os.path.join(PROJECT_ROOT, list_path)
         with open(list_path, 'r', encoding='utf-8') as f:
             doc_urls = [line.strip() for line in f if line.strip()]
     elif args.daily:
@@ -3647,24 +3707,23 @@ def main():
         if bt_table_id:
             bc = BitableUrlCache(bt_table_id, DATA_DIR)
             bc.load()
-        process_daily_standalone(client, parser, config, args.daily.strip(),
-                                zsxq_token, bc)
+        success = process_daily_standalone(
+            client, parser, config, args.daily.strip(), zsxq_token, bc)
+        print(f'运行结果: {"成功" if success else "失败"}')
         return
     elif args.update:
         process_daily_update(client, parser, config, credentials)
         return
     elif args.weekly:
-        process_weekly(client, parser, config, args.weekly.strip())
+        success = process_weekly(
+            client, parser, config, args.weekly.strip())
+        print(f'运行结果: {"成功" if success else "失败"}')
         return
     elif args.towiki:
         source, target_url = args.towiki
         if not process_towiki(client, source.strip(), target_url.strip()):
             raise SystemExit(1)
         return
-    else:
-        print('请指定 --file / --list / --daily / --update / --weekly / --towiki')
-        return
-
     # 提取 doc_token，保留原始 URL
     doc_entries = []
     for url in doc_urls:
@@ -3676,6 +3735,9 @@ def main():
 
     total = len(doc_entries)
     print(f'\n周报文档: {total} 篇')
+    if total == 0:
+        print('运行结果: 失败，未找到有效的飞书 Wiki 文档 URL')
+        return
 
     # 初始化 bitable URL 缓存
     bt_cfg = config.get('weekly_report', {}).get('target_bitable', {})
@@ -3708,6 +3770,7 @@ def main():
     print(f'  文档: {total} 篇')
     print(f'  URL: {total_urls} 条')
     print(f'  异常: {total_errors} 条')
+    print(f'运行结果: {"完成但有异常" if total_errors else "成功"}')
 
 
 if __name__ == '__main__':

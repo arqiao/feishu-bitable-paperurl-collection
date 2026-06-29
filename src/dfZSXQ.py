@@ -416,13 +416,16 @@ def process_topics(topic_items, download_dir, token):
     return done, skipped, failed, max_done_ts
 
 
-def process_group(group_cfg, token, start_date, end_date, config_path):
+def process_group(group_cfg, token, start_date, end_date, config_path,
+                  advance_state=True, start_ts_exclusive=None):
     """处理单个群组的下载"""
     name = group_cfg.get('name', '')
     group_url = group_cfg.get('group_url', '')
     download_dir = group_cfg.get('download_dir', '')
     last_marker = group_cfg.get('last_download_date', '')
     last_ts, last_date = parse_last_download_marker(last_marker)
+    if start_ts_exclusive is None:
+        start_ts_exclusive = last_ts
 
     m = re.search(r'/group/(\d+)', group_url)
     if not m:
@@ -436,7 +439,8 @@ def process_group(group_cfg, token, start_date, end_date, config_path):
     print(f'目标目录: {download_dir}')
 
     topic_items, fetch_completed = fetch_topics_in_range(
-        group_id, token, start_date, end_date, start_ts_exclusive=last_ts)
+        group_id, token, start_date, end_date,
+        start_ts_exclusive=start_ts_exclusive)
     if not fetch_completed:
         print('本群组处理失败：帖子列表未完整获取，本次结果作废')
         print('last_download_date 未更新，原因：帖子列表抓取失败')
@@ -451,16 +455,45 @@ def process_group(group_cfg, token, start_date, end_date, config_path):
 
     done, skipped, failed, max_done_ts = process_topics(topic_items, download_dir, token)
 
-    if done > 0 and failed == 0:
+    if done > 0 and failed == 0 and advance_state:
         update_group_last_download_marker(config_path, group_url, max_done_ts)
         group_cfg['last_download_date'] = max_done_ts
         print(f'last_download_date 已更新: {last_marker} → {max_done_ts} '
               f'({format_unix_ts_comment(max_done_ts)})')
+    elif done > 0 and failed == 0:
+        print('last_download_date 未更新，原因：历史模式不推进增量状态')
     elif done == 0 and failed == 0:
         print(f'last_download_date 未更新，原因：本次没有实际下载新文件（跳过 {skipped} 个）')
     else:
         print(f'last_download_date 未更新，原因：仍有 {failed} 个文件下载失败')
     return failed == 0
+
+
+def validate_date_range(start_date, end_date):
+    for label, value in (('START', start_date), ('END', end_date)):
+        if not re.fullmatch(r'\d{8}', value or ''):
+            raise ValueError(f'{label} 必须是 YYYYMMDD 格式')
+        try:
+            datetime.strptime(value, '%Y%m%d')
+        except ValueError as error:
+            raise ValueError(f'{label} 不是有效日期: {value}') from error
+    if start_date > end_date:
+        raise ValueError('START 不能晚于 END')
+    return start_date, end_date
+
+
+def print_run_summary(mode, total, succeeded, failed, skipped):
+    print(f'\n{"=" * 60}')
+    print(f'运行模式: {mode}')
+    print(f'群组: 总计 {total}，成功 {succeeded}，'
+          f'失败 {failed}，跳过 {skipped}')
+    if failed and succeeded:
+        result = '部分失败'
+    elif failed:
+        result = '失败'
+    else:
+        result = '成功'
+    print(f'运行结果: {result}')
 
 
 def main():
@@ -473,6 +506,11 @@ def main():
     grp.add_argument('--update', action='store_true',
                      help='增量更新，从各群组 last_download_date 次日到今天')
     args = ap.parse_args()
+    if args.his:
+        try:
+            args.his = validate_date_range(*args.his)
+        except ValueError as error:
+            ap.error(str(error))
 
     client = FeishuClient()
     token = client.credentials.get('zsxq', {}).get('access_token', '')
@@ -487,6 +525,9 @@ def main():
 
     config_path = os.path.join(PROJECT_ROOT, 'cfg', 'config.yaml')
     today = datetime.now().strftime('%Y%m%d')
+    succeeded = 0
+    failed = 0
+    skipped = 0
 
     for group_cfg in groups:
         last_marker = group_cfg.get('last_download_date', '')
@@ -497,14 +538,36 @@ def main():
         else:
             if not last_marker:
                 print(f'群组 {group_cfg.get("name")} 未配置 last_download_date，跳过')
+                skipped += 1
                 continue
             if last_date and last_date > today:
                 print(f'\n群组 {group_cfg.get("name")}: 已是最新（last={last_date}），跳过')
+                skipped += 1
                 continue
             start_date = last_date
             end_date = today
 
-        process_group(group_cfg, token, start_date, end_date, config_path)
+        ok = process_group(
+            group_cfg,
+            token,
+            start_date,
+            end_date,
+            config_path,
+            advance_state=not bool(args.his),
+            start_ts_exclusive=0 if args.his else last_ts,
+        )
+        if ok:
+            succeeded += 1
+        else:
+            failed += 1
+
+    print_run_summary(
+        mode='历史下载' if args.his else '增量更新',
+        total=len(groups),
+        succeeded=succeeded,
+        failed=failed,
+        skipped=skipped,
+    )
 
 
 if __name__ == '__main__':

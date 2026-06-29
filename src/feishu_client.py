@@ -291,7 +291,8 @@ class FeishuClient:
                 return chat.get('chat_id')
         return None
 
-    def get_chat_messages(self, chat_id: str, start_time: int = 0) -> List[Dict]:
+    def get_chat_messages(self, chat_id: str,
+                          start_time: int = 0) -> Optional[List[Dict]]:
         """获取群聊消息 - 使用应用身份"""
         return self._get_messages_as_app(chat_id, start_time)
 
@@ -325,12 +326,15 @@ class FeishuClient:
 
         return all_messages
 
-    def _get_messages_as_app(self, chat_id: str, start_time: int = 0) -> List[Dict]:
+    def _get_messages_as_app(self, chat_id: str,
+                             start_time: int = 0) -> Optional[List[Dict]]:
         """使用应用身份获取消息"""
         # 获取应用 access token
         app_token = self._get_tenant_access_token()
         if not app_token:
-            return []
+            if not self.last_error:
+                self.last_error = '无法获取 tenant_access_token'
+            return None
 
         url = f"{self.base_url}/im/v1/messages"
         headers = {
@@ -355,12 +359,22 @@ class FeishuClient:
             if page_token:
                 params["page_token"] = page_token
 
-            response = self._session.get(url, headers=headers, params=params, timeout=60)
-            result = response.json()
+            try:
+                response = self._session.get(
+                    url, headers=headers, params=params, timeout=60)
+                result = response.json()
+            except Exception as error:
+                self.last_error = f'群聊消息请求异常: {error}'
+                print(self.last_error)
+                return None
 
             if result.get('code') != 0:
-                print(f"应用身份获取消息失败: {result.get('msg')}")
-                return []
+                self.last_error = (
+                    f'应用身份获取消息失败: {result.get("msg")} '
+                    f'(code={result.get("code")})'
+                )
+                print(self.last_error)
+                return None
 
             items = result.get('data', {}).get('items', [])
 

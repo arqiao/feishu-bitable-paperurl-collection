@@ -7,7 +7,7 @@ WaytoAGI 飞书知识库 → 飞书多维表格
   python src/goWTA.py --update                 # 增量更新（基于 last_processed_date）
 
 参数:
-  --his START END    历史批量处理，指定日期范围（YYYYMMDD）
+  --his START END    历史批量处理，不推进 last_processed_date
   --update           增量更新，从 last_processed_date 到今天
 
 输出文件:
@@ -1163,11 +1163,61 @@ def print_no_urls_update_summary(last_processed_date):
           f'（当前值: {last_processed_date}）')
 
 
+def update_last_processed_state(client, wta_config, target_date, write_ok,
+                                advance_state=True):
+    old_value = str(wta_config.get('last_processed_date', ''))
+    if not advance_state:
+        print(f'\nlast_processed_date 未更新，原因：历史模式不推进增量状态'
+              f'（保持原值: {old_value}）')
+        return False
+    if not write_ok:
+        print(f'\nlast_processed_date 未更新，原因：多维表格写入未完整成功'
+              f'（保持原值: {old_value}）')
+        return False
+    if old_value and target_date <= old_value:
+        print(f'\nlast_processed_date 未更新，原因：本次没有更晚日期'
+              f'（保持原值: {old_value}）')
+        return False
+    set_config_value_preserve_comments(
+        client.config_path, ['waytoagi', 'last_processed_date'], target_date)
+    wta_config['last_processed_date'] = target_date
+    print(f'\nlast_processed_date 已更新: {old_value} → {target_date}')
+    return True
+
+
 def _normalize_date(d):
     """6位日期自动补全为8位：250226 -> 20250226"""
     if len(d) == 6 and d.isdigit():
         return '20' + d
     return d
+
+
+def validate_date_range(start_date, end_date):
+    start_date = _normalize_date(start_date)
+    end_date = _normalize_date(end_date)
+    for label, value in (('START', start_date), ('END', end_date)):
+        if not re.fullmatch(r'\d{8}', value or ''):
+            raise ValueError(
+                f'{label} 必须是 YYYYMMDD 或 YYMMDD 格式')
+        try:
+            datetime.strptime(value, '%Y%m%d')
+        except ValueError as error:
+            raise ValueError(f'{label} 不是有效日期: {value}') from error
+    if start_date > end_date:
+        raise ValueError('START 不能晚于 END')
+    return start_date, end_date
+
+
+def print_run_summary(extracted, parsed, errors, state_changed, state_reason=''):
+    print(f'\n{"=" * 60}')
+    print('处理完成')
+    print('=' * 60)
+    print(f'  提取 URL: {extracted} 条')
+    print(f'  解析结果: {parsed} 条')
+    print(f'  异常: {errors} 条')
+    print(f'  状态推进: {"已更新" if state_changed else "未更新"}')
+    if not state_changed and state_reason:
+        print(f'  原因: {state_reason}')
 
 
 def main():
@@ -1181,6 +1231,11 @@ def main():
     group.add_argument('--update', action='store_true',
                        help='增量更新: 从 last_processed_date 到今天')
     args = ap.parse_args()
+    if args.his:
+        try:
+            args.his = validate_date_range(*args.his)
+        except ValueError as error:
+            ap.error(str(error))
 
     print('=' * 60, flush=True)
     print('WaytoAGI 知识库 → 飞书多维表格')
@@ -1227,8 +1282,7 @@ def main():
 
     # 确定日期范围（需在缓存加载前，用于过滤 dedup_keys）
     if args.his:
-        start_date = _normalize_date(args.his[0])
-        end_date = _normalize_date(args.his[1])
+        start_date, end_date = args.his
     else:
         last = str(wta_config.get('last_processed_date', ''))
         if not last:
@@ -1381,27 +1435,31 @@ def main():
         default=''
     )
 
-    # 仅在阶段三成功时推进 last_processed_date，避免写入失败后跳过未入库数据
-    if write_ok:
-        old_val = str(wta_config.get('last_processed_date', ''))
-        target_date = latest_processed_date or end_date
-        if old_val:
-            set_config_value_preserve_comments(
-                client.config_path, ['waytoagi', 'last_processed_date'], target_date)
-        wta_config['last_processed_date'] = target_date
-        print(f'\nlast_processed_date 已更新: {old_val} → {target_date}')
-    else:
-        print(f'\nlast_processed_date 未更新，原因：多维表格写入未完整成功'
-              f'（保持原值: {wta_config.get("last_processed_date", "")}）')
+    # 历史模式不推进增量游标；增量模式仅在阶段三成功时推进。
+    advance_state = not bool(args.his)
+    state_changed = update_last_processed_state(
+        client,
+        wta_config,
+        target_date=latest_processed_date or end_date,
+        write_ok=write_ok,
+        advance_state=advance_state,
+    )
 
-    # 汇总统计
-    print(f'\n{"=" * 60}')
-    print('处理完成')
-    print('=' * 60)
-    print(f'  提取 URL: {len(all_url_items)} 条')
-    print(f'  解析结果: {len(parsed_rows)} 条')
-    print(f'  异常: {len(error_rows)} 条')
-    print(f'  状态推进: {"已更新" if write_ok else "未更新"}')
+    if not advance_state:
+        state_reason = '历史模式不推进增量状态'
+    elif not write_ok:
+        state_reason = '多维表格写入未完整成功'
+    elif not state_changed:
+        state_reason = '本次没有更晚日期'
+    else:
+        state_reason = ''
+    print_run_summary(
+        extracted=len(all_url_items),
+        parsed=len(parsed_rows),
+        errors=len(error_rows),
+        state_changed=state_changed,
+        state_reason=state_reason,
+    )
 
 
 if __name__ == '__main__':

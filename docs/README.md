@@ -28,6 +28,7 @@
 - **CSV_LOG_SPEC.md** - CSV 日志和缓存文件规范
 - **TOKEN_MANAGEMENT.md** - Token管理机制说明
 - **ACCESS_FAILURE_DIAGNOSTICS_PLAN.md** - 访问故障诊断规范与推进台账
+- **CLI_PARAMETER_AUDIT.md** - 核心脚本全部 CLI 参数、副作用与验证矩阵
 - **FEISHU_ACCESS_NOTE.md** - 飞书Wiki访问限制说明
 - **FEISHU_MESSAGE_DELETE_NOTE.md** - 飞书消息管理机制详解（撤回vs删除）
 - **WEIBO_PARSING_ISSUE.md** - 微博解析问题分析
