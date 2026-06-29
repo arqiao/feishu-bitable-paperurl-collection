@@ -63,6 +63,11 @@ from modules.config_utils import (
     format_unix_ts_comment,
     set_config_value_preserve_comments,
 )
+from modules.zsxq_client import (
+    diagnose_zsxq_failure,
+    fetch_zsxq_json_with_retry,
+    zsxq_headers,
+)
 
 DATA_DIR = os.path.join(PROJECT_ROOT, 'data')
 AIPM_DIR = os.path.join(DATA_DIR, 'aipm')
@@ -385,26 +390,17 @@ def resolve_zsxq_short_to_article(short_url, zsxq_token):
             return None, None
         topic_id = m.group(1)
 
-        # 通过 API 获取 article_url（最多重试 5 次，指数退避，应对偶发 1059 内部错误）
-        api_headers = {
-            'Cookie': f'zsxq_access_token={zsxq_token}',
-            'User-Agent': 'Mozilla/5.0',
-            'Referer': 'https://wx.zsxq.com/',
-        }
-        data = {}
-        for attempt in range(5):
-            api_resp = ZSXQ_SESSION.get(
-                f'https://api.zsxq.com/v2/topics/{topic_id}',
-                headers=api_headers, timeout=10
-            )
-            data = api_resp.json()
-            if data.get('succeeded'):
-                break
-            if attempt == 0 and api_resp.status_code != 200:
-                print(f'  星球 topic API 失败: HTTP {api_resp.status_code} {data.get("error") or data.get("info") or ""}'.strip())
-            if attempt < 4:
-                time.sleep(2 * (attempt + 1))  # 2s, 4s, 6s, 8s
-        if not data.get('succeeded'):
+        data = fetch_zsxq_json_with_retry(
+            ZSXQ_SESSION,
+            f'https://api.zsxq.com/v2/topics/{topic_id}',
+            zsxq_token,
+            '星球 topic API 请求',
+            timeout=10,
+            max_attempts=5,
+            sleep_func=time.sleep,
+            printer=print,
+        )
+        if not data:
             return None, topic_id
 
         topic = data.get('resp_data', {}).get('topic', {})
@@ -445,16 +441,15 @@ def extract_urls_from_daily_article(article_url, zsxq_token, exclude_urls=None):
         (list of dict, str): ([{url, link_text, has_important, is_reference}, ...], html_text)
     """
     try:
-        headers = {
-            'Cookie': f'zsxq_access_token={zsxq_token}',
-            'User-Agent': 'Mozilla/5.0',
-        }
+        headers = zsxq_headers(zsxq_token)
         resp = ZSXQ_SESSION.get(article_url, headers=headers, timeout=15)
         if resp.status_code != 200:
-            print(f'  日报网页请求失败: {resp.status_code}')
+            reason, _ = diagnose_zsxq_failure(status_code=resp.status_code)
+            print(f'  日报网页请求失败: {reason}')
             return [], ''
     except Exception as e:
-        print(f'  日报网页请求异常: {e}')
+        reason, _ = diagnose_zsxq_failure(exc=e)
+        print(f'  日报网页请求异常: {reason}')
         return [], ''
 
     html_text = resp.text
@@ -1118,43 +1113,16 @@ def write_to_bitable(client, parsed_rows, config):
 
 def fetch_group_topics_page(group_id, zsxq_token, end_time=None, count=20, retries=3):
     """获取群组帖子列表（单页），含重试"""
-    headers = {
-        'Cookie': f'zsxq_access_token={zsxq_token}',
-        'User-Agent': 'Mozilla/5.0',
-        'Referer': 'https://wx.zsxq.com/',
-    }
     url = f'https://api.zsxq.com/v2/groups/{group_id}/topics?scope=all&count={count}'
     if end_time:
         url += f'&end_time={end_time.replace("+", "%2B")}'
-    for attempt in range(1, retries + 1):
-        try:
-            resp = ZSXQ_SESSION.get(url, headers=headers, timeout=15)
-            data = resp.json()
-            if data.get('succeeded'):
-                if attempt > 1:
-                    print(f'  星球帖子列表重试成功（尝试 {attempt}/{retries}）')
-                return data.get('resp_data', {}).get('topics', [])
-            msg = (data.get("msg") or data.get("message") or
-                   data.get("error") or data.get("info") or "接口返回 succeeded=false")
-            code = data.get('code')
-            if code is not None:
-                msg = f'{msg}（code={code}）'
-            if resp.status_code in (401, 403):
-                raise ZsxqAuthError(f'HTTP {resp.status_code} {msg}'.strip())
-            reason = f'HTTP {resp.status_code} {msg}'.strip()
-        except ZsxqAuthError:
-            raise
-        except Exception as e:
-            reason = f'请求异常：{e}'
-        if attempt < retries:
-            wait_seconds = 2 * attempt
-            print(f'  星球帖子列表获取失败（尝试 {attempt}/{retries}）：'
-                  f'{reason}；{wait_seconds} 秒后重试')
-            time.sleep(wait_seconds)
-        else:
-            print(f'  星球帖子列表获取失败（尝试 {attempt}/{retries}）：'
-                  f'{reason}；已停止重试')
-    return None
+    data = fetch_zsxq_json_with_retry(
+        ZSXQ_SESSION, url, zsxq_token, '星球帖子列表获取',
+        timeout=15, max_attempts=retries, sleep_func=time.sleep,
+        printer=print)
+    if not data:
+        return None
+    return data.get('resp_data', {}).get('topics', [])
 
 
 def _extract_daily_date_from_title(title):

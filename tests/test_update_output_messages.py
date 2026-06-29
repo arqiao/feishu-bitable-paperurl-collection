@@ -14,9 +14,10 @@ import goWTA
 
 
 class FakeResponse:
-    def __init__(self, data, status_code=200):
+    def __init__(self, data, status_code=200, headers=None):
         self._data = data
         self.status_code = status_code
+        self.headers = headers or {}
 
     def json(self):
         return self._data
@@ -38,8 +39,62 @@ class UpdateOutputMessageTests(unittest.TestCase):
         text = output.getvalue()
         self.assertEqual([], topics)
         self.assertIn('星球帖子列表获取失败（尝试 1/3）', text)
-        self.assertIn('内部错误（code=1059）', text)
-        self.assertIn('星球帖子列表重试成功（尝试 2/3）', text)
+        self.assertIn('知识星球接口临时异常', text)
+        self.assertIn('code=1059', text)
+        self.assertIn('星球帖子列表获取重试成功（尝试 2/3）', text)
+
+    def test_aipm_topic_page_auth_code_stops_without_retry(self):
+        response = FakeResponse({
+            'succeeded': False,
+            'code': 401,
+            'msg': 'Unauthorized',
+        })
+
+        with patch.object(goAIPM.ZSXQ_SESSION, 'get', return_value=response) as get:
+            with patch.object(goAIPM.time, 'sleep') as sleep:
+                with contextlib.redirect_stdout(io.StringIO()) as output:
+                    topics = goAIPM.fetch_group_topics_page(
+                        'group', 'token', retries=3)
+
+        self.assertIsNone(topics)
+        self.assertEqual(1, get.call_count)
+        sleep.assert_not_called()
+        text = output.getvalue()
+        self.assertIn('知识星球认证失败', text)
+        self.assertIn('~/.config/secrets/gtokens.yaml', text)
+        self.assertIn('zsxq.access_token', text)
+
+    def test_aipm_short_link_topic_api_reports_retry_recovery(self):
+        responses = [
+            FakeResponse({}, status_code=302,
+                         headers={'Location': 'https://wx.zsxq.com/dweb2/topic_detail?topic_id=123'}),
+            FakeResponse({'succeeded': False, 'code': 1059, 'msg': '内部错误'}),
+            FakeResponse({
+                'succeeded': True,
+                'resp_data': {
+                    'topic': {
+                        'talk': {
+                            'article': {
+                                'article_url': 'https://articles.zsxq.com/id_abc.html'
+                            }
+                        }
+                    }
+                },
+            }),
+        ]
+
+        with patch.object(goAIPM.ZSXQ_SESSION, 'get', side_effect=responses):
+            with patch.object(goAIPM.time, 'sleep'):
+                with contextlib.redirect_stdout(io.StringIO()) as output:
+                    article_url, topic_id = goAIPM.resolve_zsxq_short_to_article(
+                        'https://t.zsxq.com/test', 'token')
+
+        text = output.getvalue()
+        self.assertEqual('https://articles.zsxq.com/id_abc.html', article_url)
+        self.assertEqual('123', topic_id)
+        self.assertIn('星球 topic API 请求失败（尝试 1/5）', text)
+        self.assertIn('知识星球接口临时异常', text)
+        self.assertIn('星球 topic API 请求重试成功（尝试 2/5）', text)
 
     def test_aipm_find_daily_failure_uses_one_based_page_number(self):
         with patch.object(goAIPM, 'fetch_group_topics_page', return_value=None):

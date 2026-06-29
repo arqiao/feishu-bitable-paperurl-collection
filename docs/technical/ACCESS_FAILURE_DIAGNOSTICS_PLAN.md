@@ -168,8 +168,8 @@ last_download_date 未更新，原因：本次没有发现可下载文件
 | done | 五个核心脚本全部 CLI 参数审计 | 历史/增量/只读/修复/范围模式的状态安全、校验和汇总 | `docs/technical/CLI_PARAMETER_AUDIT.md`；`PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'` | 历史和部分运行不推进增量状态；高副作用参数只做模拟验证；终端不显示后台 Token；飞书消息访问失败不再伪装成空结果 |
 | done | 增加公共 HTTP 诊断模型 | `src/modules/http_diagnostics.py` | `PYTHONPATH=src python -m unittest tests.test_http_diagnostics` | 已覆盖 401/403/429/5xx/timeout/network/知识星球 1059；只做结构化分类，不直接打印 |
 | done | 抽出知识星球平台适配 | `src/modules/zsxq_client.py`，已接入 `dfZSXQ.py` 列表页和下载地址请求 | `PYTHONPATH=src python -m unittest tests.test_http_diagnostics tests.test_zsxq_client tests.test_dfzsxq_output`；`PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'` | 统一 headers、知识星球失败诊断和 JSON GET 重试；业务下载、目录和状态推进仍留在脚本 |
-| next | 对齐 `goAIPM.py` 的知识星球访问提示 | 知识星球文章解析/周报处理 | 现有测试 + 新增认证失败测试 | 复用 `src/modules/zsxq_client.py`，避免两套文案 |
-| todo | 梳理飞书访问故障提示 | `src/feishu_client.py` 及调用方 | 飞书 token/权限/限流测试 | 保留现有自动刷新逻辑 |
+| done | 对齐 `goAIPM.py` 的知识星球访问提示 | 短链 topic API、日报网页、`--update` 星球帖子列表 | `PYTHONPATH=src python -m unittest tests.test_update_output_messages tests.test_goaipm_credentials tests.test_goaipm_parameters tests.test_towiki_output`；`PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'` | 复用 `src/modules/zsxq_client.py`；业务码 401 不再盲目重试；1059 重试恢复提示与 `dfZSXQ.py` 对齐 |
+| next | 梳理飞书访问故障提示 | `src/feishu_client.py` 及调用方 | 飞书 token/权限/限流测试 | 保留现有自动刷新逻辑 |
 | todo | 梳理微信/微博/小红书等网页访问提示 | URL 解析器及对应模块 | 针对性解析失败测试 | 登录态和页面结构变化应分开提示 |
 
 ## 复盘节奏
