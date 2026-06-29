@@ -95,37 +95,122 @@ def parse_zsxq_time(time_str):
         return None
 
 
+def _api_failure_reason(data):
+    message = data.get('msg') or data.get('message') or '接口返回 succeeded=false'
+    code = data.get('code')
+    return f'{message}（code={code}）' if code is not None else message
+
+
+def _coerce_error_code(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return value
+
+
+def _zsxq_failure_diagnosis(data=None, exc=None, status_code=None):
+    """返回 (面向用户的原因说明, 是否建议重试)。"""
+    if exc is not None:
+        if isinstance(exc, requests.Timeout):
+            return f'请求超时：{exc}', True
+        if isinstance(exc, requests.ConnectionError):
+            return f'网络连接失败：{exc}', True
+        if isinstance(exc, ValueError):
+            return f'响应解析失败：{exc}', True
+        return f'请求异常：{exc}', True
+
+    data = data or {}
+    code = _coerce_error_code(data.get('code', status_code))
+    raw_reason = _api_failure_reason(data)
+
+    if code == 401:
+        return (
+            '知识星球认证失败：当前 zsxq.access_token 无效或已过期；'
+            '请更新 ~/.config/secrets/gtokens.yaml 中的 zsxq.access_token',
+            False,
+        )
+    if code == 403:
+        return (
+            '知识星球访问权限不足：请确认当前账号仍有星球成员权限，'
+            '并确认 group_url/group_id 配置正确',
+            False,
+        )
+    if code == 1059:
+        return f'知识星球接口临时异常：{raw_reason}', True
+    if code == 429:
+        return f'知识星球接口限流：{raw_reason}', True
+    if isinstance(code, int) and 500 <= code <= 599:
+        return f'知识星球服务端异常：{raw_reason}', True
+    if isinstance(status_code, int) and 500 <= status_code <= 599:
+        return f'知识星球服务端异常：HTTP {status_code}', True
+    if isinstance(status_code, int) and status_code >= 400:
+        return f'知识星球接口返回 HTTP {status_code}：{raw_reason}', True
+    return raw_reason, True
+
+
 def fetch_topics_page(group_id, token, end_time=None, count=20):
     """获取帖子列表单页，含重试"""
     url = f'https://api.zsxq.com/v2/groups/{group_id}/topics?scope=all&count={count}'
     if end_time:
         url += f'&end_time={end_time.replace("+", "%2B")}'
-    for attempt in range(5):
+    max_attempts = 5
+    for attempt in range(1, max_attempts + 1):
         try:
             resp = ZSXQ_SESSION.get(url, headers=zsxq_headers(token), timeout=15)
             data = resp.json()
             if data.get('succeeded'):
+                if attempt > 1:
+                    print(f'  获取帖子列表重试成功（尝试 {attempt}/{max_attempts}）')
                 return data['resp_data']['topics']
+            reason, retryable = _zsxq_failure_diagnosis(
+                data=data, status_code=getattr(resp, 'status_code', None))
         except Exception as e:
-            print(f'  获取帖子列表异常: {e}')
-        if attempt < 4:
-            time.sleep(2 * (attempt + 1))
+            reason, retryable = _zsxq_failure_diagnosis(exc=e)
+
+        if not retryable:
+            print(f'  获取帖子列表失败（尝试 {attempt}/{max_attempts}）：'
+                  f'{reason}；已停止重试')
+            break
+        if attempt < max_attempts:
+            wait_seconds = 2 * attempt
+            print(f'  获取帖子列表失败（尝试 {attempt}/{max_attempts}）：'
+                  f'{reason}；{wait_seconds} 秒后重试')
+            time.sleep(wait_seconds)
+        else:
+            print(f'  获取帖子列表失败（尝试 {attempt}/{max_attempts}）：'
+                  f'{reason}；已停止重试')
     return None
 
 
 def get_download_url(file_id, token):
     """获取文件临时下载链接，含重试"""
     url = f'https://api.zsxq.com/v2/files/{file_id}/download_url'
-    for attempt in range(5):
+    max_attempts = 5
+    for attempt in range(1, max_attempts + 1):
         try:
             resp = ZSXQ_SESSION.get(url, headers=zsxq_headers(token), timeout=15)
             data = resp.json()
             if data.get('succeeded'):
+                if attempt > 1:
+                    print(f'  获取下载链接重试成功（尝试 {attempt}/{max_attempts}）')
                 return data['resp_data']['download_url']
+            reason, retryable = _zsxq_failure_diagnosis(
+                data=data, status_code=getattr(resp, 'status_code', None))
         except Exception as e:
-            print(f'  获取下载链接异常: {e}')
-        if attempt < 4:
-            time.sleep(2 * (attempt + 1))
+            reason, retryable = _zsxq_failure_diagnosis(exc=e)
+
+        if not retryable:
+            print(f'  获取下载链接失败（尝试 {attempt}/{max_attempts}）：'
+                  f'{reason}；已停止重试')
+            break
+        if attempt < max_attempts:
+            wait_seconds = 2 * attempt
+            print(f'  获取下载链接失败（尝试 {attempt}/{max_attempts}）：'
+                  f'{reason}；{wait_seconds} 秒后重试')
+            time.sleep(wait_seconds)
+        else:
+            print(f'  获取下载链接失败（尝试 {attempt}/{max_attempts}）：'
+                  f'{reason}；已停止重试')
     return None
 
 
@@ -197,26 +282,30 @@ def download_file(download_url, dest_path):
 
 
 def fetch_topics_in_range(group_id, token, start_date, end_date, start_ts_exclusive=0):
-    """拉取范围内含文件的帖子，按日期升序返回。"""
+    """拉取范围内含文件的帖子，返回 (帖子列表, 是否完整抓取)。"""
     results = []
     end_time_param = None
     reached_before_start = False
     max_pages = 0 if start_date else 200  # 有起始日期则不限页数
     page = 0
+    fetched_pages = 0
+    completed = True
     seen_page_cursors = set()
 
     while max_pages == 0 or page < max_pages:
         page += 1
         topics = fetch_topics_page(group_id, token, end_time_param)
         if topics is None:
-            print(f'\r  第 {page} 页获取失败，停止' + ' ' * 40)
+            completed = False
+            print(f'  第 {page} 页最终获取失败，抓取中止'
+                  f'（成功获取 {fetched_pages} 页）')
             break
         if not topics:
             break
 
+        fetched_pages += 1
         last_ct = parse_zsxq_time(topics[-1].get('create_time', ''))
         last_date_str = last_ct.strftime('%Y-%m-%d') if last_ct else '?'
-        print(f'\r  翻页中... 第 {page} 页（{last_date_str}），已找到 {len(results)} 个含文件帖子', end='', flush=True)
 
         for t in topics:
             ct_str = t.get('create_time', '')
@@ -244,22 +333,33 @@ def fetch_topics_in_range(group_id, token, start_date, end_date, start_ts_exclus
                     'create_ts': topic_ts,
                 })
 
+        print(f'  翻页中... 第 {page} 页（{last_date_str}），'
+              f'已找到 {len(results)} 个含文件帖子')
         if reached_before_start:
             break
         next_end_time = topics[-1].get('create_time')
         if not next_end_time:
-            print(f'\n  第 {page} 页缺少分页游标，停止')
+            completed = False
+            print(f'  第 {page} 页缺少分页游标，抓取中止')
             break
         if next_end_time == end_time_param or next_end_time in seen_page_cursors:
-            print(f'\n  第 {page} 页分页游标未前进（{next_end_time}），停止，避免重复翻页')
+            completed = False
+            print(f'  第 {page} 页分页游标未前进（{next_end_time}），'
+                  '抓取中止，避免重复翻页')
             break
         seen_page_cursors.add(next_end_time)
         end_time_param = next_end_time
         time.sleep(0.5)
+    else:
+        completed = False
+        print(f'  已达到 {max_pages} 页抓取上限，抓取中止')
 
-    print(f'\n  翻页完成，共 {page} 页' + ' ' * 30)
+    if completed:
+        print(f'  翻页完成，共 {fetched_pages} 页')
+    else:
+        print(f'  抓取未完成：成功获取 {fetched_pages} 页，本次结果不会用于下载')
     results.sort(key=lambda x: x['create_time'])
-    return results
+    return results, completed
 
 
 def process_topics(topic_items, download_dir, token):
@@ -335,14 +435,19 @@ def process_group(group_cfg, token, start_date, end_date, config_path):
     print(f'下载范围: {start_date} ~ {end_date}')
     print(f'目标目录: {download_dir}')
 
-    topic_items = fetch_topics_in_range(
+    topic_items, fetch_completed = fetch_topics_in_range(
         group_id, token, start_date, end_date, start_ts_exclusive=last_ts)
+    if not fetch_completed:
+        print('本群组处理失败：帖子列表未完整获取，本次结果作废')
+        print('last_download_date 未更新，原因：帖子列表抓取失败')
+        return False
+
     print(f'找到 {len(topic_items)} 个含文件的帖子')
 
     if not topic_items:
         print('无文件需要下载')
         print('last_download_date 未更新，原因：本次没有发现可下载文件')
-        return
+        return True
 
     done, skipped, failed, max_done_ts = process_topics(topic_items, download_dir, token)
 
@@ -355,6 +460,7 @@ def process_group(group_cfg, token, start_date, end_date, config_path):
         print(f'last_download_date 未更新，原因：本次没有实际下载新文件（跳过 {skipped} 个）')
     else:
         print(f'last_download_date 未更新，原因：仍有 {failed} 个文件下载失败')
+    return failed == 0
 
 
 def main():
@@ -371,7 +477,7 @@ def main():
     client = FeishuClient()
     token = client.credentials.get('zsxq', {}).get('access_token', '')
     if not token:
-        print('未配置 zsxq access_token，请检查 credentials.yaml')
+        print('未配置 zsxq.access_token，请检查 ~/.config/secrets/gtokens.yaml')
         return
 
     groups = client.config.get('zsxq_downloader', {}).get('groups', [])

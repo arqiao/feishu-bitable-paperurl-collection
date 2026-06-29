@@ -79,6 +79,41 @@ def _config_path_for_profile(client, *keys):
         return ['feishuMessage', profile_name, *keys]
     return list(keys)
 
+
+def print_no_new_messages_summary(last_processed_time):
+    print("\n没有新消息需要处理", flush=True)
+    print("last_processed_time 未更新，原因：未发现新消息", flush=True)
+    print(f"当前 last_processed_time: {last_processed_time}", flush=True)
+
+
+def print_run_summary(stats):
+    print("\n" + "=" * 60, flush=True)
+    print("处理完成", flush=True)
+    print("=" * 60, flush=True)
+    print(f"链接总数: {stats['total']} 条", flush=True)
+    print(f"解析成功: {stats['parse_success']} 条", flush=True)
+    print(f"解析异常: {stats['parse_errors']} 条", flush=True)
+    print(f"本地 CSV: {stats['csv_written']} 条", flush=True)
+    print(
+        f"多维表格: 成功 {stats['bitable_written']} 条，"
+        f"失败 {stats['bitable_failed']} 条，"
+        f"跳过 {stats['bitable_skipped']} 条",
+        flush=True,
+    )
+    print(
+        f"撤回消息: 成功 {stats['recall_success']} 条，"
+        f"失败 {stats['recall_failed']} 条",
+        flush=True,
+    )
+    if stats['parse_errors']:
+        print("说明: 解析异常已写入异常日志，消息撤回仍按现有策略执行",
+              flush=True)
+    if stats['state_advanced']:
+        print(f"last_processed_time 已更新: {stats['state_time']}", flush=True)
+    else:
+        print(f"last_processed_time 未更新: {stats['state_reason']}", flush=True)
+
+
 def load_index_cache(chat_id: str) -> dict:
     """加载消息序号缓存，chat_id 不匹配或文件损坏时返回空缓存"""
     try:
@@ -316,6 +351,7 @@ def main():
             profile_name = profile_names[0]
             print(f"\n未指定 --profile，使用默认: {profile_name}", flush=True)
         profile_cfg = profiles[profile_name]
+        print(f"\n运行 profile: {profile_name}", flush=True)
         # 将 profile 内容合并到顶层，覆盖旧的平铺字段
         client.config['target_chat'] = profile_cfg['target_chat']
         client.config['target_bitable'] = profile_cfg['target_bitable']
@@ -424,7 +460,13 @@ def main():
             print(f"✓ 消息总数: {total_count} 条（首次运行，全部为新消息）", flush=True)
 
     if new_count == 0:
-        print("\n没有新消息需要处理", flush=True)
+        last_state = (
+            datetime.fromtimestamp(last_processed_time / 1000).strftime(
+                '%Y-%m-%d %H:%M:%S')
+            if last_processed_time > 0
+            else '首次运行'
+        )
+        print_no_new_messages_summary(last_state)
         return
 
     # 提取 URL 并记录消息序号
@@ -600,7 +642,12 @@ def main():
         item['has_error'] = bool(article_info['error_info'])
 
         csv_rows.append(csv_row)
-        success_count += 1
+        if article_info['error_info']:
+            error_count += 1
+            print(f"  解析结果: 异常（已写入异常日志，不进入多维表格）",
+                  flush=True)
+        else:
+            success_count += 1
 
         # 收集多维表格数据（不在多维表格中 且 解析成功的记录才写入）
         if parsed_norm not in bitable_existing_urls and not article_info['error_info']:
@@ -672,6 +719,8 @@ def main():
     bitable_write_ok = False
     bitable_available = bool(bitable_app_token and bitable_table_id)
     bitable_fail_rows = []  # 收集入库失败记录
+    bitable_written_count = 0
+    bitable_failed_count = 0
     now_str = datetime.now().strftime('%Y/%m/%d %H:%M')
 
     if bitable_available and bitable_rows:
@@ -703,6 +752,8 @@ def main():
             result = client.batch_add_bitable_records(bitable_app_token, bitable_table_id, batch_records)
             bt_ok = result['success']
             bt_fail = result['failed']
+            bitable_written_count += bt_ok
+            bitable_failed_count += bt_fail
 
             # 追加新记录到本地缓存
             if bitable_cache and bt_ok > 0:
@@ -785,6 +836,8 @@ def main():
 
     # 撤回已处理的群消息
     # 撤回逻辑：只要写入总日志就撤回
+    recall_ok = 0
+    recall_fail = 0
     if csv_rows:
         # 收集所有已处理消息的 message_id（去重）
         recall_ids = list(set(
@@ -795,8 +848,6 @@ def main():
         if recall_ids:
             recall_ids.reverse()
             print(f"\n正在撤回 {len(recall_ids)} 条已处理消息（倒序）...", flush=True)
-            recall_ok = 0
-            recall_fail = 0
             for mid in recall_ids:
                 if client.recall_message(mid):
                     recall_ok += 1
@@ -808,6 +859,9 @@ def main():
 
     # 仅在入库成功时推进最后处理时间，避免写入失败后跳过未入库消息
     should_advance_state = (not bitable_rows) or bitable_write_ok
+    state_advanced = False
+    state_time = ''
+    state_reason = '存在待写入多维表格记录但写入未完成'
     if url_messages and should_advance_state:
         latest_time = max(item['message_time'] for item in url_messages)
         client.config['last_processed_time'] = latest_time
@@ -819,16 +873,25 @@ def main():
         )
         latest_time_str = datetime.fromtimestamp(latest_time/1000).strftime('%Y-%m-%d %H:%M:%S')
         print(f"\n✓ 已更新处理时间: {latest_time_str}", flush=True)
+        state_advanced = True
+        state_time = latest_time_str
     elif url_messages:
         print("\n未更新 last_processed_time，原因：存在待写入多维表格记录但写入未完成", flush=True)
 
-    # 输出统计
-    print("\n" + "=" * 60, flush=True)
-    print("处理完成", flush=True)
-    print("=" * 60, flush=True)
-    print(f"成功: {success_count} 条", flush=True)
-    print(f"失败: {error_count} 条", flush=True)
-    print(f"总计: {len(url_messages)} 条", flush=True)
+    print_run_summary({
+        'total': len(url_messages),
+        'parse_success': success_count,
+        'parse_errors': error_count,
+        'csv_written': len(csv_rows),
+        'bitable_written': bitable_written_count,
+        'bitable_failed': bitable_failed_count,
+        'bitable_skipped': bitable_skipped_count,
+        'recall_success': recall_ok,
+        'recall_failed': recall_fail,
+        'state_advanced': state_advanced,
+        'state_time': state_time,
+        'state_reason': state_reason,
+    })
 
 
 if __name__ == "__main__":

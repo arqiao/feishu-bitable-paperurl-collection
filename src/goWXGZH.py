@@ -228,7 +228,17 @@ def _load_chrome_master_key():
     return _dpapi_decrypt(enc_key)
 
 
-def _decrypt_chrome_cookie(encrypted_value: bytes, master_key: bytes) -> str:
+def _strip_chrome_cookie_host_digest(value: bytes, host_key: str = '') -> bytes:
+    if not host_key or len(value) <= 32:
+        return value
+    digest = hashlib.sha256(host_key.encode('utf-8')).digest()
+    if value.startswith(digest):
+        return value[32:]
+    return value
+
+
+def _decrypt_chrome_cookie(encrypted_value: bytes, master_key: bytes,
+                           host_key: str = '') -> str:
     if not encrypted_value:
         return ''
     if sys.platform == 'darwin' and encrypted_value.startswith(b'v10'):
@@ -240,6 +250,7 @@ def _decrypt_chrome_cookie(encrypted_value: bytes, master_key: bytes) -> str:
         pad_len = decrypted[-1]
         if 0 < pad_len <= 16:
             decrypted = decrypted[:-pad_len]
+        decrypted = _strip_chrome_cookie_host_digest(decrypted, host_key)
         return decrypted.decode('utf-8')
 
     if encrypted_value.startswith(b'v10') or encrypted_value.startswith(b'v11'):
@@ -265,16 +276,17 @@ def _load_wechat_cookie_from_chrome():
         conn = sqlite3.connect(tmp_path)
         cur = conn.cursor()
         cur.execute("""
-            SELECT name, encrypted_value, value
+            SELECT host_key, name, encrypted_value, value
             FROM cookies
             WHERE host_key IN ('mp.weixin.qq.com', '.mp.weixin.qq.com')
         """)
         parts = []
-        for name, encrypted_value, plain_value in cur.fetchall():
+        for host_key, name, encrypted_value, plain_value in cur.fetchall():
             value = plain_value or ''
             if not value:
                 try:
-                    value = _decrypt_chrome_cookie(encrypted_value, master_key)
+                    value = _decrypt_chrome_cookie(
+                        encrypted_value, master_key, host_key)
                 except Exception:
                     value = ''
             if value:
@@ -303,7 +315,7 @@ def _load_wechat_cookie_from_chrome_robust():
     def _read_cookie_rows(conn):
         cur = conn.cursor()
         cur.execute("""
-            SELECT name, encrypted_value, value
+            SELECT host_key, name, encrypted_value, value
             FROM cookies
             WHERE host_key IN ('mp.weixin.qq.com', '.mp.weixin.qq.com')
         """)
@@ -311,11 +323,12 @@ def _load_wechat_cookie_from_chrome_robust():
 
     def _rows_to_cookie(rows):
         parts = []
-        for name, encrypted_value, plain_value in rows:
+        for host_key, name, encrypted_value, plain_value in rows:
             value = plain_value or ''
             if not value:
                 try:
-                    value = _decrypt_chrome_cookie(encrypted_value, master_key)
+                    value = _decrypt_chrome_cookie(
+                        encrypted_value, master_key, host_key)
                 except Exception:
                     value = ''
             if value:
@@ -855,6 +868,8 @@ def fetch_articles(biz, cookie, token, ts_start, ts_end, account_name=''):
         data = _wx_publish_request(biz, cookie, token,
                                    begin=begin, count=count)
         if data is None:
+            print(f'    第 {page} 页最终获取失败，文章列表抓取中止')
+            print('    本公众号文章列表未完整获取，本次结果不会用于更新 last_update')
             error_rows.append([
                 account_name, '', '', '抓取失败',
                 f'第 {page} 页 begin={begin} 请求失败', now_str])
@@ -921,6 +936,15 @@ def fetch_articles(biz, cookie, token, ts_start, ts_end, account_name=''):
     return articles, error_rows
 
 
+def print_no_articles_summary(fetch_errors, last_update):
+    print('  未抓取到文章')
+    if fetch_errors:
+        print('  原因：文章列表抓取失败')
+        print(f'  last_update 未更新（当前值: {last_update}）')
+    else:
+        print('  原因：本次时间范围内没有发现新文章')
+
+
 def parse_articles(url_parser, articles, account_name=''):
     """用 UrlParser 解析每篇文章的详细信息
 
@@ -946,17 +970,26 @@ def parse_articles(url_parser, articles, account_name=''):
         # 解析，含重试
         info = None
         max_retries = 2
-        for attempt in range(max_retries + 1):
+        max_attempts = max_retries + 1
+        for attempt in range(max_attempts):
             try:
                 info = url_parser.parse_url(url)
                 if not info.get('error_info'):
+                    if attempt > 0:
+                        print(f'    解析重试成功（尝试 {attempt+1}/{max_attempts}）',
+                              flush=True)
                     break
             except Exception as e:
                 info = {'error_info': str(e), 'title': '', 'source': '',
                         'publish_date': '', 'weekday': '', 'url': url}
+            err = info.get('error_info', '未知错误')
             if attempt < max_retries:
                 time.sleep(3)
-                print(f'    重试 [{attempt+1}/{max_retries}]', flush=True)
+                print(f'    解析失败（尝试 {attempt+1}/{max_attempts}）：'
+                      f'{err}；3 秒后重试', flush=True)
+            else:
+                print(f'    解析最终失败（尝试 {attempt+1}/{max_attempts}）：'
+                      f'{err}', flush=True)
 
         title = info.get('title', '') or art.get('title', '')
         source = info.get('source', '')
@@ -1305,7 +1338,7 @@ def main():
         all_error_rows.extend(fetch_errors)
 
         if not articles:
-            print(f'  未抓取到文章')
+            print_no_articles_summary(fetch_errors, acct.get('last_update', 0))
             continue
 
         # 按发布时间从远到近排序

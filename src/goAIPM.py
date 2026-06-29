@@ -1126,23 +1126,34 @@ def fetch_group_topics_page(group_id, zsxq_token, end_time=None, count=20, retri
     url = f'https://api.zsxq.com/v2/groups/{group_id}/topics?scope=all&count={count}'
     if end_time:
         url += f'&end_time={end_time.replace("+", "%2B")}'
-    for attempt in range(retries):
+    for attempt in range(1, retries + 1):
         try:
             resp = ZSXQ_SESSION.get(url, headers=headers, timeout=15)
             data = resp.json()
             if data.get('succeeded'):
+                if attempt > 1:
+                    print(f'  星球帖子列表重试成功（尝试 {attempt}/{retries}）')
                 return data.get('resp_data', {}).get('topics', [])
-            msg = data.get("error") or data.get("info") or ""
+            msg = (data.get("msg") or data.get("message") or
+                   data.get("error") or data.get("info") or "接口返回 succeeded=false")
+            code = data.get('code')
+            if code is not None:
+                msg = f'{msg}（code={code}）'
             if resp.status_code in (401, 403):
                 raise ZsxqAuthError(f'HTTP {resp.status_code} {msg}'.strip())
-            if attempt == 0:
-                print(f'  星球帖子列表请求失败: HTTP {resp.status_code} {msg}'.strip())
+            reason = f'HTTP {resp.status_code} {msg}'.strip()
         except ZsxqAuthError:
             raise
         except Exception as e:
-            print(f'  获取帖子列表异常: {e}')
-        if attempt < retries - 1:
-            time.sleep(2 * (attempt + 1))
+            reason = f'请求异常：{e}'
+        if attempt < retries:
+            wait_seconds = 2 * attempt
+            print(f'  星球帖子列表获取失败（尝试 {attempt}/{retries}）：'
+                  f'{reason}；{wait_seconds} 秒后重试')
+            time.sleep(wait_seconds)
+        else:
+            print(f'  星球帖子列表获取失败（尝试 {attempt}/{retries}）：'
+                  f'{reason}；已停止重试')
     return None
 
 
@@ -1193,15 +1204,16 @@ def find_daily_articles_since(group_id, zsxq_token, since_ts_exclusive=0, since_
     end_time = None
     reached_boundary = False
 
-    for page in range(20):
+    for page in range(1, 21):
         try:
             topics = fetch_group_topics_page(group_id, zsxq_token, end_time)
         except ZsxqAuthError as e:
             print(f'  知识星球认证失败: {e}')
-            print('  请更新 cfg/credentials.yaml 中的 zsxq.access_token 后重试')
+            print('  请更新 ~/.config/secrets/gtokens.yaml 中的 '
+                  'zsxq.access_token 后重试')
             return None
         if topics is None:
-            print(f'  第 {page} 页获取失败，停止翻页')
+            print(f'  第 {page} 页最终获取失败，停止查找日报')
             return None
         if not topics:
             break
@@ -1245,6 +1257,7 @@ def find_daily_articles_since(group_id, zsxq_token, since_ts_exclusive=0, since_
                 print(f'  跳过 {ds}，未找到对应日报')
             d += timedelta(days=1)
 
+    print(f'  日报查找完成：找到 {len(found)} 篇')
     return found
 
 
@@ -1479,15 +1492,18 @@ def process_daily_update(client, parser, config, credentials):
     group_id = m.group(1)
 
     print(f'上次处理日期: {last_date or last_marker}')
+    print(f'知识星球群组: {group_id}')
     print(f'正在查找新日报...', flush=True)
 
     daily_articles = find_daily_articles_since(
         group_id, zsxq_token, since_ts_exclusive=last_ts, since_date=last_date)
     if daily_articles is None:
         print('日报查找失败，未更新 last_processed_date')
+        print('last_processed_date 未更新，原因：日报列表抓取失败')
         return
     if not daily_articles:
         print('没有新的日报需要处理')
+        print('last_processed_date 未更新，原因：未发现新日报')
         return
 
     print(f'\n找到 {len(daily_articles)} 篇待处理日报:')
@@ -1505,6 +1521,8 @@ def process_daily_update(client, parser, config, credentials):
     # 逐篇处理
     last_success_date = last_date
     last_success_ts = last_ts
+    success_count = 0
+    failed_count = 0
     for i, (date_str, article_url, topic_ts) in enumerate(daily_articles, 1):
         print(f'\n{"=" * 60}')
         print(f'[{i}/{len(daily_articles)}] AI日报_{date_str}')
@@ -1512,10 +1530,12 @@ def process_daily_update(client, parser, config, credentials):
         success = process_daily_standalone(
             client, parser, config, article_url, zsxq_token, bitable_cache)
         if success:
+            success_count += 1
             last_success_date = date_str
             if topic_ts:
                 last_success_ts = topic_ts
         else:
+            failed_count += 1
             print(f'  未推进 last_processed_date，{date_str} 写入未完成')
 
     # 更新 last_processed_date
@@ -1529,6 +1549,11 @@ def process_daily_update(client, parser, config, credentials):
         )
         print(f'\nlast_processed_date 已更新: {last_marker} → {last_success_ts} '
               f'({format_unix_ts_comment(last_success_ts)})')
+    else:
+        print(f'\nlast_processed_date 未更新，原因：本次没有日报处理成功')
+
+    print(f'本次日报处理完成：待处理 {len(daily_articles)}，'
+          f'成功 {success_count}，失败 {failed_count}')
 
 
 def _normalize_url(url):
@@ -1722,6 +1747,16 @@ def _towiki_api_json(resp, label):
         raise RuntimeError(
             f'{label} 响应无法解析: status={resp.status_code}, body={resp.text[:200]}'
         )
+    if resp.status_code == 401:
+        raise RuntimeError(
+            f'{label} 认证失败: HTTP 401 {data.get("msg") or ""}'.strip())
+    if resp.status_code == 403:
+        raise RuntimeError(
+            f'{label} 权限失败: HTTP 403 {data.get("msg") or ""}'.strip())
+    if resp.status_code >= 500:
+        raise RuntimeError(
+            f'{label} 服务端错误: HTTP {resp.status_code} '
+            f'{data.get("msg") or ""}'.strip())
     if data.get('code') != 0:
         raise RuntimeError(f'{label} 失败: {data.get("msg")} (code={data.get("code")})')
     return data.get('data', {})
@@ -2545,7 +2580,26 @@ def _towiki_docling_flatten_refs(data, refs, parent_label=''):
     return items
 
 
+def _towiki_docling_proxy_issue():
+    for env_name in ('NO_PROXY', 'no_proxy'):
+        value = os.environ.get(env_name, '')
+        for entry in (part.strip() for part in value.split(',')):
+            host = entry.split('/', 1)[0]
+            if host.count(':') >= 2 and not host.startswith('['):
+                return (
+                    f'{env_name} 含裸 IPv6 条目 {entry!r}，'
+                    '当前 httpx 会将其误解析为端口'
+                )
+    return ''
+
+
 def _towiki_docling_structure(pdf_path):
+    proxy_issue = _towiki_docling_proxy_issue()
+    if proxy_issue:
+        print(f'  Docling 已跳过：{proxy_issue}；使用 PyMuPDF',
+              flush=True)
+        return None
+
     try:
         sys.modules['mlx'] = None
         sys.modules['mlx_whisper'] = None
@@ -2899,7 +2953,53 @@ def _towiki_normalize_mime_type(content_type, filename=''):
     return 'image/png'
 
 
-def _towiki_download_image(client, image_item):
+def _towiki_is_transient_error(error):
+    if isinstance(error, (
+        requests.exceptions.Timeout,
+        requests.exceptions.ConnectionError,
+        requests.exceptions.ChunkedEncodingError,
+    )):
+        return True
+    if isinstance(error, requests.exceptions.HTTPError):
+        status = getattr(error.response, 'status_code', 0)
+        return status == 429 or status >= 500
+    message = str(error).lower()
+    return (
+        '429' in message
+        or '限流' in message
+        or re.search(r'\b(?:http|status)[ =:]*(5\d\d)\b', message) is not None
+    )
+
+
+def _towiki_is_access_error(error):
+    message = str(error).lower()
+    return (
+        '认证失败' in message
+        or '权限失败' in message
+        or re.search(r'\bhttp[ =:]*(401|403)\b', message) is not None
+    )
+
+
+def _towiki_get_with_retry(client, url, headers, timeout, label, retries=3):
+    for attempt in range(1, retries + 1):
+        try:
+            resp = client._session.get(url, headers=headers, timeout=timeout)
+            resp.raise_for_status()
+            if attempt > 1:
+                print(f'  {label}重试成功（尝试 {attempt}/{retries}）',
+                      flush=True)
+            return resp
+        except Exception as error:
+            if not _towiki_is_transient_error(error) or attempt == retries:
+                raise
+            wait_seconds = 2 * attempt
+            print(f'  {label}失败（尝试 {attempt}/{retries}）：{error}；'
+                  f'{wait_seconds} 秒后重试', flush=True)
+            time.sleep(wait_seconds)
+    raise RuntimeError(f'{label}重试流程异常结束')
+
+
+def _towiki_download_image(client, image_item, retries=3):
     source = image_item['source']
     if isinstance(source, (bytes, bytearray)):
         filename = image_item.get('filename') or 'image.png'
@@ -2919,8 +3019,8 @@ def _towiki_download_image(client, image_item):
         token = client.credentials.get('zsxq', {}).get('access_token', '')
         if token:
             headers['Cookie'] = f'zsxq_access_token={token}'
-    resp = client._session.get(img_url, headers=headers, timeout=30)
-    resp.raise_for_status()
+    resp = _towiki_get_with_retry(
+        client, img_url, headers, 30, '图片下载', retries)
     content_type = resp.headers.get('Content-Type', '').split(';')[0] or 'image/png'
     ext = mimetypes.guess_extension(content_type) or Path(urlparse(img_url).path).suffix
     filename = Path(urlparse(img_url).path).name or f'image{ext or ".png"}'
@@ -2977,10 +3077,11 @@ def _towiki_write_image(client, doc_id, parent_id, image_item):
     )
 
 
-def _towiki_append_blocks(client, doc_id, blocks):
+def _towiki_append_blocks(client, doc_id, blocks, progress_callback=None):
     parent_id = _towiki_get_document_root(client, doc_id)
     normal_buf = []
     colors_disabled = False
+    written_count = 0
 
     def is_rate_limited(err):
         return '429' in str(err) or '限流' in str(err)
@@ -3011,7 +3112,7 @@ def _towiki_append_blocks(client, doc_id, blocks):
             write_batch(url, [target_block], f'写入文本 block[{index}]')
             return
         except RuntimeError as e:
-            if is_rate_limited(e):
+            if is_rate_limited(e) or _towiki_is_access_error(e) or _towiki_is_transient_error(e):
                 raise
             downgraded = _towiki_block_without_colors(block)
             if downgraded == block:
@@ -3024,14 +3125,15 @@ def _towiki_append_blocks(client, doc_id, blocks):
                 write_batch(url, [downgraded], f'写入降级文本 block[{index}]')
                 colors_disabled = True
             except RuntimeError as e2:
-                if is_rate_limited(e2):
+                if (is_rate_limited(e2) or _towiki_is_access_error(e2)
+                        or _towiki_is_transient_error(e2)):
                     raise
                 print(f'  block[{index}] 降级后仍不兼容，改用纯文本: {e2}', flush=True)
                 write_batch(url, [_towiki_plain_text_block(block)],
                             f'写入纯文本 block[{index}]')
 
     def flush():
-        nonlocal normal_buf, colors_disabled
+        nonlocal normal_buf, colors_disabled, written_count
         if not normal_buf:
             return
         url = f'{client.base_url}/docx/v1/documents/{doc_id}/blocks/{parent_id}/children'
@@ -3042,6 +3144,8 @@ def _towiki_append_blocks(client, doc_id, blocks):
             try:
                 write_batch(url, batch, '写入文本 blocks')
             except RuntimeError as e:
+                if _towiki_is_access_error(e) or _towiki_is_transient_error(e):
+                    raise
                 print(f'  批量写入失败，拆成单块重试: {e}', flush=True)
                 if not colors_disabled and any(
                     _towiki_block_without_colors(block) != block for block in batch
@@ -3053,9 +3157,15 @@ def _towiki_append_blocks(client, doc_id, blocks):
                         time.sleep(0.5)
                         continue
                     except RuntimeError as e2:
+                        if (_towiki_is_access_error(e2)
+                                or _towiki_is_transient_error(e2)):
+                            raise
                         print(f'  去色批量写入仍失败，继续单块重试: {e2}', flush=True)
                 for j, block in enumerate(batch):
                     write_single_or_downgrade(url, block, i + j)
+            written_count += len(batch)
+            if progress_callback:
+                progress_callback(written_count)
             time.sleep(0.5)
         normal_buf = []
 
@@ -3063,10 +3173,14 @@ def _towiki_append_blocks(client, doc_id, blocks):
         if isinstance(block, dict) and block.get('_towiki_image'):
             flush()
             _towiki_write_image(client, doc_id, parent_id, block)
+            written_count += 1
+            if progress_callback:
+                progress_callback(written_count)
             time.sleep(0.3)
         else:
             normal_buf.append(block)
     flush()
+    return written_count
 
 
 def _towiki_select_content(soup):
@@ -3086,8 +3200,8 @@ def _towiki_fetch_html_blocks(client, source_url):
     headers = {'User-Agent': 'Mozilla/5.0'}
     if token and 'zsxq.com' in source_url:
         headers['Cookie'] = f'zsxq_access_token={token}'
-    resp = client._session.get(source_url, headers=headers, timeout=30)
-    resp.raise_for_status()
+    resp = _towiki_get_with_retry(
+        client, source_url, headers, 30, '源网页读取')
     soup = BeautifulSoup(resp.text, 'html.parser')
     for tag in soup(['script', 'style', 'noscript']):
         tag.decompose()
@@ -3141,8 +3255,8 @@ def _towiki_source_is_pdf_url(source):
 
 def _towiki_download_pdf_url(client, source_url):
     headers = {'User-Agent': 'Mozilla/5.0'}
-    resp = client._session.get(source_url, headers=headers, timeout=60)
-    resp.raise_for_status()
+    resp = _towiki_get_with_retry(
+        client, source_url, headers, 60, '源 PDF 下载')
     suffix = Path(urlparse(source_url).path).suffix or '.pdf'
     fd, temp_path = tempfile.mkstemp(prefix='goaipm_towiki_src_', suffix=suffix)
     with os.fdopen(fd, 'wb') as f:
@@ -3258,6 +3372,7 @@ def _towiki_pdf_data_with_pymupdf(pdf_path):
 
         pages.append({'lines': lines, 'items': items, 'images': []})
 
+    pdf.close()
     return {'pages': pages}
 
 
@@ -3294,37 +3409,97 @@ def _towiki_pdf_blocks(source_path):
                         filename=image.get('name', ''),
                         content_type=image.get('content_type', 'image/png'),
                     ))
+        print(f'  PyMuPDF 回退解析成功：{len(blocks)} blocks', flush=True)
         return blocks
     return _towiki_split_text_blocks(pdf_path.stem, 3)
 
 
-def process_towiki(client, source, target_url):
+def process_towiki(client, source, target_url, write_retries=3):
     """--towiki 模式：把网页或 PDF 内容写入飞书 wiki/docx。"""
     if not _towiki_user_token(client):
-        raise RuntimeError('--towiki 需要 feishu user_access_token，请先授权')
-    doc_id = _towiki_resolve_doc_id(client, target_url)
+        print('--towiki 最终失败：缺少飞书 user_access_token', flush=True)
+        print('请运行 python src/modules/feishu_auth.py 完成用户授权',
+              flush=True)
+        print('目标文档未修改', flush=True)
+        return False
+    print(f'源内容: {source}', flush=True)
+    print(f'目标文档: {target_url}', flush=True)
+    try:
+        doc_id = _towiki_resolve_doc_id(client, target_url)
+    except Exception as error:
+        print(f'目标文档访问失败：{error}', flush=True)
+        print('请检查目标 URL、飞书用户授权及文档编辑权限', flush=True)
+        print('目标文档未修改', flush=True)
+        return False
     print(f'目标 document_id: {doc_id}', flush=True)
 
-    if source.lower().startswith(('http://', 'https://')) and _towiki_source_is_pdf_url(source):
-        print('下载源 PDF...', flush=True)
-        pdf_path = _towiki_download_pdf_url(client, source)
-        blocks = _towiki_pdf_blocks(pdf_path)
-    elif source.lower().startswith(('http://', 'https://')):
-        print('读取源网页...', flush=True)
-        blocks = _towiki_fetch_html_blocks(client, source)
-    else:
-        print('读取源 PDF...', flush=True)
-        blocks = _towiki_pdf_blocks(source)
+    try:
+        if (source.lower().startswith(('http://', 'https://'))
+                and _towiki_source_is_pdf_url(source)):
+            print('下载源 PDF...', flush=True)
+            pdf_path = _towiki_download_pdf_url(client, source)
+            blocks = _towiki_pdf_blocks(pdf_path)
+        elif source.lower().startswith(('http://', 'https://')):
+            print('读取源网页...', flush=True)
+            blocks = _towiki_fetch_html_blocks(client, source)
+        else:
+            print('读取源 PDF...', flush=True)
+            blocks = _towiki_pdf_blocks(source)
+    except Exception as error:
+        print(f'源内容读取最终失败：{error}', flush=True)
+        print('目标文档尚未清空或写入', flush=True)
+        return False
 
     if not blocks:
-        raise RuntimeError('未从源内容提取到可写入的 blocks')
+        print('源内容解析失败：未提取到可写入的 blocks', flush=True)
+        print('目标文档尚未清空或写入', flush=True)
+        return False
     print(f'提取到 {len(blocks)} 个待写入 blocks', flush=True)
 
-    print('清空目标文档...', flush=True)
-    _towiki_clear_document(client, doc_id)
-    print('写入目标文档...', flush=True)
-    _towiki_append_blocks(client, doc_id, blocks)
-    print('写入完成', flush=True)
+    for attempt in range(1, write_retries + 1):
+        last_reported = 0
+
+        def report_progress(written):
+            nonlocal last_reported
+            if written == len(blocks) or written - last_reported >= 100:
+                print(f'  写入进度: {written}/{len(blocks)} blocks',
+                      flush=True)
+                last_reported = written
+
+        try:
+            print(f'清空目标文档（尝试 {attempt}/{write_retries}）...',
+                  flush=True)
+            _towiki_clear_document(client, doc_id)
+            print(f'写入目标文档（尝试 {attempt}/{write_retries}）...',
+                  flush=True)
+            _towiki_append_blocks(
+                client, doc_id, blocks, progress_callback=report_progress)
+        except Exception as error:
+            retryable = _towiki_is_transient_error(error)
+            if retryable and attempt < write_retries:
+                wait_seconds = 3 * attempt
+                print(f'整份写入失败（尝试 {attempt}/{write_retries}）：'
+                      f'{error}', flush=True)
+                print(f'{wait_seconds} 秒后将重新清空并从头写入',
+                      flush=True)
+                time.sleep(wait_seconds)
+                continue
+            print(f'整份写入最终失败（尝试 {attempt}/{write_retries}）：'
+                  f'{error}', flush=True)
+            if not retryable:
+                print('该错误不适合自动重试，请检查输入、凭证或文档权限',
+                      flush=True)
+            print('目标文档可能只写入了部分内容，请排除故障后重新运行命令',
+                  flush=True)
+            return False
+
+        if attempt > 1:
+            print(f'整份文档重试成功（尝试 {attempt}/{write_retries}）',
+                  flush=True)
+        print(f'目标文档写入完成：{len(blocks)} blocks', flush=True)
+        return True
+
+    return False
 
 
 def process_one_doc(client, parser, config, doc_token, doc_url, doc_index, total_docs):
@@ -3430,10 +3605,12 @@ def main():
     print('=' * 60, flush=True)
 
     client = FeishuClient()
+    feishu_auth = client.credentials.get('auth_feishuMSG-xls',
+                                         client.credentials.get('auth', {}))
     credentials = {
         'zsxq_token': client.credentials.get('zsxq', {}).get('access_token', ''),
         'zhihu_cookies': client.credentials.get('zhihu', {}),
-        'feishu_user_token': client.credentials.get('auth', {}).get('user_access_token', ''),
+        'feishu_user_token': feishu_auth.get('user_access_token', ''),
         'wechat_cookie': client.credentials.get('wechat', {}).get('cookie', ''),
         'xiaobot_token': client.credentials.get('xiaobot', {}).get('token', ''),
     }
@@ -3461,7 +3638,8 @@ def main():
     elif args.daily:
         zsxq_token = credentials['zsxq_token']
         if not zsxq_token:
-            print('--daily 需要 zsxq token，请检查 credentials.yaml')
+            print('--daily 需要 zsxq token，请检查 '
+                  '~/.config/secrets/gtokens.yaml')
             return
         bt_cfg = config.get('weekly_report', {}).get('target_bitable', {})
         bt_table_id = bt_cfg.get('table_id', '')
@@ -3480,7 +3658,8 @@ def main():
         return
     elif args.towiki:
         source, target_url = args.towiki
-        process_towiki(client, source.strip(), target_url.strip())
+        if not process_towiki(client, source.strip(), target_url.strip()):
+            raise SystemExit(1)
         return
     else:
         print('请指定 --file / --list / --daily / --update / --weekly / --towiki')

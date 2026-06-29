@@ -1157,6 +1157,12 @@ def write_error_log(error_rows, date_tag):
     return len(error_rows)
 
 
+def print_no_urls_update_summary(last_processed_date):
+    print('\n未提取到任何 URL，结束')
+    print(f'last_processed_date 未更新，原因：本次未提取到待处理 URL'
+          f'（当前值: {last_processed_date}）')
+
+
 def _normalize_date(d):
     """6位日期自动补全为8位：250226 -> 20250226"""
     if len(d) == 6 and d.isdigit():
@@ -1182,10 +1188,12 @@ def main():
 
     # 初始化客户端
     client = FeishuClient()
+    feishu_auth = client.credentials.get('auth_feishuMSG-xls',
+                                         client.credentials.get('auth', {}))
     credentials = {
         'zsxq_token': client.credentials.get('zsxq', {}).get('access_token', ''),
         'zhihu_cookies': client.credentials.get('zhihu', {}),
-        'feishu_user_token': client.credentials.get('auth', {}).get('user_access_token', ''),
+        'feishu_user_token': feishu_auth.get('user_access_token', ''),
         'wechat_cookie': client.credentials.get('wechat', {}).get('cookie', ''),
         'xiaobot_token': client.credentials.get('xiaobot', {}).get('token', ''),
     }
@@ -1232,7 +1240,11 @@ def main():
         start_date = start_dt.strftime('%Y%m%d')
         end_date = datetime.now().strftime('%Y%m%d')
 
+    mode = '历史批量' if args.his else '增量更新'
+    print(f'运行模式: {mode}')
     print(f'日期范围: {start_date} ~ {end_date}')
+    if not args.his:
+        print(f'last_processed_date 当前值: {wta_config.get("last_processed_date", "")}')
     date_tag = datetime.now().strftime('%Y%m%d')
 
     # 加载本地 URL 缓存（按精选日期范围过滤 dedup_keys）
@@ -1275,7 +1287,7 @@ def main():
         print(f'  提取到 {len(items)} 条，去重后累计 {len(all_url_items)} 条')
 
     if not all_url_items:
-        print('\n未提取到任何 URL，结束')
+        print_no_urls_update_summary(wta_config.get('last_processed_date', ''))
         return
 
     # 按日期升序（最远日期在前），同日期按 order 升序
@@ -1377,9 +1389,10 @@ def main():
             set_config_value_preserve_comments(
                 client.config_path, ['waytoagi', 'last_processed_date'], target_date)
         wta_config['last_processed_date'] = target_date
-        print(f'\n已更新 last_processed_date: {target_date}')
+        print(f'\nlast_processed_date 已更新: {old_val} → {target_date}')
     else:
-        print(f'\n未更新 last_processed_date，保持原值: {wta_config.get("last_processed_date", "")}')
+        print(f'\nlast_processed_date 未更新，原因：多维表格写入未完整成功'
+              f'（保持原值: {wta_config.get("last_processed_date", "")}）')
 
     # 汇总统计
     print(f'\n{"=" * 60}')
@@ -1388,6 +1401,7 @@ def main():
     print(f'  提取 URL: {len(all_url_items)} 条')
     print(f'  解析结果: {len(parsed_rows)} 条')
     print(f'  异常: {len(error_rows)} 条')
+    print(f'  状态推进: {"已更新" if write_ok else "未更新"}')
 
 
 if __name__ == '__main__':

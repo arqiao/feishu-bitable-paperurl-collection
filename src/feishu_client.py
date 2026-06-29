@@ -114,7 +114,10 @@ class FeishuClient:
 
     def check_token_valid(self) -> bool:
         """检查 token 是否有效"""
-        expire_time = self.credentials[_PROJECT_AUTH_KEY].get('user_token_expire_time', 0)
+        project_auth = self.credentials.get(_PROJECT_AUTH_KEY, {})
+        if not project_auth:
+            return False
+        expire_time = project_auth.get('user_token_expire_time', 0)
         try:
             expire_time = int(expire_time)
         except (TypeError, ValueError):
@@ -213,7 +216,8 @@ class FeishuClient:
         注意：由于飞书 API 的限制，refresh_token 有效期为 30 天
         超过 30 天未使用需要重新授权
         """
-        refresh_token = self.credentials[_PROJECT_AUTH_KEY].get('user_refresh_token', '')
+        project_auth = self.credentials.get(_PROJECT_AUTH_KEY, {})
+        refresh_token = project_auth.get('user_refresh_token', '')
         if not refresh_token:
             print("刷新 token 失败: 缺少 refresh_token")
             return False
@@ -230,7 +234,8 @@ class FeishuClient:
         }
 
         try:
-            response = self._session.post(url, json=data, headers=headers)
+            response = self._session.post(
+                url, json=data, headers=headers, timeout=30)
             result = response.json()
 
             if result.get('code') == 0:
