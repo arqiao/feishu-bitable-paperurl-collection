@@ -69,6 +69,11 @@ def classify_http_failure(error=None, response=None, status_code=None,
         return _diagnosis(
             category, retryable, service, label, combined_message,
             status, body_code, credential_hint)
+    body_code_int = _to_int(body_code)
+    if body_code_int is not None and body_code_int >= 500:
+        return _diagnosis('server_error', True, service, '服务端异常',
+                          combined_message, status, body_code,
+                          credential_hint)
 
     if status == 401:
         return _diagnosis('auth', False, service, '认证失败', combined_message,

@@ -46,6 +46,17 @@ class HttpDiagnosticsTests(unittest.TestCase):
         self.assertTrue(diag.retryable)
         self.assertIn('服务端异常', diag.summary)
 
+    def test_business_5xx_code_is_server_error_and_retryable(self):
+        diag = classify_http_failure(
+            payload={'code': 500, 'msg': 'Internal Error'},
+            service='知识星球',
+        )
+
+        self.assertEqual('server_error', diag.category)
+        self.assertTrue(diag.retryable)
+        self.assertIn('知识星球服务端异常', diag.summary)
+        self.assertIn('code=500', diag.detail)
+
     def test_timeout_exception_is_retryable(self):
         diag = classify_http_failure(
             error=requests.exceptions.ReadTimeout('read timed out'),

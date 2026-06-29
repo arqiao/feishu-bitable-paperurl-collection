@@ -33,13 +33,9 @@ from modules.config_utils import (
     format_unix_ts_comment,
     set_list_item_scalar_preserve_comments,
 )
+from modules.zsxq_client import fetch_zsxq_json_with_retry
 
 ERROR_LOG = os.path.join(PROJECT_ROOT, 'log-err', 'zsxq_downloader_err.log')
-
-ZSXQ_HEADERS_TPL = {
-    'User-Agent': 'Mozilla/5.0',
-    'Referer': 'https://wx.zsxq.com/',
-}
 
 ZSXQ_SESSION = requests.Session()
 ZSXQ_SESSION.trust_env = False
@@ -80,12 +76,6 @@ def _setup_encoding():
             sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', line_buffering=True)
 
 
-def zsxq_headers(token):
-    h = dict(ZSXQ_HEADERS_TPL)
-    h['Cookie'] = f'zsxq_access_token={token}'
-    return h
-
-
 def parse_zsxq_time(time_str):
     """解析知识星球时间字符串为 datetime（带时区）"""
     time_str = re.sub(r'(\+\d{2})(\d{2})$', r'\1:\2', time_str)
@@ -95,123 +85,28 @@ def parse_zsxq_time(time_str):
         return None
 
 
-def _api_failure_reason(data):
-    message = data.get('msg') or data.get('message') or '接口返回 succeeded=false'
-    code = data.get('code')
-    return f'{message}（code={code}）' if code is not None else message
-
-
-def _coerce_error_code(value):
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return value
-
-
-def _zsxq_failure_diagnosis(data=None, exc=None, status_code=None):
-    """返回 (面向用户的原因说明, 是否建议重试)。"""
-    if exc is not None:
-        if isinstance(exc, requests.Timeout):
-            return f'请求超时：{exc}', True
-        if isinstance(exc, requests.ConnectionError):
-            return f'网络连接失败：{exc}', True
-        if isinstance(exc, ValueError):
-            return f'响应解析失败：{exc}', True
-        return f'请求异常：{exc}', True
-
-    data = data or {}
-    code = _coerce_error_code(data.get('code', status_code))
-    raw_reason = _api_failure_reason(data)
-
-    if code == 401:
-        return (
-            '知识星球认证失败：当前 zsxq.access_token 无效或已过期；'
-            '请更新 ~/.config/secrets/gtokens.yaml 中的 zsxq.access_token',
-            False,
-        )
-    if code == 403:
-        return (
-            '知识星球访问权限不足：请确认当前账号仍有星球成员权限，'
-            '并确认 group_url/group_id 配置正确',
-            False,
-        )
-    if code == 1059:
-        return f'知识星球接口临时异常：{raw_reason}', True
-    if code == 429:
-        return f'知识星球接口限流：{raw_reason}', True
-    if isinstance(code, int) and 500 <= code <= 599:
-        return f'知识星球服务端异常：{raw_reason}', True
-    if isinstance(status_code, int) and 500 <= status_code <= 599:
-        return f'知识星球服务端异常：HTTP {status_code}', True
-    if isinstance(status_code, int) and status_code >= 400:
-        return f'知识星球接口返回 HTTP {status_code}：{raw_reason}', True
-    return raw_reason, True
-
-
 def fetch_topics_page(group_id, token, end_time=None, count=20):
     """获取帖子列表单页，含重试"""
     url = f'https://api.zsxq.com/v2/groups/{group_id}/topics?scope=all&count={count}'
     if end_time:
         url += f'&end_time={end_time.replace("+", "%2B")}'
-    max_attempts = 5
-    for attempt in range(1, max_attempts + 1):
-        try:
-            resp = ZSXQ_SESSION.get(url, headers=zsxq_headers(token), timeout=15)
-            data = resp.json()
-            if data.get('succeeded'):
-                if attempt > 1:
-                    print(f'  获取帖子列表重试成功（尝试 {attempt}/{max_attempts}）')
-                return data['resp_data']['topics']
-            reason, retryable = _zsxq_failure_diagnosis(
-                data=data, status_code=getattr(resp, 'status_code', None))
-        except Exception as e:
-            reason, retryable = _zsxq_failure_diagnosis(exc=e)
-
-        if not retryable:
-            print(f'  获取帖子列表失败（尝试 {attempt}/{max_attempts}）：'
-                  f'{reason}；已停止重试')
-            break
-        if attempt < max_attempts:
-            wait_seconds = 2 * attempt
-            print(f'  获取帖子列表失败（尝试 {attempt}/{max_attempts}）：'
-                  f'{reason}；{wait_seconds} 秒后重试')
-            time.sleep(wait_seconds)
-        else:
-            print(f'  获取帖子列表失败（尝试 {attempt}/{max_attempts}）：'
-                  f'{reason}；已停止重试')
-    return None
+    data = fetch_zsxq_json_with_retry(
+        ZSXQ_SESSION, url, token, '获取帖子列表',
+        timeout=15, sleep_func=time.sleep, printer=print)
+    if not data:
+        return None
+    return data['resp_data']['topics']
 
 
 def get_download_url(file_id, token):
     """获取文件临时下载链接，含重试"""
     url = f'https://api.zsxq.com/v2/files/{file_id}/download_url'
-    max_attempts = 5
-    for attempt in range(1, max_attempts + 1):
-        try:
-            resp = ZSXQ_SESSION.get(url, headers=zsxq_headers(token), timeout=15)
-            data = resp.json()
-            if data.get('succeeded'):
-                if attempt > 1:
-                    print(f'  获取下载链接重试成功（尝试 {attempt}/{max_attempts}）')
-                return data['resp_data']['download_url']
-            reason, retryable = _zsxq_failure_diagnosis(
-                data=data, status_code=getattr(resp, 'status_code', None))
-        except Exception as e:
-            reason, retryable = _zsxq_failure_diagnosis(exc=e)
-
-        if not retryable:
-            print(f'  获取下载链接失败（尝试 {attempt}/{max_attempts}）：'
-                  f'{reason}；已停止重试')
-            break
-        if attempt < max_attempts:
-            wait_seconds = 2 * attempt
-            print(f'  获取下载链接失败（尝试 {attempt}/{max_attempts}）：'
-                  f'{reason}；{wait_seconds} 秒后重试')
-            time.sleep(wait_seconds)
-        else:
-            print(f'  获取下载链接失败（尝试 {attempt}/{max_attempts}）：'
-                  f'{reason}；已停止重试')
-    return None
+    data = fetch_zsxq_json_with_retry(
+        ZSXQ_SESSION, url, token, '获取下载链接',
+        timeout=15, sleep_func=time.sleep, printer=print)
+    if not data:
+        return None
+    return data['resp_data']['download_url']
 
 
 def _set_windows_ctime(path, dt):
